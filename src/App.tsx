@@ -1,11 +1,16 @@
-import * as react from 'react'
+// import * as react from 'react'
+import Header from "./Header"
+import Footer from "./Footer"
+import Search from "./Search"
 
 function App() {
 
   return (
     <>
       <div>
-        <h1>Hi</h1>
+        <Header />
+        <Search />
+        <Footer/>
       </div>
     </>
   )
