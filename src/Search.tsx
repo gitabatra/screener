@@ -1,17 +1,18 @@
 function Search() {
     return (
+		<div className="searchWrap">
         <div className="search">
 			<form action="#">
+                <h1 className="mainHeading">Stock Screener</h1>
+                <h4 className="smallHeading">Screening tool for investors</h4>
 				<input type="text"
-					placeholder="Search companies"
+					placeholder="Search for a company"
 					name="search" />
-				<button className="searchBtn">
+				{/* <button className="searchBtn">
                     Search
-					{/* <i class="fa fa-search"
-					style="font-size: 18px;">
-					</i> */}
-				</button>
+				</button> */}
 			</form>
+		</div>
 		</div>
     );
 }
