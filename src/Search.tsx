@@ -1,3 +1,5 @@
+import PopularStocks from "./PopularStocks";
+
 function Search() {
     return (
 		<div className="searchWrap">
@@ -8,6 +10,7 @@ function Search() {
 				<input type="text"
 					placeholder="Search for a company"
 					name="search" />
+				<PopularStocks />
 				{/* <button className="searchBtn">
                     Search
 				</button> */}
