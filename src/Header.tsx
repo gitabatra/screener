@@ -1,8 +1,9 @@
-type Props = {
+type NavLinkProps = {
     href: string,
     children: string
 }
-function NavLink({href, children}: Props){
+
+function NavLink({href, children}: NavLinkProps){
     const path = window.location.pathname; 
     return ( <li className= {path === href ? "active" : ""}>
         <a href= {href}> 
@@ -17,7 +18,6 @@ function Header() {
     <a href="/" className="logo">
         <img alt="logo-image" src="" />
     </a>
-    <image />
     <ul>
         <NavLink href="/">Home</NavLink>
         <NavLink href="/watchlist">Watchlist</NavLink>

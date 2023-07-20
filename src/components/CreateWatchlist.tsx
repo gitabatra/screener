@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useState, ChangeEvent, MouseEvent } from "react";
 
 function CreateWatchlist(){
     const [wlName, setWLName] = useState("");
 
-    function handleChangeWL(event){
+    function handleChangeWL(event: ChangeEvent<HTMLInputElement>){
         console.log("creating new watchlist event is executing......",event.target.value);
         setWLName(event.target.value);
     }
 
-    function handleSaveWL(event){
+    function handleSaveWL(event: MouseEvent<HTMLButtonElement>){
         console.log("Saving the watchlist name....",wlName);
         event.preventDefault();
     }
