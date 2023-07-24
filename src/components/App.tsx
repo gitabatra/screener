@@ -1,9 +1,9 @@
 // import * as react from 'react'
 import Header from "./header/Header"
 import Footer from "./Footer"
-import CoreWatchlist from "./CoreWatchlist";
-import Portfolio from "./Portfolio";
-import CreateWatchlist from "./CreateWatchlist";
+import CoreWatchlist from "./watchlist/CoreWatchlist";
+import Portfolio from "./portfolio/Portfolio";
+// import CreateWatchlist from "./watchlist/CreateWatchlist";
 import { Routes } from "../types";
 import HomeSearch from "./Home/HomeSearch";
 
@@ -21,7 +21,7 @@ function App() {
       Component = <Portfolio />
       break;
     case "/create-watchlist":
-      Component = <CreateWatchlist />
+      Component = <CoreWatchlist />
     //no default
   }
 
@@ -29,8 +29,8 @@ function App() {
     <>
       <div>
         <Header />
-        <div className="w-full h-screen mt-10 h-screen">
-        { Component }
+        <div className="w-full h-screen mt-10 h-screen bg-gray-800 text-white">
+          { Component }
         </div>
         <Footer/>
       </div>
