@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { useState, ChangeEvent, MouseEvent } from "react";
 
-function NewWatchlist({setIsCreateWLOpen, watchlistName}){
+function CreateArea({setIsCreateWLOpen, setWatchlistName}){
     
     const [wlName, setWLName] = useState("");
     // const [watchlist, setWatchlist]= useState(['Core watchlist']);
@@ -13,8 +13,7 @@ function NewWatchlist({setIsCreateWLOpen, watchlistName}){
 
     function handleSaveWL(event: MouseEvent<HTMLButtonElement>){
         console.log("Saving the watchlist name....",wlName);
-        watchlistName(wlName);
-       // setWLName();
+        setWatchlistName(wlName);
         event.preventDefault();
     }
     return (
@@ -43,4 +42,4 @@ function NewWatchlist({setIsCreateWLOpen, watchlistName}){
     );
 }
 
-export default NewWatchlist
+export default CreateArea

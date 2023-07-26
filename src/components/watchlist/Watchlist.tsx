@@ -1,8 +1,8 @@
 import { useState } from "react";
-import NewWatchlist from "./NewWatchlist";
-import CreateWatchlist from "./CreateWatchlist";
+import CreateArea from "./CreateArea";
+import DisplayWatchlist from "./DisplayWatchlist";
 
-function CoreWatchlist() {
+function Watchlist() {
     const [isCreateWLOpen, setIsCreateWLOpen] = useState(false);
     const [watchlist, setWatchlist] = useState(['Core Watchlist']);
   
@@ -12,18 +12,18 @@ function CoreWatchlist() {
     }
 
     const addWatchlistName = (wlName: string) => {
-        console.log(`child passed in ${wlName}`);
         watchlist.push(wlName);
         setWatchlist(watchlist);
         console.log(watchlist);
     }
 
+   
 
   
   return (
       <div className="container mx-auto items-center">
         <div className="mt-10">
-          <div className="pt-20 flex justify-center items-center">
+          <div className="pt-20 flex justify-center items-center py-6">
             <button
               className="inline-flex items-center justify-center btn rounded font-medium text-2xl text-white bg-sky-700 px-6 py-4 hover:bg-sky-800"
               onClick = {showCreateWatchlilst}
@@ -35,11 +35,11 @@ function CoreWatchlist() {
             </button>
           </div>
           {
-            isCreateWLOpen ? <NewWatchlist  setIsCreateWLOpen= {setIsCreateWLOpen} watchlistName={addWatchlistName}/> : ""
+            isCreateWLOpen ? <CreateArea  setIsCreateWLOpen= {setIsCreateWLOpen}  setWatchlistName={ addWatchlistName }/> : ""
           }
           {
             watchlist.map((wlItem,index) =>{
-                return (<CreateWatchlist key= {index} name={wlItem} />);
+                return (<DisplayWatchlist key= {index} name={wlItem} />);
             })
           }
         </div>
@@ -47,4 +47,4 @@ function CoreWatchlist() {
   )
 }
 
-export default CoreWatchlist
+export default Watchlist
