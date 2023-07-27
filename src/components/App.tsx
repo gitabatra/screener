@@ -1,35 +1,45 @@
 // import * as react from 'react'
 import Header from "./header/Header"
 import Footer from "./Footer"
-import Search from "./Search"
-import CoreWatchlist from "./CoreWatchlist";
-import Portfolio from "./Portfolio";
-import CreateWatchlist from "./CreateWatchlist";
+import Watchlist from "./watchlist/Watchlist";
+import Portfolio from "./portfolio/Portfolio";
 import { Routes } from "../types";
+import HomeSearch from "./Home/HomeSearch";
+import WatchlistView from "./watchlist/watchlistView";
+import ManageCompanies from "./watchlist/ManageCompanies";
 
 function App() {
 
   let Component;
   switch(window.location.pathname){
     case Routes.HOME:
-      Component = <Search />
+      Component = <HomeSearch />
       break;
     case Routes.WATCHLIST:
-      Component = <CoreWatchlist />
+      Component = <Watchlist />
       break;
     case Routes.PORTFOLIO:
       Component = <Portfolio />
       break;
     case "/create-watchlist":
-      Component = <CreateWatchlist />
+      Component = <Watchlist />
+      break;
+    case "/watchlist/watchist-view":
+        Component = <WatchlistView />
+        break;
+    case "/watchlist/manage-companies":
+        Component = <ManageCompanies />
     //no default
+    
   }
 
   return (
     <>
       <div>
         <Header />
-        { Component }
+        <div className="w-full h-screen mt-10 h-screen bg-gray-800 text-white">
+          { Component }
+        </div>
         <Footer/>
       </div>
     </>
