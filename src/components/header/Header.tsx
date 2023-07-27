@@ -3,23 +3,6 @@ import { Routes } from "../../types";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 
-// function Header() {
-//   return (
-//     <>
-//       <header className="navbar">
-//         <a href={Routes.HOME} className="logo">
-//           <img alt="logo-image" src="" />
-//         </a>
-//         <ul>
-//           <NavLink href={Routes.HOME}>Home</NavLink>
-//           <NavLink href={Routes.WATCHLIST}>Watchlist</NavLink>
-//           <NavLink href={Routes.PORTFOLIO}>Portfolio</NavLink>
-//         </ul>
-//       </header>
-//     </>
-//   );
-// }
-
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (

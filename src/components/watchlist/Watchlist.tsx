@@ -12,13 +12,14 @@ function Watchlist() {
     }
 
     const addWatchlistName = (wlName: string) => {
-        watchlist.push(wlName);
-        setWatchlist(watchlist);
-        console.log(watchlist);
+        const watchlists = [
+          ...watchlist,
+          wlName
+        ]
+        // watchlist.push(wlName);
+        setWatchlist(watchlists);
+        console.log(watchlists);
     }
-
-   
-
   
   return (
       <div className="container mx-auto items-center">

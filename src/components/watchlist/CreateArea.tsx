@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { useState, ChangeEvent, MouseEvent } from "react";
 
-function CreateArea({setIsCreateWLOpen, setWatchlistName}){
+interface CreateAreaProps {
+  setIsCreateWLOpen: (open:boolean) => void;
+  setWatchlistName: (name:string) => void;
+}
+
+function CreateArea({setIsCreateWLOpen, setWatchlistName}: CreateAreaProps){
     
     const [wlName, setWLName] = useState("");
-    // const [watchlist, setWatchlist]= useState(['Core watchlist']);
 
     function handleChangeWL(event: ChangeEvent<HTMLInputElement>){
         console.log("creating new watchlist event is executing......",event.target.value);
