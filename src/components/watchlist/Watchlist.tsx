@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateArea from "./CreateArea";
 import DisplayWatchlist from "./DisplayWatchlist";
+import { getDataFromLocalStorage } from "../../utils/api";
 
-function Watchlist() {
+
+
+function Watchlist(){
     const [isCreateWLOpen, setIsCreateWLOpen] = useState(false);
-    const [watchlist, setWatchlist] = useState(['Core Watchlist']);
+   // const [count, setCount] = useState();
+    const [watchlists, setWatchlist] = useState(getDataFromLocalStorage());
   
     function showCreateWatchlilst(){
         console.log("create watchlist button ecent is executing....");
@@ -12,17 +16,35 @@ function Watchlist() {
     }
 
     const addWatchlistName = (wlName: string) => {
-        const watchlists = [
-          ...watchlist,
-          wlName
-        ]
-        // watchlist.push(wlName);
-        setWatchlist(watchlists);
-        console.log(watchlists);
-    }
-  
-  return (
-      <div className="container mx-auto items-center">
+        //setCount(()=>((watchlists.length)+1));
+        console.log("Count: ",watchlists.length);
+       // console.log("Count: ",count);
+        const watchlistId = "wl-20230727-" + (watchlists.length).toString();
+        console.log("Count: ",watchlistId,watchlists.length);
+        let watchlist = {
+            id:watchlistId,
+            wlName: wlName,
+            wlData: [{}]
+          }
+          setWatchlist([...watchlists,watchlist]);
+          console.log(watchlists);
+      }
+
+      const deleteWatchlist=(id:string) =>{
+         console.log("Delete function is executing....",id);
+         const filteredWatchlists = watchlists.filter((element,index)=>{
+            return (id!= element.id)
+         })
+         console.log("Delete function is executing....",id,filteredWatchlists);
+         setWatchlist(filteredWatchlists);
+      }
+
+      useEffect(()=>{
+        localStorage.setItem("watchlists",JSON.stringify(watchlists));
+      },[watchlists]);
+
+    return (<>
+     <div className="container mx-auto items-center">
         <div className="mt-10">
           <div className="pt-20 flex justify-center items-center py-6">
             <button
@@ -39,13 +61,11 @@ function Watchlist() {
             isCreateWLOpen ? <CreateArea  setIsCreateWLOpen= {setIsCreateWLOpen}  setWatchlistName={ addWatchlistName }/> : ""
           }
           {
-            watchlist.map((wlItem,index) =>{
-                return (<DisplayWatchlist key= {index} name={wlItem} />);
-            })
+            watchlists.map((watchlist:object,index:number) => {return  (<DisplayWatchlist key= {index} watchlist={watchlist} deleteWatchlist={deleteWatchlist}/>)})
           }
         </div>
       </div>
-  )
+    </>);
 }
 
-export default Watchlist
+export default Watchlist;

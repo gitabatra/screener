@@ -1,4 +1,13 @@
+// import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 function ManageCompanies() {
+  // const navigate = useNavigate();
+  const { id } = useParams();
+
+  
+  console.log("********** Watchlist Id: ",id);
+
   return (
     <>
       <div className="container mx-auto py-10">

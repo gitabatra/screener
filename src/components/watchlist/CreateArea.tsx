@@ -2,7 +2,7 @@
 import { useState, ChangeEvent, MouseEvent } from "react";
 
 interface CreateAreaProps {
-  setIsCreateWLOpen: (open:boolean) => void;
+  setIsCreateWLOpen : (open:boolean) => void;
   setWatchlistName: (name:string) => void;
 }
 
@@ -16,9 +16,10 @@ function CreateArea({setIsCreateWLOpen, setWatchlistName}: CreateAreaProps){
     }
 
     function handleSaveWL(event: MouseEvent<HTMLButtonElement>){
+        event.preventDefault();
         console.log("Saving the watchlist name....",wlName);
         setWatchlistName(wlName);
-        event.preventDefault();
+        setWLName('');
     }
     return (
         <>
