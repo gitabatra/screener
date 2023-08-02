@@ -1,16 +1,14 @@
 // import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import SecondaryNavigation from "./SecondaryNavigation";
 
 function ManageCompanies() {
-  // const navigate = useNavigate();
   const { id } = useParams();
-
-  
-  console.log("********** Watchlist Id: ",id);
 
   return (
     <>
       <div className="container mx-auto py-10">
+      <SecondaryNavigation watchlistID={id} />
         <div className="py-10 px-5">
           <h1>Add Companies to Core Watchliat</h1>
         </div>

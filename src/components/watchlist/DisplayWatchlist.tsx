@@ -10,9 +10,6 @@ interface DisplayWatchlistProps {
 
 function DisplayWatchlist({watchlist,deleteWatchlist}: DisplayWatchlistProps){
   const navigate = useNavigate();
-
-  console.log("Watchlist : ",watchlist["id"]);
-
   
     return (
    <>

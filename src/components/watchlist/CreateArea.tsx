@@ -11,13 +11,11 @@ function CreateArea({setIsCreateWLOpen, setWatchlistName}: CreateAreaProps){
     const [wlName, setWLName] = useState("");
 
     function handleChangeWL(event: ChangeEvent<HTMLInputElement>){
-        console.log("creating new watchlist event is executing......",event.target.value);
         setWLName(event.target.value);
     }
 
     function handleSaveWL(event: MouseEvent<HTMLButtonElement>){
         event.preventDefault();
-        console.log("Saving the watchlist name....",wlName);
         setWatchlistName(wlName);
         setWLName('');
     }

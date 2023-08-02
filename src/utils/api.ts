@@ -48,7 +48,6 @@ export const getDataFromLocalStorage=() =>{
 }
 export const getWatchlistDataById = ((id:string) => {
     const watchList = JSON.parse(localStorage.getItem("watchlists")) || [];
-    console.log("Id in data file: ",id,watchList);
     return watchList.filter((watchlist) => watchlist.id === id);
   })
 
@@ -56,7 +55,6 @@ export const getStocksDataFromWatchlist = ((id:string) => {
     const watchlistData = getWatchlistDataById(id);
     const wlength = Object.keys(watchlistData[0].wlData).length;
     const stocksData = Object.values(watchlistData[0].wlData);
-    console.log("Stocks data: ",stocksData);
     return stocksData;
 })
   

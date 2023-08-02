@@ -5,7 +5,6 @@ import { getWatchlistDataById, getStocksDataFromWatchlist } from "../../utils/ap
 
 
 function WatclistTableHeader({header}) {
-  console.log("HeaderInfo...  :",header);
   return (
     <>
       <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -25,7 +24,6 @@ function WatclistTableHeader({header}) {
 }
 
 function WatchlistTableRow({stock}) {
-  console.log("Stock data in Watchlist table: ",stock);
   return (
     <>
       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -42,15 +40,11 @@ function WatchlistTableRow({stock}) {
 }
 
 function WatchlistView() {
-
   const { id } = useParams();
   const navigate = useNavigate();
-  console.log("Watchlist view WL ID: ",id);
   const watchlistData = getWatchlistDataById(id);
   const watchlistHeaderInfo = Object.keys(watchlistData[0].wlData[0]);
   const stocksList =  getStocksDataFromWatchlist(id);
-  console.log("Watchlistdata: ",watchlistData[0].wlName,stocksList);
-
 
   return (
     <>
