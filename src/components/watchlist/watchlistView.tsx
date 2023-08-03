@@ -1,10 +1,14 @@
 // import { loader } from ".";
 import SecondaryNavigation from "./SecondaryNavigation";
 import { useParams, useNavigate } from "react-router-dom";
-import { getWatchlistDataById, getStocksDataFromWatchlist } from "../../utils/api";
+import { getWatchlistDataById, getStocksDataFromWatchlist, getStockNameInfo, stock } from "../../utils/api";
 
+interface headerProp{
+  header: []
+}
 
-function WatclistTableHeader({header}) {
+function WatclistTableHeader({header}:headerProp) {
+  console.log("headerInfo: ",header);
   return (
     <>
       <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -23,7 +27,13 @@ function WatclistTableHeader({header}) {
   );
 }
 
-function WatchlistTableRow({stock}) {
+
+interface stockProp {
+  stock: stock
+}
+
+function WatchlistTableRow({stock}:stockProp) {
+  console.log("......Stocks....",stock);
   return (
     <>
       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -40,11 +50,12 @@ function WatchlistTableRow({stock}) {
 }
 
 function WatchlistView() {
-  const { id } = useParams();
+  const { id } = useParams<{id: string}>();
   const navigate = useNavigate();
-  const watchlistData = getWatchlistDataById(id);
-  const watchlistHeaderInfo = Object.keys(watchlistData[0].wlData[0]);
-  const stocksList =  getStocksDataFromWatchlist(id);
+  console.log("Id in Watchlist-view: ",id);
+  const watchlistData = getWatchlistDataById(id as string);
+  const watchlistHeaderInfo = getStockNameInfo(id as string);
+  const stocksList =  getStocksDataFromWatchlist(id as string);
 
   return (
     <>
@@ -63,9 +74,13 @@ function WatchlistView() {
 
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-center text-gray-500 dark:text-gray-400">
-            <WatclistTableHeader header={watchlistHeaderInfo}/>
+            {
+              (watchlistHeaderInfo?.length) ? <WatclistTableHeader header={watchlistHeaderInfo}/> : <caption className="text-xl">Stocks are not added. Click on Companies to add them.</caption>
+            }
+           
             <tbody>
               {
+                // if(stocksList)
                 stocksList.map((stock,index) => {return (<WatchlistTableRow key={index} stock={stock} />)})
               }
             </tbody>

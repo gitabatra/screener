@@ -1,11 +1,12 @@
 // import { useState, ChangeEvent, MouseEvent } from "react";
 import { Bars4Icon, TrashIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
+import { watchlist } from "../../utils/api";
 
 
 interface DisplayWatchlistProps {
-  watchlist : object;
-  deleteWatchlist: (id:string) => void;
+  watchlist : watchlist;
+  deleteWatchlist: (id: string) => void;
 }
 
 function DisplayWatchlist({watchlist,deleteWatchlist}: DisplayWatchlistProps){

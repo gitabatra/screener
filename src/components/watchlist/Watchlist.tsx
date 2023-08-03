@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CreateArea from "./CreateArea";
 import DisplayWatchlist from "./DisplayWatchlist";
 import { getDataFromLocalStorage } from "../../utils/api";
-
+import { watchlist } from "../../utils/api";
 
 
 function Watchlist(){
@@ -15,16 +15,16 @@ function Watchlist(){
         setIsCreateWLOpen(true);
     }
 
-    const addWatchlistName = (wlName: string) => {
+    const addWatchlistName = (watchlistName: string) => {
         //setCount(()=>((watchlists.length)+1));
         console.log("Count: ",watchlists.length);
        // console.log("Count: ",count);
         const watchlistId = "wl-20230727-" + (watchlists.length).toString();
         console.log("Count: ",watchlistId,watchlists.length);
-        let watchlist = {
-            id:watchlistId,
-            wlName: wlName,
-            wlData: [{}]
+        const watchlist: watchlist = {
+            id: watchlistId,
+            wlName: watchlistName,
+            wlData: []
           }
           setWatchlist([...watchlists,watchlist]);
           console.log(watchlists);
@@ -32,7 +32,7 @@ function Watchlist(){
 
       const deleteWatchlist=(id:string) =>{
          console.log("Delete function is executing....",id);
-         const filteredWatchlists = watchlists.filter((element,index)=>{
+         const filteredWatchlists: watchlist[] = watchlists.filter((element,index)=>{
             return (id!= element.id)
          })
          console.log("Delete function is executing....",id,filteredWatchlists);
