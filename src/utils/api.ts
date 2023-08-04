@@ -1,4 +1,4 @@
-
+import { Watchlist, Stock } from "../types";
 
 export function getStocks() {
     // Actually go get the data from the API
@@ -8,29 +8,17 @@ export function getStocks() {
     // fetch('myapi.com')
 }
 
-export interface stock {
-    stockID: string,
-    stockName: string,
-    cmp: number,
-    market_Cap: number,
-    quarterly_Profit: number,
-    quarterly_Sales: number,
-    epsAnn: number,
-    roe: number,
-    roce: number,
-    pe: number,
-    industryPE: number
-}
-
-export interface watchlist {
-    id: string,
-    wlName: string,
-    wlData: stock[]
-}
+export interface Result {
+    userId:number,
+    id: number,
+    title: string,
+    body: string
+  }
 
 
-export const getDataFromLocalStorage=() =>{ 
-    const watchlistData: watchlist[] = (JSON.parse(localStorage.getItem("watchlists")));
+
+export const getDataFromLocalStorage = (): Watchlist[] => { 
+    const watchlistData = JSON.parse(localStorage.getItem("watchlists") ?? 'null') as Watchlist[] | null;
     if(watchlistData){
        return(watchlistData);
     }else{
@@ -40,49 +28,49 @@ export const getDataFromLocalStorage=() =>{
             wlData: [{
                 stockID: "stock-0",
                 stockName: "AA",
-                cmp: "321",
-                market_Cap: "4.6",
-                quarterly_Profit:"10",
-                quarterly_Sales: "12",
-                epsAnn: "21",
-                roe: "10",
-                roce: "19.1",
-                pe: "5",
-                industryPE: "7"
+                cmp: 321,
+                marketCap: 4.6,
+                quarterlyProfit:10,
+                quarterlySales: 12,
+                epsAnn: 21,
+                roe: 10,
+                roce: 19.1,
+                pe: 5,
+                industryPE: 7
             },
             {
                 stockID: "stock-1",
                 stockName: "ABC",
-                cmp: "321",
-                marketCap: "4.6",
-                quarterlyProfit:"10",
-                quarterlySales: "12",
-                epsAnn: "21",
-                roe: "10",
-                roce: "19.1",
-                pe: "5",
-                industryPE: "7"
+                cmp: 321,
+                marketCap: 4.6,
+                quarterlyProfit:10,
+                quarterlySales: 12,
+                epsAnn: 21,
+                roe: 10,
+                roce: 19.1,
+                pe: 5,
+                industryPE: 7
                 }
         ]}]
     }
 }
-export const getWatchlistDataById = ((id:string) => {
-    const watchList: watchlist[] = (JSON.parse(localStorage.getItem("watchlists")));
-    return watchList.filter((watchlist) => watchlist.id === id);
-  })
+export const getWatchlistDataById = (id:string): Watchlist[] | null => {
+    const watchList = JSON.parse(localStorage.getItem("watchlists") ?? 'null') as Watchlist[] | null;
+    return watchList?.filter((watchlist) => watchlist.id === id) ?? null;
+}
 
 export const getStockNameInfo = ((id:string) => {
-    const watchlistData = getWatchlistDataById(id);
-    console.log(watchlistData[0]);
+    const watchlistData: Watchlist[] | null = getWatchlistDataById(id);
+    console.log(watchlistData?.[0]);
     // if(JSON.stringify(watchlistData[0].wlData) === '[]'){
     //     console.log("stock data is not present");
     //     return [];
     // } 
     // else{
-    const wlLength = (watchlistData[0].wlData).length;
-    if(wlLength > 0){
-    const headerInfo =Object.keys(watchlistData[0].wlData[0])
-    console.log("Length of header: ",(watchlistData[0].wlData).length);
+    const wlLength = (watchlistData?.[0]?.wlData)?.length;
+    if(wlLength as number> 0){
+    const headerInfo =Object.keys((watchlistData?.[0]?.wlData?.[0]) as Stock);
+   // console.log("Length of header: ",(watchlistData[0].wlData).length);
     return(headerInfo);
     }else{
         return []
@@ -94,11 +82,11 @@ export const getStockNameInfo = ((id:string) => {
 export const getStocksDataFromWatchlist = ((id:string) => {
     const watchlistData = getWatchlistDataById(id);
     // const wlength: number = Object.keys(watchlistData[0].wlData).length;
-    if(JSON.stringify(watchlistData[0].wlData) === '[]'){
+    if(JSON.stringify(watchlistData?.[0]?.wlData) === '[]'){
         console.log("stock data is not present");
         return [];
     } else{
-        const stocksData = Object.values(watchlistData[0].wlData);
+        const stocksData = Object.values((watchlistData?.[0]?.wlData) as Stock[]);
         console.log("stocks: ",stocksData)
         return stocksData;
     }

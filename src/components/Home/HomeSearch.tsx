@@ -1,6 +1,12 @@
+import { useState } from "react";
 import PopularStocks from "./PopularStocks";
 import SearchForm from "./SearchForm";
+import SearchResult from "./SearchResult";
+import { StockResult } from "../../types";
+
 function HomeSearch() {
+  const[result, setResult] = useState<StockResult[]>([]);
+  console.log("Result in home: ",result);
   return (
     <>
       <div className="searchWrap w-full h-screen text-white flex items-center">
@@ -15,7 +21,8 @@ function HomeSearch() {
               Screening tool for investors
             </h4>
           </div>
-         <SearchForm />
+         <SearchForm setResult={setResult}/>
+         <SearchResult result={result as unknown as StockResult[]}/>
          <PopularStocks />
         </div>
       </div>

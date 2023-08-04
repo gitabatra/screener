@@ -3,13 +3,13 @@ import { useParams } from "react-router-dom";
 import SecondaryNavigation from "./SecondaryNavigation";
 import { getStocksDataFromWatchlist } from "../../utils/api";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { stock } from "../../utils/api";
+import { Stock } from "../../types";
 
 interface stockProp {
-  stock: stock
+  stock: Stock
 }
 
-function Stock({stock}:stockProp){
+function StockData({stock}: stockProp){
   console.log("Stocks in managecompanies: ",stock);
   return (<>
    <div className="flex justify-between items-center">
@@ -22,7 +22,7 @@ function Stock({stock}:stockProp){
 
 function ManageCompanies() {
   const { id } = useParams<{id: string}>();
-  const stocksList: stock[] =  getStocksDataFromWatchlist(id as string);
+  const stocksList =  getStocksDataFromWatchlist(id as string);
   console.log("Watchlist data in Manage Companies: ",stocksList);
 
   return (
@@ -74,7 +74,7 @@ function ManageCompanies() {
           </form>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 py-5 px-5">
           {
-            stocksList.map((stock, index) => {return(<Stock key={index} stock={stock} />)})
+            stocksList.map((stock, index) => {return(<StockData key={index} stock={stock as unknown as Stock} />)})
           }
         </div>
         </div>

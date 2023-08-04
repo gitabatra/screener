@@ -1,4 +1,4 @@
-export * from "./Watchlist";
+export * from "./Watchlists";
 export * from "./DisplayWatchlist";
 export * from "./CreateArea";
 export * from "./WatchlistView";

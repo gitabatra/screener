@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import CreateArea from "./CreateArea";
 import DisplayWatchlist from "./DisplayWatchlist";
 import { getDataFromLocalStorage } from "../../utils/api";
-import { watchlist } from "../../utils/api";
+import { Watchlist } from "../../types";
 
 
-function Watchlist(){
+function Watchlists(){
     const [isCreateWLOpen, setIsCreateWLOpen] = useState(false);
    // const [count, setCount] = useState();
     const [watchlists, setWatchlist] = useState(getDataFromLocalStorage());
@@ -21,18 +21,18 @@ function Watchlist(){
        // console.log("Count: ",count);
         const watchlistId = "wl-20230727-" + (watchlists.length).toString();
         console.log("Count: ",watchlistId,watchlists.length);
-        const watchlist: watchlist = {
+        const watchlist: Watchlist = {
             id: watchlistId,
             wlName: watchlistName,
             wlData: []
           }
-          setWatchlist([...watchlists,watchlist]);
+          setWatchlist([...watchlists, watchlist]);
           console.log(watchlists);
       }
 
       const deleteWatchlist=(id:string) =>{
          console.log("Delete function is executing....",id);
-         const filteredWatchlists: watchlist[] = watchlists.filter((element,index)=>{
+         const filteredWatchlists: Watchlist[] = watchlists.filter((element)=>{
             return (id!= element.id)
          })
          console.log("Delete function is executing....",id,filteredWatchlists);
@@ -61,11 +61,11 @@ function Watchlist(){
             isCreateWLOpen ? <CreateArea  setIsCreateWLOpen= {setIsCreateWLOpen}  setWatchlistName={ addWatchlistName }/> : ""
           }
           {
-            watchlists.map((watchlist:object,index:number) => {return  (<DisplayWatchlist key= {index} watchlist={watchlist} deleteWatchlist={deleteWatchlist}/>)})
+            watchlists.map((watchlist:object,index:number) => {return  (<DisplayWatchlist key= {index} watchlist={watchlist as Watchlist} deleteWatchlist={deleteWatchlist}/>)})
           }
         </div>
       </div>
     </>);
 }
 
-export default Watchlist;
+export default Watchlists;

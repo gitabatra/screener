@@ -1,5 +1,5 @@
 
-import Watchlist from "./watchlist/Watchlist";
+import Watchlist from "./watchlist/Watchlists";
 import WatchlistView from "./watchlist/WatchlistView"
 import Portfolio from "./portfolio/Portfolio";
 import { Routes } from "../types";

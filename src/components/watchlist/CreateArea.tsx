@@ -2,8 +2,8 @@
 import { useState, ChangeEvent, MouseEvent } from "react";
 
 interface CreateAreaProps {
-  setIsCreateWLOpen : (open:boolean) => void;
-  setWatchlistName: (name:string) => void;
+  setIsCreateWLOpen: (open: boolean) => void;
+  setWatchlistName: (name: string) => void;
 }
 
 function CreateArea({setIsCreateWLOpen, setWatchlistName}: CreateAreaProps){
