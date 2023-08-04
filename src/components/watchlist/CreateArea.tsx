@@ -2,8 +2,8 @@
 import { useState, ChangeEvent, MouseEvent } from "react";
 
 interface CreateAreaProps {
-  setIsCreateWLOpen: (open:boolean) => void;
-  setWatchlistName: (name:string) => void;
+  setIsCreateWLOpen: (open: boolean) => void;
+  setWatchlistName: (name: string) => void;
 }
 
 function CreateArea({setIsCreateWLOpen, setWatchlistName}: CreateAreaProps){
@@ -11,14 +11,13 @@ function CreateArea({setIsCreateWLOpen, setWatchlistName}: CreateAreaProps){
     const [wlName, setWLName] = useState("");
 
     function handleChangeWL(event: ChangeEvent<HTMLInputElement>){
-        console.log("creating new watchlist event is executing......",event.target.value);
         setWLName(event.target.value);
     }
 
     function handleSaveWL(event: MouseEvent<HTMLButtonElement>){
-        console.log("Saving the watchlist name....",wlName);
-        setWatchlistName(wlName);
         event.preventDefault();
+        setWatchlistName(wlName);
+        setWLName('');
     }
     return (
         <>
