@@ -6,6 +6,7 @@ import { Routes } from "../types";
 import HomeSearch from "./Home/HomeSearch";
 import ManageCompanies from "./watchlist/ManageCompanies";
 import RootLayout from "./RootLayout";
+import StockDashboard from "./stock/StockDashboard";
 
 
 import {
@@ -16,6 +17,7 @@ import {
 } from "react-router-dom";
 
 
+
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<RootLayout />}>
   <Route index element={<HomeSearch />} />
@@ -23,6 +25,7 @@ const router = createBrowserRouter(createRoutesFromElements(
   <Route path= {Routes.WATCHLIST_VIEW} element={ <WatchlistView />} /> 
   <Route path= {Routes.MANAGE_COMPANIES} element={ <ManageCompanies />} />
   <Route path= {Routes.PORTFOLIO} element={ <Portfolio />} />
+  <Route path= {Routes.STOCK} element={ <StockDashboard />} />
   </Route>
 ));
 
