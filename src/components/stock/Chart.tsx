@@ -2,7 +2,10 @@ function Chart(){
   
     return(<>
     <div id="stock-chart" className="py-10 text-white min-h-screen">
-        <h1>Chart</h1>
+        <div className="mt-20 pt-10"></div>
+        <div className="pl-6 pt-8">
+        <h1 className="text-2xl">Chart</h1>
+        </div>
     </div>
     </>);
 }
