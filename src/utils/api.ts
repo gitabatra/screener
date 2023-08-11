@@ -1,16 +1,22 @@
 import { Watchlist, Stock } from "../types";
 
+import data from '../../data/companyOverview.json';
+
 export function getStocks() {
     // Actually go get the data from the API
 
     // localStorage.get('stocks')[0].stocks
 
     // fetch('myapi.com')
+
+    
 }
 
 
 
-
+export const getCompanyOverview = () => {
+    return data
+}
 
 export const getDataFromLocalStorage = (): Watchlist[] => { 
     const watchlistData = JSON.parse(localStorage.getItem("watchlists") ?? 'null') as Watchlist[] | null;
