@@ -1,4 +1,4 @@
-import { Watchlist, Stock } from "../types";
+import { Watchlist, Stock, StockResult } from "../types";
 
 import data from '../../data/companyOverview.json';
 
@@ -11,6 +11,10 @@ export function getStocks() {
 
     
 }
+
+// export const getStockOverviewData=(symbol:string) =>{
+
+// }
 
 
 

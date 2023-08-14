@@ -1,4 +1,12 @@
-function QuarterlyResult(){
+import { BalanceSheet } from "../../types";
+
+interface stockProp{
+    id: string,
+    quarterData: BalanceSheet[]
+   }
+
+function QuarterlyResult({id,quarterData}:stockProp){
+    console.log(id,quarterData[0]?.quarterlyReports);
     return (<>
      <div className="py-10 text-white min-h-screen">
      <div className="mt-20 pt-10"></div>

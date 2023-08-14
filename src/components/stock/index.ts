@@ -2,6 +2,6 @@ export * from "./StockDashboard";
 export * from "./DashboardTab";
 export * from "./StockInfo";
 export * from "./Chart";
-export * from "./BalanceSheet";
+export * from "./StockBalanceSheet";
 export * from "./ProfitLoss";
 export * from "./QuarterlyResult";

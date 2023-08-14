@@ -1,4 +1,12 @@
-function BalanceSheet(){
+import { BalanceSheet } from "../../types";
+
+interface stockProp{
+    id: string,
+    annualData: BalanceSheet[]
+   }
+
+function StockBalanceSheet({id, annualData}: stockProp){
+    console.log(id,annualData[0].annualReports);
     return (<>
      <div className="py-10 text-white min-h-screen">
      <div className="mt-20 pt-12"></div>
@@ -88,4 +96,4 @@ function BalanceSheet(){
     </>);
 }
 
-export default BalanceSheet;
+export default StockBalanceSheet;

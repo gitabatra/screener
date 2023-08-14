@@ -1,4 +1,5 @@
 export * from './HomeSearch';
-export * from './SearchForm';
 export * from './PopularStocks';
-export * from './SearchResult';
+export * from './StockList';
+export * from './Search';
+export * from './Home';

@@ -1,4 +1,8 @@
-function ProfitLoss(){
+interface stockProp{
+    id: string
+   }
+function ProfitLoss({id}: stockProp){
+    console.log(id);
     return (<>
      <div className="py-10 text-white min-h-screen">
      <div className="mt-20 pt-10"></div>
