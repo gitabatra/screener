@@ -1,12 +1,18 @@
-import { BalanceSheet } from "../../types";
+import {  IncomeSheet } from "../../types";
 
 interface stockProp{
     id: string,
-    quarterData: BalanceSheet[]
+    quarterData: IncomeSheet[]
    }
 
 function QuarterlyResult({id,quarterData}:stockProp){
-    console.log(id,quarterData[0]?.quarterlyReports);
+    const quarterResult = quarterData[0]?.quarterlyReports;
+    console.log("quarter data",id,quarterResult);
+    const datestr = new Date("2020-12-31").getTime();
+    const report = quarterResult.filter((res) =>{
+        const date = new Date(res.fiscalDateEnding);
+        return ((date.getTime()> datestr))})
+    console.log("Report after 2020", report);
     return (<>
      <div className="py-10 text-white min-h-screen">
      <div className="mt-20 pt-10"></div>
@@ -16,77 +22,135 @@ function QuarterlyResult({id,quarterData}:stockProp){
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-                <th scope="col" className="px-6 py-3">
-                    
-                </th>
-                <th scope="col" className="px-6 py-3">
-                    Mar 2022
-                </th>
-                <th scope="col" className="px-6 py-3">
-                Jun 2022
-                </th>
-                <th scope="col" className="px-6 py-3">
-                Sep2022
-                </th>
-                <th scope="col" className="px-6 py-3">
-                Dec 2022
-                </th>
-                <th scope="col" className="px-6 py-3">
-                Mar 2023
-                </th>
+                <th></th>
+                {
+                    report.map((result,index) =>{
+                        const date = new Date(result.fiscalDateEnding).toLocaleString('en-us',{month:'short', year:'numeric'})
+                        return( 
+                        <th key={index} scope="col" className="px-6 py-3">
+                             {date}
+                        </th>)
+                    })
+                }
             </tr>
         </thead>
         <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Sales
                 </th>
-                <td className="px-6 py-4">
-                    18
-                </td>
-                <td className="px-6 py-4">
-                    20
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
+                {
+                    report.map((result,index) =>{
+                        return( 
+                            <td key={index} className="px-6 py-4">
+                           {result.totalRevenue}
+                        </td>)
+                    })
+                }
             </tr>
             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Expenses
                 </th>
-                <td className="px-6 py-4">
-                    18
-                </td>
-                <td className="px-6 py-4">
-                    20
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
+                {
+                    report.map((result,index) =>{
+                        return( 
+                            <td key={index} className="px-6 py-4">
+                           {result.costOfRevenue}
+                        </td>)
+                    })
+                }
             </tr>
             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Operating Profit
                 </th>
-                <td className="px-6 py-4">
-                    18
-                </td>
-                <td className="px-6 py-4">
-                    20
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
+                {
+                    report.map((result,index) =>{
+                        return( 
+                            <td key={index} className="px-6 py-4">
+                           {result.grossProfit}
+                        </td>)
+                    })
+                }
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Other Income
+                </th>
+                {
+                    report.map((result,index) =>{
+                        return( 
+                            <td key={index} className="px-6 py-4">
+                           {result.interestIncome}
+                        </td>)
+                    })
+                }
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Interest Expense
+                </th>
+                {
+                    report.map((result,index) =>{
+                        return( 
+                            <td key={index} className="px-6 py-4">
+                           {result.interestExpense}
+                        </td>)
+                    })
+                }
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Depreciation
+                </th>
+                {
+                    report.map((result,index) =>{
+                        return( 
+                            <td key={index} className="px-6 py-4">
+                           {result.depreciation}
+                        </td>)
+                    })
+                }
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Profit Before Tax
+                </th>
+                {
+                    report.map((result,index) =>{
+                        return( 
+                            <td key={index} className="px-6 py-4">
+                           {result.incomeBeforeTax}
+                        </td>)
+                    })
+                }
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Tax
+                </th>
+                {
+                    report.map((result,index) =>{
+                        return( 
+                            <td key={index} className="px-6 py-4">
+                           {result.incomeTaxExpense}
+                        </td>)
+                    })
+                }
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Net Profit
+                </th>
+                {
+                    report.map((result,index) =>{
+                        return( 
+                            <td key={index} className="px-6 py-4">
+                           {result.netIncome}
+                        </td>)
+                    })
+                }
             </tr>
            
         </tbody>

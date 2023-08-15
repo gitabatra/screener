@@ -6,13 +6,14 @@ import StockInfo from "./StockInfo";
 import { useState } from "react";
 import { HashLink } from "react-router-hash-link";
 import { useParams, useLocation } from "react-router-dom";
-import { BalanceSheet, StockData,StockDailyData } from "../../types";
+import { BalanceSheet, StockData,StockDailyData, IncomeSheet } from "../../types";
 
 
 interface locationProp{
-  result: StockData,
-  chartData: StockDailyData,
-  balanceData: BalanceSheet
+  result: StockData[],
+  chart: StockDailyData[],
+  balance: BalanceSheet[],
+  income: IncomeSheet[]
  }
 
 
@@ -24,6 +25,10 @@ function DashboardTab() {
   const location = useLocation();
   console.log("Location: ",location);
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const state : locationProp = location.state;
+ 
+  console.log("Location: ",state);
 
   const tabObj = [
     { id: "stock-info", title: "Stock" },
@@ -53,9 +58,9 @@ function DashboardTab() {
 
   return (
     <>
-      <div className="py-12 text-white">
-        <div className="px-4 fixed w-full z-10">
-          <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 bg-gray-800 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 ">
+      <div className="py-10 text-white pb-10">
+        <div className="fixed w-full z-10">
+          <ul className="px-8 flex flex-wrap text-sm font-medium text-center text-gray-500 bg-gray-800 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 ">
             {toggleState.tabObjects.map((element, index) => {
               return (
                 <li key={index} className={toggleActiveTabStyle(index)}>
@@ -79,14 +84,13 @@ function DashboardTab() {
         >
           {" "}
           <StockInfo id={id as string} 
-           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-           result={location.state.result}
+           result={state.result}
           />
         </div>
-        <div id="stock-chart" className="h-screen text-white mt-15 z-[-1]">
+        <div id="stock-chart" className="h-screen text-white mt-15 z-[-2]">
           {" "}
           <Chart id={id as string} 
-            chartData={location.state.chart as StockDailyData[]}
+            chartData={state.chart}
           />
         </div>
         <div
@@ -94,15 +98,15 @@ function DashboardTab() {
           className="h-screen text-white mt-15 z-[-1]"
         >
           {" "}
-          <QuarterlyResult id={id as string}  quarterData = {location.state.balance as BalanceSheet[]}/>
+          <QuarterlyResult id={id as string}  quarterData = {state.income}/>
         </div>
         <div id="stock-profit-loss" className="h-screen text-white z-[-1]">
           {" "}
-          <ProfitLoss id={id as string}/>
+          <ProfitLoss id={id as string} annualIncomeData={state.income}/>
         </div>
         <div id="stock-balance-sheet" className="h-screen text-white z-[-1]">
           {" "}
-          <StockBalanceSheet id={id as string} annualData = {location.state.balance as BalanceSheet[]}/>
+          <StockBalanceSheet id={id as string} annualData = {state.balance}/>
         </div>
       </div>
     </>

@@ -10,7 +10,7 @@ function StockDashboard() {
   
   return (
     <>
-      <div className="px-4 bg-gray-800">
+      <div className="bg-gray-800">
         <DashboardTab
         //  result={result}
          />

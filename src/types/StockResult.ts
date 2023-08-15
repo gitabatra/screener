@@ -149,8 +149,10 @@ export interface StockData {
 }
 
 export interface BalanceSheet {
+  [x: string]: any
   symbol: string
   annualReports: AnnualReport[]
+  quarterlyReports: QuarterlyReport[]
 }
 
 export interface AnnualReport {
@@ -194,7 +196,49 @@ export interface AnnualReport {
   commonStockSharesOutstanding: string
 }
 
-export interface Stock{
+export interface QuarterlyReport {
+  fiscalDateEnding: string
+  reportedCurrency: string
+  totalAssets: string
+  totalCurrentAssets: string
+  cashAndCashEquivalentsAtCarryingValue: string
+  cashAndShortTermInvestments: string
+  inventory: string
+  currentNetReceivables: string
+  totalNonCurrentAssets: string
+  propertyPlantEquipment: string
+  accumulatedDepreciationAmortizationPPE: string
+  intangibleAssets: string
+  intangibleAssetsExcludingGoodwill: string
+  goodwill: string
+  investments: string
+  longTermInvestments: string
+  shortTermInvestments: string
+  otherCurrentAssets: string
+  otherNonCurrentAssets: string
+  totalLiabilities: string
+  totalCurrentLiabilities: string
+  currentAccountsPayable: string
+  deferredRevenue: string
+  currentDebt: string
+  shortTermDebt: string
+  totalNonCurrentLiabilities: string
+  capitalLeaseObligations: string
+  longTermDebt: string
+  currentLongTermDebt: string
+  longTermDebtNoncurrent: string
+  shortLongTermDebtTotal: string
+  otherCurrentLiabilities: string
+  otherNonCurrentLiabilities: string
+  totalShareholderEquity: string
+  treasuryStock: string
+  retainedEarnings: string
+  commonStock: string
+  commonStockSharesOutstanding: string
+}
+
+export interface Company{
+  map(arg0: (res: Company, index: number) => import("react/jsx-runtime").JSX.Element): import("react").ReactNode
   symbol: string,
   name: string
 }
@@ -205,6 +249,7 @@ export interface Ticker {
 }
 
 export interface BestMatch {
+  map(arg0: (res: any, index: number) => import("react/jsx-runtime").JSX.Element): import("react").ReactNode
   "1. symbol": string
   "2. name": string
   "3. type": string

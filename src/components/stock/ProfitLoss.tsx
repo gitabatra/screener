@@ -1,8 +1,12 @@
+import { IncomeSheet } from "../../types";
+
 interface stockProp{
-    id: string
+    id: string,
+    annualIncomeData: IncomeSheet[]
    }
-function ProfitLoss({id}: stockProp){
-    console.log(id);
+function ProfitLoss({id,annualIncomeData}: stockProp){
+    const annualReportData = (annualIncomeData?.[0]?.annualReports)
+    console.log("Annual report data: ",id,annualReportData);
     return (<>
      <div className="py-10 text-white min-h-screen">
      <div className="mt-20 pt-10"></div>
@@ -15,21 +19,15 @@ function ProfitLoss({id}: stockProp){
                 <th scope="col" className="px-6 py-3">
                     
                 </th>
-                <th scope="col" className="px-6 py-3">
-                    Mar 2022
+                {annualReportData.map((result,index) =>{
+                const date = new Date(result.fiscalDateEnding).toLocaleString('en-us',{month:'short', year:'numeric'})
+                // const dateObj = date.get;
+                return(
+                <th key={index} scope="col" className="px-6 py-3">
+                    {date}
                 </th>
-                <th scope="col" className="px-6 py-3">
-                Jun 2022
-                </th>
-                <th scope="col" className="px-6 py-3">
-                Sep2022
-                </th>
-                <th scope="col" className="px-6 py-3">
-                Dec 2022
-                </th>
-                <th scope="col" className="px-6 py-3">
-                Mar 2023
-                </th>
+                )
+               })}
             </tr>
         </thead>
         <tbody>
@@ -37,54 +35,92 @@ function ProfitLoss({id}: stockProp){
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Sales
                 </th>
-                <td className="px-6 py-4">
-                    18
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.totalRevenue}
                 </td>
-                <td className="px-6 py-4">
-                    20
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
+            )})}
             </tr>
             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Expenses
                 </th>
-                <td className="px-6 py-4">
-                    18
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.costOfRevenue}
                 </td>
-                <td className="px-6 py-4">
-                    20
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
+            )})}
             </tr>
             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Operating Profit
                 </th>
-                <td className="px-6 py-4">
-                    18
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.grossProfit}
                 </td>
-                <td className="px-6 py-4">
-                    20
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
+            )})}
             </tr>
-           
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Other Income
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.interestIncome}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Interest Expense
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.interestExpense}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Depreciation
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.depreciation}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Profit Before Tax
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.incomeBeforeTax}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Tax
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.incomeTaxExpense}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Net Profit
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.netIncome}
+                </td>
+            )})}
+            </tr>
         </tbody>
     </table>
 </div>

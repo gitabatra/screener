@@ -1,34 +1,23 @@
 import { useState } from "react";
-import { StockData, Stock,
-  StockDailyData, BalanceSheet 
+import { StockData, IncomeSheet,
+  //  Ticker,BestMatch,  Company, BestMatch
+  StockDailyData, BalanceSheet
 } from "../../types";
 import StockList from "./StockList"
-import { Link } from "react-router-dom";
-// import { useLoaderData } from "react-router-dom";
 // import { Link } from "react-router-dom";
-// import StockDashboard from "../stock/StockDashboard";
 
-// import BalanceSheet from "../stock/BalanceSheet";
-
-// interface StockResult {
-//   result: StockData,
-//   chartData: StockDailyData,
-//   balanceSheetData: BalanceSheet
-// }
 
 function Search() {
+  // const [ticker,setTickerData] = useState<BestMatch[]>([]);
   const[result, setResult] = useState<StockData[]>([]);
-  const [chartData, setChartData] = useState<StockDailyData[]>();
-  const [balanceSheetData, setBalanceSheetData] = useState<BalanceSheet[]>();
+  const [chartData, setChartData] = useState<StockDailyData[]>([]);
+  const [balanceSheetData, setBalanceSheetData] = useState<BalanceSheet[]>([]);
+  const [income,setIncomeData] = useState<IncomeSheet[]>([]);
 
   const [input, setInput]=useState("");
 
-  const stockTicker: Stock = [{symbol: 'IBM',name: 'International Business Machines'},
-{symbol: 'BA',name: 'The Boeing Company',},
-{symbol: 'BABA',name: 'Alibaba Group Holding Ltd'},
-{symbol: 'BAC',name: 'Bank of America Corp'},
-{symbol: 'SAIC',name: 'Science Applications International Corp (SAIC)'}
-]
+
+  
 
   // const fetchTicker=(value: string)=> {
   //   const apiKey = 'EGAI68J68Y9G55QE'
@@ -37,10 +26,12 @@ function Search() {
   //   response.json())
   //   .then((json) =>{
   //     console.log("Tick: ",json);
-  //     const result = (json as Ticker[]).filter(stock =>{
+  //     const result = (json.bestMatches as BestMatch[]).filter(stock =>{
   //       console.log("Ticket result: ",stock);
-  //       return stock?.bestMatches
+  //       return (stock?.["1. symbol"].includes(value) && stock?.["3. type"]==="Equity")
   //     })
+  //     console.log("Stock search result: ", result);
+  //     setTickerData(result);
   //   });
   // }
 
@@ -84,13 +75,29 @@ function Search() {
     });
   }
 
+  const fetchIncomeSheetData=(value: string)=> {
+    console.log("fetch data for balance sheet info is executing.....");
+    void fetch("../../../data/companyIncomeData.json")
+    .then((response) => response.json())
+    .then((json)=>{
+      const incomeData = (json as IncomeSheet[]).filter(stock => {
+        console.log("BS data: ",stock);
+        return stock?.symbol?.includes(value)
+      })
+      console.log("----Income statement",incomeData);
+      setIncomeData(incomeData);
+    });
+  }
+
 
   
   const handleChange=(value: string)=> {
     console.log("Chnage list items event is executing :",value)
+    // fetchTicker(value);
     fetchData(value);
     fetchChartData(value);
     fetchBalanceSheetData(value);
+    fetchIncomeSheetData(value);
   }
     return (
         <>
@@ -121,33 +128,34 @@ function Search() {
             className="bg-gray-10 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full pl-10 p-3.5  
                      bg-gray-600 border-gray-600 dark:placeholder-gray-400 text-white"
             placeholder="Search for a company..."
-            value={input}
             onChange={(e) => handleChange(e.target.value)}
+            value={input}
             autoComplete="off"
             required
           />
         </div>
       </form>
-      {/* chartData={chartData as StockDailyData} balanceSheetData={balanceSheetData as BalanceSheet} */}
-      {/* <StockList result={result as unknown as StockData} setInput={setInput}/> */}
-      <div className="grid grid-cols-1 divide-y divide-gray-700 rounded-lg shadow w-70 dark:bg-gray-700 z-10 h-40 overflow-y-auto absolute">
-           {stockTicker.map((res: Stock, index: number) => {
+    
+      <StockList setInput={setInput} result={result} chartData={chartData} balanceSheetData={balanceSheetData} income={income}/>
+
+          {/* <div className="grid grid-cols-1 divide-y divide-gray-700 rounded-lg shadow w-70 dark:bg-gray-700 z-10 h-40 overflow-y-auto absolute">
+           {(ticker ).map((res, index: number) => {
              console.log("symbol: ", res);
              return (
-              <div key={res.symbol} >
-              <Link to={`/stock/${res.symbol}`} state={{result:result,chart:chartData,balance:balanceSheetData}}>
+              <div key={res?.["1. symbol"]} >
+              <Link to={`/stock/${res?.["1. symbol"]}`} state={{result:result,chart:chartData,balance:balanceSheetData}}>
                <div className="px-2 py-1 hover:bg-gray-500" key={index} onClick={() => {
-                 setInput(res.symbol);
+                 setInput(res?.["1. symbol"]);
                   // , { state: { result: res} }
                } }>
-                 {res.symbol}
+                 {res?.["2. name"]}
                </div>
                </Link>
                </div>
              );
               
            })}
-         </div>
+         </div> */}
         </>
     );
 }

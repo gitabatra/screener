@@ -7,8 +7,10 @@ interface stockProp{
 
 function StockBalanceSheet({id, annualData}: stockProp){
     console.log(id,annualData[0].annualReports);
+    const annualReportData = (annualData?.[0]?.annualReports)
+    console.log("Annual report data: ",annualReportData);
     return (<>
-     <div className="py-10 text-white min-h-screen">
+     <div className="py-10 text-white min-h-screen pb-14">
      <div className="mt-20 pt-12"></div>
      <div className="pl-6 pt-8">
         <h1 className="text-2xl">Balance Sheet</h1>
@@ -20,71 +22,141 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 <th scope="col" className="px-6 py-3">
                     
                 </th>
-                <th scope="col" className="px-6 py-3">
-                    March 2020
+               {annualReportData.map((result,index) =>{
+                const date = new Date(result.fiscalDateEnding).toLocaleString('en-us',{month:'short', year:'numeric'})
+                return(
+                <th key={index} scope="col" className="px-6 py-3">
+                    {date}
                 </th>
-                <th scope="col" className="px-6 py-3">
-                March 2021
-                </th>
-                <th scope="col" className="px-6 py-3">
-                March 2022
-                </th>
-                <th scope="col" className="px-6 py-3">
-                March 2023
-                </th>
+                )
+               })}
             </tr>
         </thead>
         <tbody>
+        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Total Assets 
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.totalAssets}
+                </td>
+            )})}
+        </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Total Current Assets
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.totalCurrentAssets}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Fixed Assets
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.propertyPlantEquipment}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Investments
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.investments}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Long term Investments
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.longTermInvestments}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    short term Investments
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.shortTermInvestments}
+                </td>
+            )})}
+            </tr>
+            {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Borrowings
+                </th>
+            </tr> */}
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Long Term Debt
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.longTermDebt}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Current Long Term Debt
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.currentLongTermDebt}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Long Term Debt NonCurrent
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.longTermDebtNoncurrent}
+                </td>
+            )})}
+            </tr>
+            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Short Long Term Debt Total
+                </th>
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.shortLongTermDebtTotal}
+                </td>
+            )})}
+            </tr>
             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Share Capital
                 </th>
-                <td className="px-6 py-4">
-                    18
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.totalShareholderEquity}
                 </td>
-                <td className="px-6 py-4">
-                    20
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
+            )})}
             </tr>
             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Reserves
+                   Reserves
                 </th>
-                <td className="px-6 py-4">
-                    18
+                {annualReportData.map((res,index)=>{return(
+                <td key={index} className="px-6 py-4">
+                {res.retainedEarnings}
                 </td>
-                <td className="px-6 py-4">
-                    20
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Borrowings
-                </th>
-                <td className="px-6 py-4">
-                    18
-                </td>
-                <td className="px-6 py-4">
-                    20
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
-                <td className="px-6 py-4">
-                    24
-                </td>
+            )})}
             </tr>
            
         </tbody>
