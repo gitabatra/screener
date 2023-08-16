@@ -1,34 +1,106 @@
 import StockBalanceSheet from "./StockBalanceSheet";
-import Chart from "./Chart";
 import ProfitLoss from "./ProfitLoss";
 import QuarterlyResult from "./QuarterlyResult";
 import StockInfo from "./StockInfo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HashLink } from "react-router-hash-link";
-import { useParams, useLocation } from "react-router-dom";
-import { BalanceSheet, StockData,StockDailyData, IncomeSheet } from "../../types";
+import { useParams } from "react-router-dom";
+import {
+  BalanceSheet,
+  StockData,
+  StockDailyData,
+  IncomeSheet,
+} from "../../types";
+import StockChart from "./StockChart";
 
-
-interface locationProp{
-  result: StockData[],
-  chart: StockDailyData[],
-  balance: BalanceSheet[],
-  income: IncomeSheet[]
- }
-
-
+// interface locationProp {
+//   result: StockData[];
+//   chart: StockDailyData[];
+//   balance: BalanceSheet[];
+//   income: IncomeSheet[];
+// }
 
 function DashboardTab() {
   const { id } = useParams();
+  const [result, setResult] = useState<StockData[]>([]);
+  const [chartData, setChartData] = useState<StockDailyData[]>([]);
+  const [balanceSheetData, setBalanceSheetData] = useState<BalanceSheet[]>([]);
+  const [income, setIncomeData] = useState<IncomeSheet[]>([]);
 
-  // const [chartData, setChartData] = useState();
-  const location = useLocation();
-  console.log("Location: ",location);
+  console.log(`ID: ${id!}`)
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const state : locationProp = location.state;
- 
-  console.log("Location: ",state);
+  const fetchData = (value: string) => {
+    console.log("fetch data for overview info is executing.....", value);
+    void fetch("../../../data/companyOverview.json")
+      .then((response) => response.json())
+      .then((json) => {
+        const result = (json as StockData[]).filter((stock) => {
+          return stock?.Symbol === value;
+        });
+        console.log("Result", result);
+        setResult(result);
+      });
+  };
+
+  const fetchChartData = (value: string) => {
+    console.log("fetch data for chart info is executing.....", value);
+    void fetch("../../../data/companyDailySeriesData.json")
+      .then((response) => response.json())
+      .then((json) => {
+        const result = (json as StockDailyData[]).filter((stock) => {
+          return stock?.["Meta Data"]?.["2. Symbol"] === value;
+        });
+        console.log("chartdata", result);
+        setChartData(result);
+      });
+  };
+
+  const fetchBalanceSheetData = (value: string) => {
+    console.log("fetch data for balance sheet info is executing.....", value);
+    void fetch("../../../data/companyBalanceSheet.json")
+      .then((response) => response.json())
+      .then((json) => {
+        const bsData = (json as BalanceSheet[]).filter((stock) => {
+          // console.log("BS data: ",stock);
+          return stock?.symbol === value;
+        });
+        console.log("----BS", bsData);
+        setBalanceSheetData(bsData);
+      });
+  };
+
+  const fetchIncomeSheetData = (value: string) => {
+    console.log("fetch data for balance sheet info is executing.....", value);
+    void fetch("../../../data/companyIncomeData.json")
+      .then((response) => response.json())
+      .then((json) => {
+        const incomeData = (json as IncomeSheet[]).filter((stock) => {
+          // console.log("BS data: ",stock);
+          return stock?.symbol === value;
+        });
+        console.log("----Income statement", incomeData);
+        setIncomeData(incomeData);
+      });
+  };
+
+  useEffect(() => {
+    if (id) {
+      console.log(`Starting data fetching for symbol: ${id}`)
+      fetchData(id);
+      fetchChartData(id);
+      fetchBalanceSheetData(id);
+      fetchIncomeSheetData(id);
+    }
+  }, []);
+
+  // // const [chartData, setChartData] = useState();
+  // const location = useLocation();
+  // console.log("Location: ", location);
+
+  // // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  // const state: locationProp = location.state;
+
+  // console.log("Location: ", state);
 
   const tabObj = [
     { id: "stock-info", title: "Stock" },
@@ -56,6 +128,14 @@ function DashboardTab() {
     }
   };
 
+  const ready = result.length > 0 && chartData.length > 0 && balanceSheetData.length > 0 && income.length > 0
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  console.log(`Data is ready?: ${ready}`)
+
+  if (!ready) {
+    return <p>Not ready</p>
+  }
+
   return (
     <>
       <div className="py-10 text-white pb-10">
@@ -78,35 +158,25 @@ function DashboardTab() {
             })}
           </ul>
         </div>
-        <div
-          id="stock-info"
-          className="py-10 h-screen text-white border-1 z-[-1]"
-        >
+        <div id="stock-info" className="py-10 text-white border-1 z-[-1]">
           {" "}
-          <StockInfo id={id as string} 
-           result={state.result}
-          />
+          <StockInfo id={id as string} result={result} />
         </div>
-        <div id="stock-chart" className="h-screen text-white mt-15 z-[-2]">
+        <div id="stock-chart" className="text-white mt-15 z-[-2]">
           {" "}
-          <Chart id={id as string} 
-            chartData={state.chart}
-          />
+          <StockChart id={id as string} chartData={chartData} />
         </div>
-        <div
-          id="stock-quarterly-results"
-          className="h-screen text-white mt-15 z-[-1]"
-        >
+        <div id="stock-quarterly-results" className="text-white mt-15 z-[-1]">
           {" "}
-          <QuarterlyResult id={id as string}  quarterData = {state.income}/>
+          <QuarterlyResult id={id as string} quarterData={income} />
         </div>
-        <div id="stock-profit-loss" className="h-screen text-white z-[-1]">
+        <div id="stock-profit-loss" className="text-white z-[-1]">
           {" "}
-          <ProfitLoss id={id as string} annualIncomeData={state.income}/>
+          <ProfitLoss id={id as string} annualIncomeData={income} />
         </div>
-        <div id="stock-balance-sheet" className="h-screen text-white z-[-1]">
+        <div id="stock-balance-sheet" className="text-white z-[-1]">
           {" "}
-          <StockBalanceSheet id={id as string} annualData = {state.balance}/>
+          <StockBalanceSheet id={id as string} annualData={balanceSheetData} />
         </div>
       </div>
     </>

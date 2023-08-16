@@ -1,4 +1,9 @@
-import { Watchlist, Stock, StockResult } from "../types";
+import { Watchlist, Stock } from "../types";
+
+// import { StockData, IncomeSheet,
+//     //  Ticker,BestMatch,  Company, BestMatch
+//     StockDailyData, BalanceSheet
+//   } from "../types";
 
 import data from '../../data/companyOverview.json';
 
@@ -8,13 +13,8 @@ export function getStocks() {
     // localStorage.get('stocks')[0].stocks
 
     // fetch('myapi.com')
-
     
 }
-
-// export const getStockOverviewData=(symbol:string) =>{
-
-// }
 
 
 
@@ -96,6 +96,10 @@ export const getStocksDataFromWatchlist = ((id:string) => {
         return stocksData;
     }
 })
+
+
+
+
   
 
 

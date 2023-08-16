@@ -8,6 +8,7 @@ function StockDashboard() {
   const { id } = useParams();
   console.log("Id in stock dashboard: ",id);
   
+  
   return (
     <>
       <div className="bg-gray-800">

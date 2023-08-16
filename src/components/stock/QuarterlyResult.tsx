@@ -14,7 +14,7 @@ function QuarterlyResult({id,quarterData}:stockProp){
         return ((date.getTime()> datestr))})
     console.log("Report after 2020", report);
     return (<>
-     <div className="py-10 text-white min-h-screen">
+     <div className="py-10 text-white min-h-fit">
      <div className="mt-20 pt-10"></div>
      <div className="pl-6 pt-8">
         <h1 className="text-2xl">Quarterly Results</h1>

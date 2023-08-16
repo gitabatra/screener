@@ -19,24 +19,6 @@ function StockList({result,chartData,balanceSheetData,income,setInput}: StockLis
     {symbol: 'SAIC',name: 'Science Applications International Corp (SAIC)'}
     ]
     return (<>
-         {/* <div className="grid grid-cols-1 divide-y divide-gray-700 rounded-lg shadow w-70 dark:bg-gray-700 z-10 h-40 overflow-y-auto absolute">
-           {result.map((res: StockData, index: number) => {
-             console.log("symbol: ", res);
-             return (
-               <div className="px-2 py-1 hover:bg-gray-500" key={index} onClick={() => {
-                 setInput(res.Name);
-                //  fetchChartData(res.Symbol);
-                //  fetchBalanceSheetData(res.Symbol);
-                 navigate(`/stock/${res.Symbol}`
-                  // , { state: { result: res, chart:chartData, balanceSheetData:balanceSheetData } }
-                 );
-               } }>
-                 {res.Name}
-               </div>
-             );
-
-           })}
-         </div> */}
 
         <div className="grid grid-cols-1 divide-y divide-gray-700 rounded-lg shadow w-70 dark:bg-gray-700 z-10 h-40 overflow-y-auto absolute">
            {(stockTicker as unknown as Company).map((res, index: number) => {

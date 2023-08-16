@@ -1,8 +1,16 @@
 
 import PopularStocks from "./PopularStocks";
-import Search from "./Search";
+import SearchBar from "./SearchBar";
+import {Company} from "../../types";
 
 function HomeSearch() {
+  const stockTicker = [
+    {symbol: 'IBM',name: 'International Business Machines'},
+    {symbol: 'BA',name: 'The Boeing Company',},
+    {symbol: 'BABA',name: 'Alibaba Group Holding Ltd'},
+    {symbol: 'BAC',name: 'Bank of America Corp'},
+    {symbol: 'SAIC',name: 'Science Applications International Corp (SAIC)'}
+    ]
   return (
     <>
       <div className="searchWrap w-full text-white flex items-center" style={{height: "100vh"}}>
@@ -17,7 +25,7 @@ function HomeSearch() {
               Screening tool for investors
             </h4>
           </div>
-         <Search />
+         <SearchBar placeholder="Search for a company..." data={stockTicker as Company[]}/>
          <PopularStocks />
         </div>
       </div>

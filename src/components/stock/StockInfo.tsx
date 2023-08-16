@@ -1,5 +1,6 @@
 
 import { StockData } from "../../types";
+
 // import { StockContext } from "../Home/StockContext";
 
 interface stockProp {
