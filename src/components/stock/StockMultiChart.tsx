@@ -1,6 +1,8 @@
+
+
 // import { StockDailyData } from "../../types";
 
-import { StockDailyData, TimeSeriesDaily } from "../../types";
+import { TimeSeriesDaily } from "../../types";
 import {
     Chart as ChartJS,
     LinearScale,
@@ -30,38 +32,38 @@ import {
   
 
 interface stockProp{
-    id: string,
-    chartData: StockDailyData[]
+    month: string[],
+    dailyData: TimeSeriesDaily[]
    }
 
-function StockChart({id,chartData}: stockProp){
-console.log("Id in Chart: ",id);
-const monthDate = new Date();
-monthDate.setMonth(monthDate.getMonth() - 1);
-console.log("Date: ",monthDate);
+function StockMultiChart({month,dailyData}: stockProp){
+// console.log("Id in Chart: ",id);
+// const monthDate = new Date();
+// monthDate.setMonth(monthDate.getMonth() - 1);
+// console.log("Date: ",monthDate);
 
-    const sixmonthDate = new Date();
-    sixmonthDate.setMonth(sixmonthDate.getMonth() - 6);
-    console.log("Six month Date: ",sixmonthDate);
+//     const sixmonthDate = new Date();
+//     sixmonthDate.setMonth(sixmonthDate.getMonth() - 6);
+//     console.log("Six month Date: ",sixmonthDate);
 
-    // const intYear = sixmonthDate.getFullYear() - 1;
-    const dailyData: TimeSeriesDaily[] = chartData[0]["Time Series (Daily)"];
-    console.log("------six month dates:",sixmonthDate);
-    console.log("Report after 2020", Object.keys(dailyData));
-    const keys = Object.keys(dailyData)
-    const month: string[] = []
-    // const monthData: number[] = []
-    const sixMonth = []
+//     // const intYear = sixmonthDate.getFullYear() - 1;
+//     const dailyData: TimeSeriesDaily[] = chartData[0]["Time Series (Daily)"];
+//     console.log("------six month dates:",sixmonthDate);
+//     console.log("Report after 2020", Object.keys(dailyData));
+//     const keys = Object.keys(dailyData)
+//     const month: string[] = []
+//     // const monthData: number[] = []
+//     const sixMonth = []
 
-    for (let i=0; i< keys.length; i++){
-      const datestr = new Date(keys[i]).getTime();
-      if(monthDate.getTime()< datestr){
-        month.push(keys[i]);
-      }
-      if(sixmonthDate.getTime() < datestr){
-        sixMonth.push(keys[i]);
-      }
-    }
+//     for (let i=0; i< keys.length; i++){
+//       const datestr = new Date(keys[i]).getTime();
+//       if(monthDate.getTime()< datestr){
+//         month.push(keys[i]);
+//       }
+//       if(sixmonthDate.getTime() < datestr){
+//         sixMonth.push(keys[i]);
+//       }
+//     }
 
 // const filteredMonthData = Object.keys(dailyData)
 //     .filter(key => month.includes(key))
@@ -77,7 +79,7 @@ console.log("Date: ",monthDate);
 //   console.log(value?.["4. close"]); // John, then 30
 // }
 
-  const labels = sixMonth;
+  const labels = month;
 
   const options = {
     responsive: true,
@@ -137,7 +139,7 @@ console.log("Date: ",monthDate);
         borderWidth: 2,
         fill: false,
         yAxisID: "price",
-        data: sixMonth.map((key) => {return ((dailyData[key as keyof TimeSeriesDaily[]] as TimeSeriesDaily)?.["4. close"])}),
+        data: month.map((key) => {return ((dailyData[key as keyof TimeSeriesDaily[]] as TimeSeriesDaily)?.["4. close"])}),
         order: 0,
         tension: 0.4,
         pointRadius: 0
@@ -149,7 +151,7 @@ console.log("Date: ",monthDate);
         backgroundColor: '#a8a29e',
         yAxisID: "volume",
         data: 
-        sixMonth.map((key) => {return (((dailyData[key as keyof TimeSeriesDaily[]] as TimeSeriesDaily)?.["5. volume"]))}),
+        month.map((key) => {return (((dailyData[key as keyof TimeSeriesDaily[]] as TimeSeriesDaily)?.["5. volume"]))}),
           order: 1,
       },
     ],
@@ -157,8 +159,8 @@ console.log("Date: ",monthDate);
 
     return(<>
     <div id="stock-chart" className="py-10 text-white min-h-fit pb-10">
-        <div className="mt-20 pt-10"></div>
-        <div className="px-6 pt-8">
+        {/* <div className="mt-20 pt-10"></div> */}
+        <div className="px-6 pt-6">
         <h1 className="text-2xl">Chart</h1>
         <div className="w-full h-90">
         <Chart type='bar' options={options} data={data} style={{color:"white"}}/>
@@ -168,4 +170,4 @@ console.log("Date: ",monthDate);
     </>);
 }
 
-export default StockChart;
+export default StockMultiChart;

@@ -2,105 +2,25 @@ import StockBalanceSheet from "./StockBalanceSheet";
 import ProfitLoss from "./ProfitLoss";
 import QuarterlyResult from "./QuarterlyResult";
 import StockInfo from "./StockInfo";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { HashLink } from "react-router-hash-link";
 import { useParams } from "react-router-dom";
-import {
-  BalanceSheet,
-  StockData,
-  StockDailyData,
-  IncomeSheet,
-} from "../../types";
-import StockChart from "./StockChart";
 
-// interface locationProp {
-//   result: StockData[];
-//   chart: StockDailyData[];
-//   balance: BalanceSheet[];
-//   income: IncomeSheet[];
-// }
+// import StockChart from "./StockChart";
+ 
+import {getCompanyOverviewDataBySymbol, getDailyStockDataBySymbol, getCompanyIncomeDataBySymbol, getCompanyBalanceSheetDataBySymbol} from "../../utils/api";
+// import StockMultiChart from "./StockMultiChart";
+import StockChartTab from "./StockChartTab";
+
 
 function DashboardTab() {
   const { id } = useParams();
-  const [result, setResult] = useState<StockData[]>([]);
-  const [chartData, setChartData] = useState<StockDailyData[]>([]);
-  const [balanceSheetData, setBalanceSheetData] = useState<BalanceSheet[]>([]);
-  const [income, setIncomeData] = useState<IncomeSheet[]>([]);
+  const result = getCompanyOverviewDataBySymbol(id as string);
+  const chartData = getDailyStockDataBySymbol(id as string);
+  const income = getCompanyIncomeDataBySymbol(id as string);
+  const balanceSheetData = getCompanyBalanceSheetDataBySymbol(id as string);
 
   console.log(`ID: ${id!}`)
-
-  const fetchData = (value: string) => {
-    console.log("fetch data for overview info is executing.....", value);
-    void fetch("../../../data/companyOverview.json")
-      .then((response) => response.json())
-      .then((json) => {
-        const result = (json as StockData[]).filter((stock) => {
-          return stock?.Symbol === value;
-        });
-        console.log("Result", result);
-        setResult(result);
-      });
-  };
-
-  const fetchChartData = (value: string) => {
-    console.log("fetch data for chart info is executing.....", value);
-    void fetch("../../../data/companyDailySeriesData.json")
-      .then((response) => response.json())
-      .then((json) => {
-        const result = (json as StockDailyData[]).filter((stock) => {
-          return stock?.["Meta Data"]?.["2. Symbol"] === value;
-        });
-        console.log("chartdata", result);
-        setChartData(result);
-      });
-  };
-
-  const fetchBalanceSheetData = (value: string) => {
-    console.log("fetch data for balance sheet info is executing.....", value);
-    void fetch("../../../data/companyBalanceSheet.json")
-      .then((response) => response.json())
-      .then((json) => {
-        const bsData = (json as BalanceSheet[]).filter((stock) => {
-          // console.log("BS data: ",stock);
-          return stock?.symbol === value;
-        });
-        console.log("----BS", bsData);
-        setBalanceSheetData(bsData);
-      });
-  };
-
-  const fetchIncomeSheetData = (value: string) => {
-    console.log("fetch data for balance sheet info is executing.....", value);
-    void fetch("../../../data/companyIncomeData.json")
-      .then((response) => response.json())
-      .then((json) => {
-        const incomeData = (json as IncomeSheet[]).filter((stock) => {
-          // console.log("BS data: ",stock);
-          return stock?.symbol === value;
-        });
-        console.log("----Income statement", incomeData);
-        setIncomeData(incomeData);
-      });
-  };
-
-  useEffect(() => {
-    if (id) {
-      console.log(`Starting data fetching for symbol: ${id}`)
-      fetchData(id);
-      fetchChartData(id);
-      fetchBalanceSheetData(id);
-      fetchIncomeSheetData(id);
-    }
-  }, []);
-
-  // // const [chartData, setChartData] = useState();
-  // const location = useLocation();
-  // console.log("Location: ", location);
-
-  // // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  // const state: locationProp = location.state;
-
-  // console.log("Location: ", state);
 
   const tabObj = [
     { id: "stock-info", title: "Stock" },
@@ -139,7 +59,7 @@ function DashboardTab() {
   return (
     <>
       <div className="py-10 text-white pb-10">
-        <div className="fixed w-full z-10">
+        <div className="fixed w-full">
           <ul className="px-8 flex flex-wrap text-sm font-medium text-center text-gray-500 bg-gray-800 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 ">
             {toggleState.tabObjects.map((element, index) => {
               return (
@@ -158,23 +78,25 @@ function DashboardTab() {
             })}
           </ul>
         </div>
-        <div id="stock-info" className="py-10 text-white border-1 z-[-1]">
+        <div id="stock-info" className="py-10 text-white border-1 z-[1]">
           {" "}
           <StockInfo id={id as string} result={result} />
         </div>
-        <div id="stock-chart" className="text-white mt-15 z-[-2]">
+        <div id="stock-chart" className="text-white mt-15 z-[-1]">
           {" "}
-          <StockChart id={id as string} chartData={chartData} />
+          <StockChartTab id={id as string} chartData={chartData}/>
+          {/* <StockChart id={id as string} chartData={chartData} /> */}
+          {/* <StockMultiChart id={id as string} chartData={chartData} /> */}
         </div>
-        <div id="stock-quarterly-results" className="text-white mt-15 z-[-1]">
+        <div id="stock-quarterly-results" className="text-white mt-15 z-[1]">
           {" "}
           <QuarterlyResult id={id as string} quarterData={income} />
         </div>
-        <div id="stock-profit-loss" className="text-white z-[-1]">
+        <div id="stock-profit-loss" className="text-white z-[1]">
           {" "}
           <ProfitLoss id={id as string} annualIncomeData={income} />
         </div>
-        <div id="stock-balance-sheet" className="text-white z-[-1]">
+        <div id="stock-balance-sheet" className="text-white z-[1]">
           {" "}
           <StockBalanceSheet id={id as string} annualData={balanceSheetData} />
         </div>
@@ -184,3 +106,23 @@ function DashboardTab() {
 }
 
 export default DashboardTab;
+
+// export const stockOverviewLoader = (value: string) => {
+//   const result ={}
+//   const stockInfoOutput = getCompanyOverviewDataBySymbol(value);
+
+//   const dailyData = getDailyStockDataBySymbol(value);
+//   console.log("--CHART--Daily data from aPI: ",dailyData);
+
+//   const incomeOutput = getCompanyIncomeDataBySymbol(value);
+//   console.log("--INCOME--Income Data from API by given Symbol",incomeOutput);
+
+//   const balanceInfo = getCompanyBalanceSheetDataBySymbol(value);
+//   result = {
+//     stockResult: stockInfoOutput,
+//     chartData: dailyData,
+//     balanceSheetData: balanceInfo,
+//     incomeData: incomeOutput
+//   }
+//   return result;
+// }

@@ -1,3 +1,4 @@
+import {formatNumber} from "../../utils/api";
 import {  IncomeSheet } from "../../types";
 
 interface stockProp{
@@ -13,12 +14,13 @@ function QuarterlyResult({id,quarterData}:stockProp){
         const date = new Date(res.fiscalDateEnding);
         return ((date.getTime()> datestr))})
     console.log("Report after 2020", report);
+    
     return (<>
      <div className="py-10 text-white min-h-fit">
      <div className="mt-20 pt-10"></div>
      <div className="pl-6 pt-8">
         <h1 className="text-2xl">Quarterly Results</h1>
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4">
+        <div className="overflow-x-auto shadow-md sm:rounded-lg pt-4">
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -43,7 +45,7 @@ function QuarterlyResult({id,quarterData}:stockProp){
                     report.map((result,index) =>{
                         return( 
                             <td key={index} className="px-6 py-4">
-                           {result.totalRevenue}
+                           {formatNumber(result?.totalRevenue)}
                         </td>)
                     })
                 }
@@ -56,7 +58,7 @@ function QuarterlyResult({id,quarterData}:stockProp){
                     report.map((result,index) =>{
                         return( 
                             <td key={index} className="px-6 py-4">
-                           {result.costOfRevenue}
+                           {formatNumber(result?.costOfRevenue)}
                         </td>)
                     })
                 }
@@ -69,7 +71,7 @@ function QuarterlyResult({id,quarterData}:stockProp){
                     report.map((result,index) =>{
                         return( 
                             <td key={index} className="px-6 py-4">
-                           {result.grossProfit}
+                           {formatNumber(result?.grossProfit)}
                         </td>)
                     })
                 }
@@ -82,7 +84,7 @@ function QuarterlyResult({id,quarterData}:stockProp){
                     report.map((result,index) =>{
                         return( 
                             <td key={index} className="px-6 py-4">
-                           {result.interestIncome}
+                           {formatNumber(result?.interestIncome)}
                         </td>)
                     })
                 }
@@ -95,7 +97,7 @@ function QuarterlyResult({id,quarterData}:stockProp){
                     report.map((result,index) =>{
                         return( 
                             <td key={index} className="px-6 py-4">
-                           {result.interestExpense}
+                           {formatNumber(result?.interestExpense)}
                         </td>)
                     })
                 }
@@ -108,7 +110,7 @@ function QuarterlyResult({id,quarterData}:stockProp){
                     report.map((result,index) =>{
                         return( 
                             <td key={index} className="px-6 py-4">
-                           {result.depreciation}
+                           {formatNumber(result?.depreciation)}
                         </td>)
                     })
                 }
@@ -121,7 +123,7 @@ function QuarterlyResult({id,quarterData}:stockProp){
                     report.map((result,index) =>{
                         return( 
                             <td key={index} className="px-6 py-4">
-                           {result.incomeBeforeTax}
+                           {formatNumber(result?.incomeBeforeTax)}
                         </td>)
                     })
                 }
@@ -134,7 +136,7 @@ function QuarterlyResult({id,quarterData}:stockProp){
                     report.map((result,index) =>{
                         return( 
                             <td key={index} className="px-6 py-4">
-                           {result.incomeTaxExpense}
+                           {formatNumber(result?.incomeTaxExpense)}
                         </td>)
                     })
                 }
@@ -147,7 +149,7 @@ function QuarterlyResult({id,quarterData}:stockProp){
                     report.map((result,index) =>{
                         return( 
                             <td key={index} className="px-6 py-4">
-                           {result.netIncome}
+                           {formatNumber(result?.netIncome)}
                         </td>)
                     })
                 }

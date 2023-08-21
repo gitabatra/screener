@@ -5,60 +5,60 @@ export interface IncomeSheet {
   }
   
   export interface AnnualIncomeReport {
-    fiscalDateEnding: string
+    fiscalDateEnding: Date
     reportedCurrency: string
-    grossProfit: string
-    totalRevenue: string
-    costOfRevenue: string
-    costofGoodsAndServicesSold: string
-    operatingIncome: string
-    sellingGeneralAndAdministrative: string
-    researchAndDevelopment: string
-    operatingExpenses: string
-    investmentIncomeNet: string
-    netInterestIncome: string
-    interestIncome: string
-    interestExpense: string
-    nonInterestIncome: string
-    otherNonOperatingIncome: string
-    depreciation: string
-    depreciationAndAmortization: string
-    incomeBeforeTax: string
-    incomeTaxExpense: string
-    interestAndDebtExpense: string
-    netIncomeFromContinuingOperations: string
-    comprehensiveIncomeNetOfTax: string
-    ebit: string
-    ebitda: string
-    netIncome: string
+    grossProfit: number
+    totalRevenue: number
+    costOfRevenue: number
+    costofGoodsAndServicesSold: number
+    operatingIncome: number
+    sellingGeneralAndAdministrative: number
+    researchAndDevelopment: number
+    operatingExpenses: number
+    investmentIncomeNet: number
+    netInterestIncome: number
+    interestIncome: number
+    interestExpense: number
+    nonInterestIncome: number
+    otherNonOperatingIncome: number
+    depreciation: number
+    depreciationAndAmortization: number
+    incomeBeforeTax: number
+    incomeTaxExpense: number
+    interestAndDebtExpense: number
+    netIncomeFromContinuingOperations: number
+    comprehensiveIncomeNetOfTax: number
+    ebit: number
+    ebitda: number
+    netIncome: number
   }
   
   export interface QuarterlyIncomeReport {
-    fiscalDateEnding: string
+    fiscalDateEnding: Date
     reportedCurrency: string
-    grossProfit: string
-    totalRevenue: string
-    costOfRevenue: string
-    costofGoodsAndServicesSold: string
-    operatingIncome: string
-    sellingGeneralAndAdministrative: string
-    researchAndDevelopment: string
-    operatingExpenses: string
-    investmentIncomeNet: string
-    netInterestIncome: string
-    interestIncome: string
-    interestExpense: string
-    nonInterestIncome: string
-    otherNonOperatingIncome: string
-    depreciation: string
-    depreciationAndAmortization: string
-    incomeBeforeTax: string
-    incomeTaxExpense: string
-    interestAndDebtExpense: string
-    netIncomeFromContinuingOperations: string
-    comprehensiveIncomeNetOfTax: string
-    ebit: string
-    ebitda: string
-    netIncome: string
+    grossProfit: number
+    totalRevenue: number
+    costOfRevenue: number
+    costofGoodsAndServicesSold: number
+    operatingIncome: number
+    sellingGeneralAndAdministrative: number
+    researchAndDevelopment: number
+    operatingExpenses: number
+    investmentIncomeNet: number
+    netInterestIncome: number
+    interestIncome: number
+    interestExpense: number
+    nonInterestIncome: number
+    otherNonOperatingIncome: number
+    depreciation: number
+    depreciationAndAmortization: number
+    incomeBeforeTax: number
+    incomeTaxExpense: number
+    interestAndDebtExpense: number
+    netIncomeFromContinuingOperations: number
+    comprehensiveIncomeNetOfTax: number
+    ebit: number
+    ebitda: number
+    netIncome: number
   }
   

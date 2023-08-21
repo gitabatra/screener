@@ -1,4 +1,5 @@
 import { IncomeSheet } from "../../types";
+import { formatNumber } from "../../utils/api";
 
 interface stockProp{
     id: string,
@@ -12,7 +13,7 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
      <div className="mt-20 pt-10"></div>
      <div className="pl-6 pt-8">
         <h1 className="text-2xl">Profit & Loss</h1>
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4">
+        <div className="overflow-x-auto shadow-md sm:rounded-lg pt-4">
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -37,7 +38,7 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.totalRevenue}
+                {formatNumber(res?.totalRevenue)}
                 </td>
             )})}
             </tr>
@@ -47,7 +48,7 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.costOfRevenue}
+                {formatNumber(res?.costOfRevenue)}
                 </td>
             )})}
             </tr>
@@ -57,7 +58,7 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.grossProfit}
+                {formatNumber(res?.grossProfit)}
                 </td>
             )})}
             </tr>
@@ -67,7 +68,7 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.interestIncome}
+                {formatNumber(res?.interestIncome)}
                 </td>
             )})}
             </tr>
@@ -77,7 +78,7 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.interestExpense}
+                {formatNumber(res?.interestExpense)}
                 </td>
             )})}
             </tr>
@@ -87,7 +88,7 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.depreciation}
+                {formatNumber(res?.depreciation)}
                 </td>
             )})}
             </tr>
@@ -97,7 +98,7 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.incomeBeforeTax}
+                {formatNumber(res?.incomeBeforeTax)}
                 </td>
             )})}
             </tr>
@@ -107,7 +108,7 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.incomeTaxExpense}
+                {formatNumber(res?.incomeTaxExpense)}
                 </td>
             )})}
             </tr>
@@ -117,7 +118,7 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.netIncome}
+                {formatNumber(res?.netIncome)}
                 </td>
             )})}
             </tr>

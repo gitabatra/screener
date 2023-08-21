@@ -1,4 +1,5 @@
 import { BalanceSheet } from "../../types";
+import { formatNumber } from "../../utils/api";
 
 interface stockProp{
     id: string,
@@ -11,11 +12,11 @@ function StockBalanceSheet({id, annualData}: stockProp){
     console.log("Annual report data: ",annualReportData);
     return (<>
      <div className="py-10 text-white min-h-screen pb-14">
-     <div className="mt-20 pt-12"></div>
+     <div className="mt-14 pt-12"></div>
      <div className="pl-6 pt-8">
         <h1 className="text-2xl">Balance Sheet</h1>
 
-<div className="relative overflow-x-auto shadow-md sm:rounded-lg pt-4">
+<div className="overflow-x-auto shadow-md sm:rounded-lg pt-4">
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -39,7 +40,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.totalAssets}
+                {formatNumber(res?.totalAssets)}
                 </td>
             )})}
         </tr>
@@ -49,7 +50,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.totalCurrentAssets}
+                {formatNumber(res?.totalCurrentAssets)}
                 </td>
             )})}
             </tr>
@@ -59,7 +60,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.propertyPlantEquipment}
+                {formatNumber(res?.propertyPlantEquipment)}
                 </td>
             )})}
             </tr>
@@ -69,7 +70,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.investments}
+                {formatNumber(res?.investments)}
                 </td>
             )})}
             </tr>
@@ -79,7 +80,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.longTermInvestments}
+                {formatNumber(res?.longTermInvestments)}
                 </td>
             )})}
             </tr>
@@ -89,7 +90,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.shortTermInvestments}
+                {formatNumber(res?.shortTermInvestments)}
                 </td>
             )})}
             </tr>
@@ -104,7 +105,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.longTermDebt}
+                {formatNumber(res?.longTermDebt)}
                 </td>
             )})}
             </tr>
@@ -114,7 +115,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.currentLongTermDebt}
+                {formatNumber(res?.currentLongTermDebt)}
                 </td>
             )})}
             </tr>
@@ -124,7 +125,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.longTermDebtNoncurrent}
+                {formatNumber(res?.longTermDebtNoncurrent)}
                 </td>
             )})}
             </tr>
@@ -134,7 +135,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.shortLongTermDebtTotal}
+                {formatNumber(res?.shortLongTermDebtTotal)}
                 </td>
             )})}
             </tr>
@@ -144,7 +145,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.totalShareholderEquity}
+                {formatNumber(res?.totalShareholderEquity)}
                 </td>
             )})}
             </tr>
@@ -154,7 +155,7 @@ function StockBalanceSheet({id, annualData}: stockProp){
                 </th>
                 {annualReportData.map((res,index)=>{return(
                 <td key={index} className="px-6 py-4">
-                {res.retainedEarnings}
+                {formatNumber(res?.retainedEarnings)}
                 </td>
             )})}
             </tr>

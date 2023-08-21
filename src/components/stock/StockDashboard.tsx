@@ -13,7 +13,6 @@ function StockDashboard() {
     <>
       <div className="bg-gray-800">
         <DashboardTab
-        //  result={result}
          />
       </div>
     </>
