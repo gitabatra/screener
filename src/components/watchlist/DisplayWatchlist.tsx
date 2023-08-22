@@ -1,5 +1,5 @@
 // import { useState, ChangeEvent, MouseEvent } from "react";
-import { Bars4Icon, TrashIcon } from "@heroicons/react/24/solid";
+import { ListBulletIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
 import { Watchlist } from "../../types";
 
@@ -24,7 +24,7 @@ function DisplayWatchlist({watchlist,deleteWatchlist}: DisplayWatchlistProps){
 
               <button className="btn outline outline-offset-2 outline-1 ml-5 px-2 py-1" onClick={()=>{navigate(`/watchlist/${watchlist.id}/manage-companies`)}}>
                 <div className="w-7 h-7">
-                  <Bars4Icon />
+                  <ListBulletIcon />
                 </div>
               </button>
 

@@ -3,9 +3,12 @@ import Watchlist from "./watchlist/Watchlists";
 import WatchlistView from "./watchlist/WatchlistView"
 import Portfolio from "./portfolio/Portfolio";
 import { Routes } from "../types";
-import HomeSearch from "./Home/HomeSearch";
 import ManageCompanies from "./watchlist/ManageCompanies";
 import RootLayout from "./RootLayout";
+import StockDashboard from "./stock/StockDashboard";
+
+import Home from "./Home/Home";
+import NotFound from "./NotFound";
 
 
 import {
@@ -18,11 +21,13 @@ import {
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<RootLayout />}>
-  <Route index element={<HomeSearch />} />
+  <Route index element={<Home />}/>
   <Route path= {Routes.WATCHLIST} element={ <Watchlist />} />   
   <Route path= {Routes.WATCHLIST_VIEW} element={ <WatchlistView />} /> 
   <Route path= {Routes.MANAGE_COMPANIES} element={ <ManageCompanies />} />
   <Route path= {Routes.PORTFOLIO} element={ <Portfolio />} />
+  <Route path= {Routes.STOCK} element={ <StockDashboard />} />
+  <Route path= {Routes.NOT_FOUND} element={<NotFound />} />
   </Route>
 ));
 

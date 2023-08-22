@@ -24,7 +24,7 @@ function Header() {
             {isMenuOpen ? <XMarkIcon /> : <Bars3Icon />}
           </div>
           <ul
-            className={`md:flex pl-9 md:items-center md:pb-0 pb-12 absolute md:static dark:bg-gray-900 md:z-auto z-[-1] left-0 w-full md:w-auto md:pl-0 
+            className={`md:flex pl-9 md:items-center md:pb-0 pb-12 absolute md:static dark:bg-gray-900 md:z-auto z-[56] left-0 w-full md:w-auto md:pl-0 
           ${isMenuOpen ? "top-12" : "top-[-490px]"}`}
           >
             <NavLink href={Routes.HOME}>Home</NavLink>

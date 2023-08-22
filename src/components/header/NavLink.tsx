@@ -1,6 +1,6 @@
 interface NavLinkProps {
   href: string;
-  children: string; //TODO Rename to something like title, or name
+  children: string;
 }
 
 function NavLink({ href, children }: NavLinkProps) {

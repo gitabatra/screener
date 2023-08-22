@@ -3,11 +3,11 @@ import CreateArea from "./CreateArea";
 import DisplayWatchlist from "./DisplayWatchlist";
 import { getDataFromLocalStorage } from "../../utils/api";
 import { Watchlist } from "../../types";
+import { WatchlistContext } from "../Context/WatchlistContext";
 
 
 function Watchlists(){
     const [isCreateWLOpen, setIsCreateWLOpen] = useState(false);
-   // const [count, setCount] = useState();
     const [watchlists, setWatchlist] = useState(getDataFromLocalStorage());
   
     function showCreateWatchlilst(){
@@ -16,9 +16,7 @@ function Watchlists(){
     }
 
     const addWatchlistName = (watchlistName: string) => {
-        //setCount(()=>((watchlists.length)+1));
         console.log("Count: ",watchlists.length);
-       // console.log("Count: ",count);
         const watchlistId = "wl-20230727-" + (watchlists.length).toString();
         console.log("Count: ",watchlistId,watchlists.length);
         const watchlist: Watchlist = {
@@ -60,9 +58,11 @@ function Watchlists(){
           {
             isCreateWLOpen ? <CreateArea  setIsCreateWLOpen= {setIsCreateWLOpen}  setWatchlistName={ addWatchlistName }/> : ""
           }
+          <WatchlistContext.Provider value={{watchlists}}>
           {
             watchlists.map((watchlist:object,index:number) => {return  (<DisplayWatchlist key= {index} watchlist={watchlist as Watchlist} deleteWatchlist={deleteWatchlist}/>)})
           }
+           </WatchlistContext.Provider>
         </div>
       </div>
     </>);

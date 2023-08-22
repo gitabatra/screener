@@ -12,7 +12,7 @@ interface stockProp {
 function StockData({stock}: stockProp){
   console.log("Stocks in managecompanies: ",stock);
   return (<>
-   <div className="flex justify-between items-center">
+   <div className="flex justify-between items-center pb-4 border-b-2 border-gray-600">
             <p>{stock.stockName}</p>
           <button className="w-5 h-5"><TrashIcon /></button>
   </div>
@@ -54,7 +54,7 @@ function ManageCompanies() {
                     />
                   </svg>
                 </div>
-                <input type="search" placeholder="eg. BMO" className="bg-gray-40 dark:bg-gray-600 border-b-2 w-full border-gray-800 p-2.5 pl-10 text-gray-100" required/>
+                <input type="search" placeholder="eg. BMO" className="bg-gray-40 dark:bg-gray-600 rounded-lg border-b-2 w-full border-gray-800 p-2.5 pl-10 text-gray-100" required/>
 
                 {/* <input
                   type="text"
@@ -72,7 +72,7 @@ function ManageCompanies() {
               </button>
             </div>
           </form>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 py-5 px-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 py-5 px-5">
           {
             stocksList.map((stock, index) => {return(<StockData key={index} stock={stock as unknown as Stock} />)})
           }

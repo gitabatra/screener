@@ -3,5 +3,7 @@ export enum Routes {
     WATCHLIST = '/watchlist',
     PORTFOLIO = '/portfolio',
     WATCHLIST_VIEW='/watchlist/:id',
-    MANAGE_COMPANIES='/watchlist/:id/manage-companies'
+    MANAGE_COMPANIES='/watchlist/:id/manage-companies',
+    STOCK='/stock/:id',
+    NOT_FOUND='*'
 }

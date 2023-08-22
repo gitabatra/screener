@@ -6,7 +6,7 @@ function RootLayout(){
     return (<>
     <Header />
     <main>
-    <div className="w-full h-screen mt-10 h-screen bg-gray-800 text-white">
+    <div className="w-full min-h-screen mt-10 bg-gray-800 text-white">
         <Outlet />
     </div>
     </main>
