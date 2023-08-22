@@ -1,4 +1,4 @@
-import { Watchlist, Stock, CompanyOverviewData, StockDailyData, TimeSeriesDaily, IncomeSheet, BalanceSheet, DailyData } from "../types";
+import { Watchlist, Stock, CompanyOverviewData, StockDailyData, IncomeSheet, BalanceSheet, DailyData } from "../types";
 
 
 import data from "../../data/companyOverview.json";
@@ -29,37 +29,126 @@ export const getDataFromLocalStorage = (): Watchlist[] => {
         id: "wl-20230727-0",
         wlName: "Core watchlist",
         wlData: [
-          {
-            stockID: "stock-0",
-            stockName: "AA",
-            cmp: 321,
-            marketCap: 4.6,
-            quarterlyProfit: 10,
-            quarterlySales: 12,
-            epsAnn: 21,
-            roe: 10,
-            roce: 19.1,
-            pe: 5,
-            industryPE: 7,
-          },
-          {
-            stockID: "stock-1",
-            stockName: "ABC",
-            cmp: 321,
-            marketCap: 4.6,
-            quarterlyProfit: 10,
-            quarterlySales: 12,
-            epsAnn: 21,
-            roe: 10,
-            roce: 19.1,
-            pe: 5,
-            industryPE: 7,
-          },
+        //   {
+        //     stockID: "stock-1",
+        //     stockName: "ABC",
+        //     cmp: 321,
+        //     marketCap: 4.6,
+        //     bookValue: 1.3,
+        //     priceToBookRatio:5.2,
+        //     dividendYield:1.3,
+        //     priceToSalesRatioTTM:2.3,
+        //     eps: 21,
+        //     roe: 10,
+        //     ProfitMargin:2.99,
+        //     pe: 5,
+        //     weekHigh_52: 7,
+        //     weekLow_52: 5
+        //   },
+        //   {
+        //     stockID: "stock-1",
+        //     stockName: "ABC",
+        //     cmp: 321,
+        //     marketCap: 4.6,
+        //     bookValue: 1.3,
+        //     priceToBookRatio:5.2,
+        //     dividendYield:1.3,
+        //     priceToSalesRatioTTM:2.3,
+        //     eps: 21,
+        //     roe: 10,
+        //     ProfitMargin:2.99,
+        //     pe: 5,
+        //     weekHigh_52: 7,
+        //     weekLow_52: 5
+        //   },
         ],
       },
     ];
   }
 };
+
+export const getWatchlists = (watchlist: Watchlist[]) =>{
+    const watchlistNames: string[] = []
+    console.log("Watchlist------", watchlist);
+    const wlLength: number =  watchlist.length
+    for(let i=0; i<wlLength; i++){
+        const wlname: string | undefined = (watchlist[i].wlName)
+        watchlistNames.push(wlname);
+    }
+    console.log("GetWatchlist names from wlData: ",watchlist,wlLength,watchlistNames)
+    return watchlistNames
+}
+
+export function addStockToWatchlist(id: string, symbol: string) {
+   console.log("Passed Watchlist ID: ",id,"and symbol is: ",symbol);
+   const watchlistData = getWatchlistDataById(id);
+   console.log(watchlistData?.[0]?.wlData);
+//    const isAlreadyAdded = watchlistData?.[0]?.wlData.map((key) =>{
+//     return (key.stockID === symbol ? true : false)
+//    })
+   const data: Stock[] | undefined = watchlistData?.[0]?.wlData as Stock[];
+   for(let i=0; i<data.length; i++)
+   {
+    if (data[i].stockID === symbol){
+        return true
+    }
+   }
+//    console.log("isAlreadyAdded", isAlreadyAdded)
+}
+
+export function isStockAlreadyAdded(stockData: Stock[],symbol: string) {
+    const data: Stock[] = stockData;
+    for(let i=0; i<data.length; i++)
+    {
+     if (data[i].stockID === symbol){
+         return true
+     }
+    }
+    return false
+}
+
+export function insertStockToWatchlist(watchlistId: string, symbol: string, result: CompanyOverviewData[],index: number) {
+    const watchlists = getDataFromLocalStorage();
+    console.log("Passed Watchlist ID: ",watchlistId,"and symbol is: ",symbol);
+    const watchlistData = getWatchlistDataById(watchlistId);
+    console.log(watchlistData,watchlistData?.[0]?.wlData);
+
+    const newWLDataObject: Stock = {
+        stockID: result?.[0]?.Symbol,
+        stockName: result?.[0]?.Name,
+        cmp: 0,
+        marketCap: (result?.[0]?.MarketCapitalization),
+        bookValue: result?.[0]?.BookValue,
+        priceToBookRatio: result?.[0]?.PriceToBookRatio,
+        dividendYield: result?.[0]?.DividendYield,
+        priceToSalesRatioTTM: result?.[0]?.PriceToSalesRatioTTM,
+        eps: result?.[0]?.EPS,
+        roe: result?.[0]?.ReturnOnEquityTTM,
+        ProfitMargin: result?.[0]?.ProfitMargin,
+        pe: result?.[0]?.PERatio,
+        weekHigh_52: result?.[0]?.["52WeekHigh"],
+        weekLow_52: result?.[0]?.["52WeekLow"],
+      };
+      const stockData: Stock[] | undefined = watchlistData?.[0]?.wlData
+      let isAdded: boolean = false;
+      if(stockData?.length !== 0 || stockData !== undefined){
+       isAdded = isStockAlreadyAdded(stockData as Stock[], symbol);
+       console.log("IF added or not: ", isAdded);
+      }
+      if(!isAdded){
+        console.log("not added..");
+        watchlistData?.[0]?.wlData.push(newWLDataObject);
+        // console.log(
+        //   "CoreWatchlist Data After assigning new object",
+        //   watchlistData?.[0]?.wlData
+        // );
+        console.log("after adding watchlist Data: ",watchlistData)
+        Object.assign(watchlists[index].wlData,watchlistData?.[0]?.wlData)
+        console.log("after Assigning to  watchlist Data: ",watchlists[0])
+        localStorage.setItem("watchlists", JSON.stringify(watchlists));
+      }
+ }
+
 export const getWatchlistDataById = (id: string): Watchlist[] | null => {
   const watchList = JSON.parse(localStorage.getItem("watchlists") ?? "null") as
     | Watchlist[]
@@ -678,7 +767,7 @@ function getTimeSeries(item: StockDailyData){
     const result: {[key: string]: DailyData } = {}
     Object.keys(item["Time Series (Daily)"]).forEach(function (key) {
 
-        const value = item["Time Series (Daily)"][key] as DailyData;
+        const value = item?.["Time Series (Daily)"]?.[key] as DailyData;
         // console.log("Key:", key, "Value: ",value);
         result[key] = {
             "1. open": (Number(value["1. open"]) ? Number(value["1. open"]) : value["1. open"]),

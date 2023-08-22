@@ -7,9 +7,9 @@ interface stockProp{
    }
 
 function StockBalanceSheet({id, annualData}: stockProp){
-    console.log(id,annualData[0].annualReports);
+    console.log("Stock Balance sheet",id);
     const annualReportData = (annualData?.[0]?.annualReports)
-    console.log("Annual report data: ",annualReportData);
+    // console.log("Annual report data: ",annualReportData);
     return (<>
      <div className="py-10 text-white min-h-screen pb-14">
      <div className="mt-14 pt-12"></div>

@@ -7,7 +7,7 @@ interface stockProp{
    }
 function ProfitLoss({id,annualIncomeData}: stockProp){
     const annualReportData = (annualIncomeData?.[0]?.annualReports)
-    console.log("Annual report data: ",id,annualReportData);
+    console.log("Annual report data: ",id);
     return (<>
      <div className="py-10 text-white min-h-screen">
      <div className="mt-20 pt-10"></div>

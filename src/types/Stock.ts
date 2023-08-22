@@ -1,15 +1,18 @@
 export interface Stock {
-    stockID: string,
-    stockName: string,
-    cmp: number,
-    marketCap: number,
-    quarterlyProfit: number,
-    quarterlySales: number,
-    epsAnn: number,
-    roe: number,
-    roce: number,
-    pe: number,
-    industryPE: number
+  stockID: string,
+  stockName: string,
+  cmp: number,
+  marketCap: number,
+  bookValue: number,
+  priceToBookRatio: number,
+  dividendYield: number,
+  priceToSalesRatioTTM: number,
+  eps: number,
+  roe: number,
+  ProfitMargin: number,
+  pe: number,
+  weekHigh_52: number,
+  weekLow_52: number
 }
 
 export interface CompanyOverviewData {

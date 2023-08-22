@@ -8,12 +8,12 @@ interface stockProp{
 
 function QuarterlyResult({id,quarterData}:stockProp){
     const quarterResult = quarterData[0]?.quarterlyReports;
-    console.log("quarter data",id,quarterResult);
+    console.log("quarter data",id);
     const datestr = new Date("2020-12-31").getTime();
     const report = quarterResult.filter((res) =>{
         const date = new Date(res.fiscalDateEnding);
         return ((date.getTime()> datestr))})
-    console.log("Report after 2020", report);
+    // console.log("Report after 2020", report);
     
     return (<>
      <div className="py-10 text-white min-h-fit">
