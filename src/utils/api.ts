@@ -7,6 +7,15 @@ import incomeData from "../../data/companyIncomeData.json";
 import balanceData from "../../data/companyBalanceSheet.json";
 
 
+export const stockTicker = [
+    {symbol: 'IBM',name: 'International Business Machines'},
+    {symbol: 'BA',name: 'The Boeing Company',},
+    {symbol: 'BABA',name: 'Alibaba Group Holding Ltd'},
+    {symbol: 'BAC',name: 'Bank of America Corp'},
+    {symbol: 'SAIC',name: 'Science Applications International Corp (SAIC)'}
+    ]
+
+
 export function getStocks() {
   // Actually go get the data from the API
   // localStorage.get('stocks')[0].stocks
@@ -107,11 +116,14 @@ export function isStockAlreadyAdded(stockData: Stock[],symbol: string) {
     return false
 }
 
-export function insertStockToWatchlist(watchlistId: string, symbol: string, result: CompanyOverviewData[],index: number) {
+export function insertStockToWatchlist(watchlistId: string, symbol: string, result: CompanyOverviewData[]) {
     const watchlists = getDataFromLocalStorage();
     console.log("Passed Watchlist ID: ",watchlistId,"and symbol is: ",symbol);
     const watchlistData = getWatchlistDataById(watchlistId);
     console.log(watchlistData,watchlistData?.[0]?.wlData);
+
+    const index = watchlists.findIndex(x => x.id === watchlistId);
+    console.log("**********Indx of selected watchlist: ",index);
 
     const newWLDataObject: Stock = {
         stockID: result?.[0]?.Symbol,

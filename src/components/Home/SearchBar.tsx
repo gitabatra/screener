@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from "react";
 import { Company } from "../../types";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { getCompanyOverviewDataBySymbol, insertStockToWatchlist } from "../../utils/api";
 
 // import { StockData, IncomeSheet,
 //     //  Ticker,BestMatch,  Company, BestMatch
@@ -10,12 +11,22 @@ import { useNavigate } from "react-router-dom";
 interface searchProps 
 {
     placeholder: string,
-    data: Company[]
+    data: Company[],
+    value: string,
+    setInput: (value: string) => void
+    // setSymbol: (value: string) => void
 }
 
-function SearchBar({placeholder, data}: searchProps){
+function SearchBar({placeholder, data, value, setInput}: searchProps){
     const navigate = useNavigate();
-    const [input,setInput] = useState("");
+    const { pathname } = useLocation(); 
+    const isIncluded = pathname.includes("manage-companies");
+
+    const params = useParams()
+    console.log("Params.id: ",params.id);
+   
+    
+    // const [input,setInput] = useState("");
     const [filteredList, setFilteredList] = useState<Company[]>([]);
 
     
@@ -73,29 +84,48 @@ function SearchBar({placeholder, data}: searchProps){
             className="bg-gray-10 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full pl-10 p-3.5  
                      bg-gray-600 border-gray-600 dark:placeholder-gray-400 text-white"
             placeholder={placeholder}
-            value= {input}
+            value= {value}
             onChange={handleChange}
             autoComplete="off"
             required
           />
         </div>
         </div>
+        
         {filteredList.length !== 0 &&  <div className="grid grid-cols-1 divide-y divide-gray-700 rounded-lg shadow w-70 dark:bg-gray-700 z-10 h-40 overflow-y-auto absolute">
+     
             {
+              !isIncluded ?
               filteredList.map((value,index) =>{
                 return (<div key={index}>
                     <div className="px-2 py-1 hover:bg-gray-500" key={index} onClick={() => {
                         console.log("selected stock: ",value?.symbol)
                         setInput(value?.symbol);
-                        navigate(`/stock/${value?.symbol}`
-                        );
+                        navigate(`/stock/${value?.symbol}`);
                } }>
                  {value?.name}
                </div>
-                </div>)
+            
+                </div>) 
+              })
+              :
+              filteredList.map((value,index) =>{
+                return (<div key={index}>
+                    <div className="px-2 py-1 hover:bg-gray-500" key={index} onClick={() => {
+                        // console.log("selected stock: ",value?.name)
+                        setInput(value?.symbol);
+                        const result = getCompanyOverviewDataBySymbol(value?.symbol);
+                        // console.log("Result in Manage Companies---- ",result);
+                        insertStockToWatchlist(params.id as string, value?.symbol,result);  
+                        setFilteredList([]);  
+               } }>
+                 {value?.name}
+               </div>
+                </div>) 
               })
             }
         </div>}
+       
 
          {/* <div className="grid grid-cols-1 divide-y divide-gray-700 rounded-lg shadow w-70 dark:bg-gray-700 z-10 h-40 overflow-y-auto absolute">
            {(ticker ).map((res, index: number) => {

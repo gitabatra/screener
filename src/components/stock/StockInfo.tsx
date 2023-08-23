@@ -41,7 +41,7 @@ function StockInfo({ id, result }: stockProp) {
     if (watchlists.length === 1) {
       console.log("CORE WATCHLIST");
       //const watchlistId: string = "wl-20230727-0";
-      insertStockToWatchlist("wl-20230727-0", id,result,0);
+      insertStockToWatchlist("wl-20230727-0", id,result);
     }
   }
 
@@ -49,7 +49,7 @@ function StockInfo({ id, result }: stockProp) {
     console.log("handle selection of watchlist",index)
     const watchlistID = watchlists[index].id;
     console.log("Selected watchlist ID",watchlistID);
-    insertStockToWatchlist(watchlistID, id,result,index);
+    insertStockToWatchlist(watchlistID, id,result);
   }
 
   return (
