@@ -1,12 +1,15 @@
 
 import PopularStocks from "./PopularStocks";
-import SearchBar from "./SearchBar";
+//import SearchBar from "./SearchBar";
 import {Company} from "../../types";
 import {stockTicker} from "../../utils/api";
 import { useState } from "react";
+import Search from "./Search";
+import SearchList from "./SearchList";
 
 function HomeSearch() {
   const [input,setInput] = useState("");
+  const [filteredList, setFilteredList] = useState<Company[]>([]);
   // const stockTicker = [
   //   {symbol: 'IBM',name: 'International Business Machines'},
   //   {symbol: 'BA',name: 'The Boeing Company',},
@@ -28,9 +31,11 @@ function HomeSearch() {
               Screening tool for investors
             </h4>
           </div>
-         <SearchBar placeholder="Search for a company..." data={stockTicker as Company[]} value={input} setInput={setInput}
+          <Search placeholder="Search for a company..." data={stockTicker as Company[]} value={input} setFilteredList={setFilteredList}/>
+          <SearchList filteredList={filteredList} setInput={setInput} />
+         {/* <SearchBar placeholder="Search for a company..." data={stockTicker as Company[]} value={input} setInput={setInput}
          // setSymbol={Symbol.bind(null)}
-         />
+         /> */}
          <PopularStocks />
         </div>
       </div>

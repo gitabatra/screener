@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { StockDailyData, TimeSeriesDaily } from "../../types";
 import StockMultiChart from "./StockMultiChart";
+import {getMonthDate, 
+    // getChartDataByMonth, getChartDataByYear, getDailyStockChartData, 
+    getYearDate} from "./chartDataAPI";
+// import TestChart from "./TestChart";
 
 interface stockProp{
     id: string,
@@ -10,22 +14,21 @@ interface stockProp{
 function StockChartTab({id,chartData}: stockProp){
     const [chartTabIndex,setChartTabIndex] = useState(0);
     console.log("Id in Chart: ",id);
-    const monthDate = new Date();
-    monthDate.setMonth(monthDate.getMonth() - 1);
-    // console.log("Date: ",monthDate);
 
-    const sixmonthDate = new Date();
-    sixmonthDate.setMonth(sixmonthDate.getMonth() - 6);
+    const monthDate =  getMonthDate(1);
+    const sixmonthDate =  getMonthDate(6);
     console.log("Six month Date: ",sixmonthDate);
-
-    // const intYear = sixmonthDate.getFullYear() - 1;
+    const oneYearDate = getYearDate(1);
+    const threeYearDate = getYearDate(3);
     const dailyData: TimeSeriesDaily[] = chartData[0]["Time Series (Daily)"];
+
     console.log("------six month dates:",sixmonthDate);
     // console.log("Report after 2020", Object.keys(dailyData));
     const keys = Object.keys(dailyData)
     const month: string[] = []
-    // const monthData: number[] = []
     const sixMonth = []
+    const oneYear = []
+    const threeYear = []
 
     for (let i=0; i< keys.length; i++){
       const datestr = new Date(keys[i]).getTime();
@@ -34,6 +37,12 @@ function StockChartTab({id,chartData}: stockProp){
       }
       if(sixmonthDate.getTime() < datestr){
         sixMonth.push(keys[i]);
+      }
+      if(oneYearDate.getTime() < datestr){
+        oneYear.push(keys[i]);
+      }
+      if(threeYearDate.getTime() < datestr){
+        threeYear.push(keys[i]);
       }
     }
 
@@ -69,9 +78,11 @@ function StockChartTab({id,chartData}: stockProp){
     </div>
     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800"  hidden={chartTabIndex !== 2}>
         <p className="text-sm text-gray-500 dark:text-gray-400">1 year</p>
+        <StockMultiChart month={oneYear} dailyData={dailyData}/>
     </div>
     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800"  hidden={chartTabIndex !== 3}>
         <p className="text-sm text-gray-500 dark:text-gray-400"> 3 year</p>
+        <StockMultiChart month={threeYear} dailyData={dailyData}/>
     </div>
 </div>
 </div>

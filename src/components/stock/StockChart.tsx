@@ -29,12 +29,12 @@ import {
 
   
 
-interface stockProp{
+interface StockProp{
     id: string,
     chartData: StockDailyData[]
    }
 
-function StockChart({id,chartData}: stockProp){
+function StockChart({id,chartData}: StockProp){
 console.log("Id in Chart: ",id);
 const monthDate = new Date();
 monthDate.setMonth(monthDate.getMonth() - 1);

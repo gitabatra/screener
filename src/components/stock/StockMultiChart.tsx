@@ -37,49 +37,10 @@ interface stockProp{
    }
 
 function StockMultiChart({month,dailyData}: stockProp){
-// console.log("Id in Chart: ",id);
-// const monthDate = new Date();
-// monthDate.setMonth(monthDate.getMonth() - 1);
-// console.log("Date: ",monthDate);
 
-//     const sixmonthDate = new Date();
-//     sixmonthDate.setMonth(sixmonthDate.getMonth() - 6);
-//     console.log("Six month Date: ",sixmonthDate);
-
-//     // const intYear = sixmonthDate.getFullYear() - 1;
-//     const dailyData: TimeSeriesDaily[] = chartData[0]["Time Series (Daily)"];
-//     console.log("------six month dates:",sixmonthDate);
-//     console.log("Report after 2020", Object.keys(dailyData));
-//     const keys = Object.keys(dailyData)
-//     const month: string[] = []
-//     // const monthData: number[] = []
-//     const sixMonth = []
-
-//     for (let i=0; i< keys.length; i++){
-//       const datestr = new Date(keys[i]).getTime();
-//       if(monthDate.getTime()< datestr){
-//         month.push(keys[i]);
-//       }
-//       if(sixmonthDate.getTime() < datestr){
-//         sixMonth.push(keys[i]);
-//       }
-//     }
-
-// const filteredMonthData = Object.keys(dailyData)
-//     .filter(key => month.includes(key))
-//     .reduce((obj, key) => {
-//         obj[key] = dailyData[key];
-//         return obj;
-//   }, []);
-
-// console.log("filtered Month data",filteredMonthData);
-
-// for (let value of Object.values(filteredMonthData)) {
-//   monthData.push(parseFloat(value?.["4. close"]));
-//   console.log(value?.["4. close"]); // John, then 30
-// }
-
+  console.log("Moth keys: ",month)
   const labels = month;
+
 
   const options = {
     responsive: true,

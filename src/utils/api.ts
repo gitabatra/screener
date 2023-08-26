@@ -116,6 +116,23 @@ export function isStockAlreadyAdded(stockData: Stock[],symbol: string) {
     return false
 }
 
+export function deleteStockFromWatchlist(watchlistId: string, stockId: string) {
+  const watchlists = getDataFromLocalStorage();
+  const watchlistData = getWatchlistDataById(watchlistId);
+  console.log(watchlistData,watchlistData?.[0]?.wlData);
+  const index = watchlists.findIndex(x => x.id === watchlistId);
+  const stockIndex = watchlists[index].wlData.findIndex(x => x.stockID === stockId)
+  console.log("**********Indx of selected watchlist: ",index, stockIndex);
+  
+  const watchlistDataObj = watchlists[index].wlData;
+  watchlistDataObj.splice(stockIndex, 1);
+ 
+
+  // Object.assign(watchlists[index].wlData,filteredList)
+  console.log("after Assigning to  watchlist Data: ",watchlistDataObj,watchlists[index])
+  localStorage.setItem("watchlists", JSON.stringify(watchlists));
+}
+
 export function insertStockToWatchlist(watchlistId: string, symbol: string, result: CompanyOverviewData[]) {
     const watchlists = getDataFromLocalStorage();
     console.log("Passed Watchlist ID: ",watchlistId,"and symbol is: ",symbol);
