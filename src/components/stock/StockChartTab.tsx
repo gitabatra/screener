@@ -20,6 +20,7 @@ function StockChartTab({id,chartData}: stockProp){
     console.log("Six month Date: ",sixmonthDate);
     const oneYearDate = getYearDate(1);
     const threeYearDate = getYearDate(3);
+    const fiveYearDate = getYearDate(5);
     const dailyData: TimeSeriesDaily[] = chartData[0]["Time Series (Daily)"];
 
     console.log("------six month dates:",sixmonthDate);
@@ -29,6 +30,7 @@ function StockChartTab({id,chartData}: stockProp){
     const sixMonth = []
     const oneYear = []
     const threeYear = []
+    const fiveYear = []
 
     for (let i=0; i< keys.length; i++){
       const datestr = new Date(keys[i]).getTime();
@@ -44,12 +46,20 @@ function StockChartTab({id,chartData}: stockProp){
       if(threeYearDate.getTime() < datestr){
         threeYear.push(keys[i]);
       }
+      if(fiveYearDate.getTime() < datestr){
+        fiveYear.push(keys[i]);
+      }
     }
 
     return(<>
-    <div className="pb-4 px-4">
+    <div className="py-10 text-white">
+     <div className="mt-10 pt-10"></div>
+    <div id="stock-chart-tab" className="pb-4 px-4 pt-8" > 
+    <div className="ml-4 mr-4 pl-4 pt-4 shadow-lg rounded-lg shadow-cyan-500/50">
+    <h1 className="text-2xl pb-4">Chart</h1>
+         {/* <div className="mt-20 pt-10"></div> */}
     <div className="flex flex-wrap -mb-px text-sm font-medium text-center">
-        <div className="border border-sky-600 rounded-lg" >
+        <div className="border border-gray-500 rounded-lg p-3" >
         <div className={`inline-block px-4 py-3 rounded-lg text-white hover:bg-sky-600 hover:text-white cursor-pointer mr-2
         ${chartTabIndex === 0 ? "bg-sky-600" : ""}`} 
         // style = {chartTabIndex === 0 ? {backgroundColor:"#0891b2"} : ""}
@@ -63,27 +73,33 @@ function StockChartTab({id,chartData}: stockProp){
         ${chartTabIndex === 2 ? "bg-sky-600" : ""} `}
             onClick={()=>{setChartTabIndex(2)}}>1 year</div>
    
-        <div className={`inline-block px-4 py-3 rounded-lg hover:bg-sky-600 hover:text-white cursor-pointer
+        <div className={`inline-block px-4 py-3 rounded-lg hover:bg-sky-600 hover:text-white cursor-pointer mr-2
         ${chartTabIndex === 3 ? "bg-sky-600" : ""}` }
             onClick={()=>{setChartTabIndex(3)}}>3 year</div>
+
+        <div className={`inline-block px-4 py-3 rounded-lg hover:bg-sky-600 hover:text-white cursor-pointer
+        ${chartTabIndex === 4 ? "bg-sky-600" : ""}` }
+            onClick={()=>{setChartTabIndex(4)}}>5 year</div>
         </div>
     </div>
     <div id="myTabContent">
     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800"  hidden={chartTabIndex !== 0}>
-        <StockMultiChart month={month} dailyData={dailyData}/>
+        <StockMultiChart month={month} dailyData={dailyData} chartTabIndex={chartTabIndex}/>
     </div>
     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800"  hidden={chartTabIndex !== 1}>
-        <p className="text-sm text-gray-500 dark:text-gray-400">6 month</p>
-        <StockMultiChart month={sixMonth} dailyData={dailyData}/>
+        <StockMultiChart month={sixMonth} dailyData={dailyData} chartTabIndex={chartTabIndex}/>
     </div>
     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800"  hidden={chartTabIndex !== 2}>
-        <p className="text-sm text-gray-500 dark:text-gray-400">1 year</p>
-        <StockMultiChart month={oneYear} dailyData={dailyData}/>
+        <StockMultiChart month={oneYear} dailyData={dailyData} chartTabIndex={chartTabIndex}/>
     </div>
     <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800"  hidden={chartTabIndex !== 3}>
-        <p className="text-sm text-gray-500 dark:text-gray-400"> 3 year</p>
-        <StockMultiChart month={threeYear} dailyData={dailyData}/>
+        <StockMultiChart month={threeYear} dailyData={dailyData} chartTabIndex={chartTabIndex}/>
     </div>
+    <div className="p-4 rounded-lg bg-gray-50 dark:bg-gray-800"  hidden={chartTabIndex !== 4}>
+        <StockMultiChart month={fiveYear} dailyData={dailyData} chartTabIndex={chartTabIndex}/>
+    </div>
+    </div>
+</div>
 </div>
 </div>
 </>);

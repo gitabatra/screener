@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { CompanyOverviewData} from "../../types";
 import {
   formatNumber,
-  getWatchlists,
+  getWatchlistsNames,
   insertStockToWatchlist,
 } from "../../utils/api";
 import { WatchlistContext } from "../Context/WatchlistContext";
@@ -25,7 +25,7 @@ function StockInfo({ id, result }: stockProp) {
 
   console.log("Watchlists from Context: ",watchlists);
 
-  const wlNames = getWatchlists(watchlists);
+  const wlNames = getWatchlistsNames(watchlists);
 
   function handleMouseEnter(){
     console.log("Handling mouse hover event")
@@ -55,12 +55,13 @@ function StockInfo({ id, result }: stockProp) {
   return (
     <>
       <div id="stock-info" className="px-4 min-h-fit mt-20">
+      <div className="ml-4 mr-4 pl-4 pt-4 shadow-lg rounded-lg shadow-cyan-500/50">
         <div className="flex justify-end pl-6 pt-8">
-          <div className="flex flex-col">
+          <div className="flex flex-col" onMouseEnter={handleMouseEnter} 
+              onMouseLeave={()=>{setMultipleWatchlists(false)}} >
             <button
               className="btn rounded font-medium text-2xl text-white bg-sky-700 px-6 py-4 hover:bg-sky-800"
-              onClick={handleClick} onMouseEnter={handleMouseEnter} 
-              // onMouseLeave={()=>{setMultipleWatchlists(false)}}
+              onClick={handleClick} 
             >
               <span className="mr-2">Add to watchlist</span>
             </button>
@@ -166,6 +167,7 @@ function StockInfo({ id, result }: stockProp) {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </>
   );

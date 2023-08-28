@@ -6,7 +6,7 @@ import { TimeSeriesDaily } from "../../types";
 import {
     Chart as ChartJS,
     LinearScale,
-    CategoryScale,
+    TimeScale,
     BarElement,
     PointElement,
     LineElement,
@@ -15,11 +15,15 @@ import {
     LineController,
     BarController,
   } from 'chart.js';
+  
+
+  import 'chartjs-adapter-date-fns';
   import { Chart } from 'react-chartjs-2';
+
 
   ChartJS.register(
     LinearScale,
-    CategoryScale,
+    TimeScale,
     BarElement,
     PointElement,
     LineElement,
@@ -33,10 +37,52 @@ import {
 
 interface stockProp{
     month: string[],
-    dailyData: TimeSeriesDaily[]
+    dailyData: TimeSeriesDaily[],
+    chartTabIndex : number
+    // type: string
    }
 
-function StockMultiChart({month,dailyData}: stockProp){
+function StockMultiChart({month,dailyData,chartTabIndex}: stockProp){
+  console.log("Chart index in StockMultiChart",chartTabIndex);
+  let chartDataUnit: string = "day"
+  // let dateFormat = 'MM/dd/yyyy'
+  
+  switch(chartTabIndex) { 
+    case 0: { 
+       //statements; 
+       chartDataUnit = "day";
+      //  dateFormat = 'MM/dd/yyyy'
+       break; 
+    } 
+    case 1: { 
+       //statements; 
+       chartDataUnit = "month";
+      //  dateFormat = 'MM/dd/yyyy'
+       break; 
+    } 
+    case 2: { 
+      //statements; 
+      chartDataUnit = "month";
+      // dateFormat = 'MM/dd/yyyy'
+      break; 
+   } 
+   case 3: { 
+    //statements; 
+    chartDataUnit = "quarter";
+    // dateFormat = 'MMM dd yyyy'
+    break; 
+  } 
+  case 4: { 
+    //statements; 
+    chartDataUnit = "quarter";
+    // dateFormat = 'MMM dd yyyy'
+    break; 
+  } 
+    default: { 
+       //statements; 
+       break; 
+    } 
+ } 
 
   console.log("Moth keys: ",month)
   const labels = month;
@@ -44,11 +90,13 @@ function StockMultiChart({month,dailyData}: stockProp){
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     interaction: {
       mode: 'index' as const,
       intersect: false,
     },
     stacked: false,
+    
     plugins: {
       title: {
         display: true,
@@ -56,6 +104,16 @@ function StockMultiChart({month,dailyData}: stockProp){
       },
     },
     scales: {
+      x: {
+        type: 'time',
+        position: 'bottom',
+        time: {
+          displayFormats: {'day': 'MMM dd yyyy'},
+          // tooltipFormat: 'MM/dd/yyyy',
+          tooltipFormat: 'MMM dd yyyy',
+          unit: chartDataUnit,
+         }
+      },
         volume: {
         type: 'linear' as const,
         display: true,
@@ -119,11 +177,9 @@ function StockMultiChart({month,dailyData}: stockProp){
   };
 
     return(<>
-    <div id="stock-chart" className="py-10 text-white min-h-fit pb-10">
-        {/* <div className="mt-20 pt-10"></div> */}
+    <div id="stock-chart" className="py-10 text-white pb-10">
         <div className="px-6 pt-6">
-        <h1 className="text-2xl">Chart</h1>
-        <div className="w-full h-90">
+        <div className="chart-container" style={{position: "relative", height:"60vh", width:"90vw"}}>
         <Chart type='bar' options={options} data={data} style={{color:"white"}}/>
         </div>
         </div>

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { CompanyOverviewData} from "../../types";
 import {
   formatNumber,
-  getWatchlists,
+  getWatchlistsNames,
   insertStockToWatchlist,
 } from "../../utils/api";
 import { WatchlistContext } from "../Context/WatchlistContext";
@@ -26,7 +26,7 @@ function StockBasicInfo({ id, result }: stockProp) {
 
   console.log("Watchlists from Context: ",watchlists);
 
-  const wlNames = getWatchlists(watchlists);
+  const wlNames = getWatchlistsNames(watchlists);
 
   function handleMouseEnter(){
     console.log("Handling mouse hover event")

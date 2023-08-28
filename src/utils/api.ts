@@ -27,94 +27,35 @@ export const getCompanyOverview = () => {
 };
 
 export const getDataFromLocalStorage = (): Watchlist[] => {
+  const defaultData = [
+    {
+      id: "wl-20230727-0",
+      wlName: "Core watchlist",
+      wlData: [
+      ],
+    },
+  ];
+
   const watchlistData = JSON.parse(
     localStorage.getItem("watchlists") ?? "null"
   ) as Watchlist[] | null;
-  if (watchlistData) {
-    return watchlistData;
-  } else {
-    return [
-      {
-        id: "wl-20230727-0",
-        wlName: "Core watchlist",
-        wlData: [
-        //   {
-        //     stockID: "stock-1",
-        //     stockName: "ABC",
-        //     cmp: 321,
-        //     marketCap: 4.6,
-        //     bookValue: 1.3,
-        //     priceToBookRatio:5.2,
-        //     dividendYield:1.3,
-        //     priceToSalesRatioTTM:2.3,
-        //     eps: 21,
-        //     roe: 10,
-        //     ProfitMargin:2.99,
-        //     pe: 5,
-        //     weekHigh_52: 7,
-        //     weekLow_52: 5
-        //   },
-        //   {
-        //     stockID: "stock-1",
-        //     stockName: "ABC",
-        //     cmp: 321,
-        //     marketCap: 4.6,
-        //     bookValue: 1.3,
-        //     priceToBookRatio:5.2,
-        //     dividendYield:1.3,
-        //     priceToSalesRatioTTM:2.3,
-        //     eps: 21,
-        //     roe: 10,
-        //     ProfitMargin:2.99,
-        //     pe: 5,
-        //     weekHigh_52: 7,
-        //     weekLow_52: 5
-        //   },
-        ],
-      },
-    ];
-  }
+
+    return watchlistData ? watchlistData : defaultData
 };
 
-export const getWatchlists = (watchlist: Watchlist[]) =>{
-    const watchlistNames: string[] = []
-    console.log("Watchlist------", watchlist);
-    const wlLength: number =  watchlist.length
-    for(let i=0; i<wlLength; i++){
-        const wlname: string | undefined = (watchlist[i].wlName)
-        watchlistNames.push(wlname);
-    }
-    console.log("GetWatchlist names from wlData: ",watchlist,wlLength,watchlistNames)
+
+export const getWatchlistsNames = (watchlist: Watchlist[]) =>{
+    const watchlistNames = watchlist.map(wl => wl.wlName);
+    console.log("Watchlist names: ",watchlistNames);
     return watchlistNames
 }
 
-export function addStockToWatchlist(id: string, symbol: string) {
-   console.log("Passed Watchlist ID: ",id,"and symbol is: ",symbol);
-   const watchlistData = getWatchlistDataById(id);
-   console.log(watchlistData?.[0]?.wlData);
-//    const isAlreadyAdded = watchlistData?.[0]?.wlData.map((key) =>{
-//     return (key.stockID === symbol ? true : false)
-//    })
-   const data: Stock[] | undefined = watchlistData?.[0]?.wlData as Stock[];
-   for(let i=0; i<data.length; i++)
-   {
-    if (data[i].stockID === symbol){
-        return true
-    }
-   }
-//    console.log("isAlreadyAdded", isAlreadyAdded)
-}
 
 export function isStockAlreadyAdded(stockData: Stock[],symbol: string) {
-    const data: Stock[] = stockData;
-    for(let i=0; i<data.length; i++)
-    {
-     if (data[i].stockID === symbol){
-         return true
-     }
-    }
-    return false
+    const isAdded = stockData.find(stock => stock.stockID === symbol)
+    return isAdded ? isAdded : false
 }
+
 
 export function deleteStockFromWatchlist(watchlistId: string, stockId: string) {
   const watchlists = getDataFromLocalStorage();
@@ -124,8 +65,19 @@ export function deleteStockFromWatchlist(watchlistId: string, stockId: string) {
   const stockIndex = watchlists[index].wlData.findIndex(x => x.stockID === stockId)
   console.log("**********Indx of selected watchlist: ",index, stockIndex);
   
+  // So this is actually a clever way to remove just one item from the list 
   const watchlistDataObj = watchlists[index].wlData;
   watchlistDataObj.splice(stockIndex, 1);
+
+  // but again, alternative!
+  // misread something, but in essence you can do a .filter() which will only return items that are true to the predicate
+  // you can flip this though to exclude the one item you want to delete
+  // like .filter(wl => wl.id === watchlistId)
+  // Now the new array returned is the same thing you wanted, and you can just save/return that array
+  // Now what you currently have is perhaps more performant (if we really cared about it), but the filter way is more readable
+  // Like the other alternatives, its up to you if you want to do it or not!
+  // didnt hear you
+  // yup
  
 
   // Object.assign(watchlists[index].wlData,filteredList)
@@ -159,21 +111,12 @@ export function insertStockToWatchlist(watchlistId: string, symbol: string, resu
         weekLow_52: result?.[0]?.["52WeekLow"],
       };
       const stockData: Stock[] | undefined = watchlistData?.[0]?.wlData
-      let isAdded: boolean = false;
-      if(stockData?.length !== 0 || stockData !== undefined){
-       isAdded = isStockAlreadyAdded(stockData as Stock[], symbol);
-       console.log("IF added or not: ", isAdded);
-      }
+
+      const isAdded = isStockAlreadyAdded(stockData as Stock[], symbol);
       if(!isAdded){
         console.log("not added..");
         watchlistData?.[0]?.wlData.push(newWLDataObject);
-        // console.log(
-        //   "CoreWatchlist Data After assigning new object",
-        //   watchlistData?.[0]?.wlData
-        // );
-        console.log("after adding watchlist Data: ",watchlistData)
         Object.assign(watchlists[index].wlData,watchlistData?.[0]?.wlData)
-        console.log("after Assigning to  watchlist Data: ",watchlists[0])
         localStorage.setItem("watchlists", JSON.stringify(watchlists));
       }
  }
@@ -188,11 +131,6 @@ export const getWatchlistDataById = (id: string): Watchlist[] | null => {
 export const getStockNameInfo = (id: string) => {
   const watchlistData: Watchlist[] | null = getWatchlistDataById(id);
   console.log(watchlistData?.[0]);
-  // if(JSON.stringify(watchlistData[0].wlData) === '[]'){
-  //     console.log("stock data is not present");
-  //     return [];
-  // }
-  // else{
   const wlLength = watchlistData?.[0]?.wlData?.length;
   if ((wlLength as number) > 0) {
     const headerInfo = Object.keys(watchlistData?.[0]?.wlData?.[0] as Stock);
@@ -793,9 +731,12 @@ export function getCompanyBalanceSheetDataBySymbol(value: string) {
 
 function getTimeSeries(item: StockDailyData){
 
+  // Ok im gonna do a quick review of the code then
+
     const result: {[key: string]: DailyData } = {}
     Object.keys(item["Time Series (Daily)"]).forEach(function (key) {
 
+      // @ts-ignore
         const value = item?.["Time Series (Daily)"]?.[key] as DailyData;
         // console.log("Key:", key, "Value: ",value);
         result[key] = {
