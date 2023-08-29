@@ -6,7 +6,7 @@ import { TimeSeriesDaily } from "../../types";
 import {
     Chart as ChartJS,
     LinearScale,
-    CategoryScale,
+    TimeScale,
     BarElement,
     PointElement,
     LineElement,
@@ -15,11 +15,15 @@ import {
     LineController,
     BarController,
   } from 'chart.js';
+  
+
+  import 'chartjs-adapter-date-fns';
   import { Chart } from 'react-chartjs-2';
+
 
   ChartJS.register(
     LinearScale,
-    CategoryScale,
+    TimeScale,
     BarElement,
     PointElement,
     LineElement,
@@ -33,61 +37,66 @@ import {
 
 interface stockProp{
     month: string[],
-    dailyData: TimeSeriesDaily[]
+    dailyData: TimeSeriesDaily[],
+    chartTabIndex : number
+    // type: string
    }
 
-function StockMultiChart({month,dailyData}: stockProp){
-// console.log("Id in Chart: ",id);
-// const monthDate = new Date();
-// monthDate.setMonth(monthDate.getMonth() - 1);
-// console.log("Date: ",monthDate);
+function StockMultiChart({month,dailyData,chartTabIndex}: stockProp){
+  console.log("Chart index in StockMultiChart",chartTabIndex);
+  let chartDataUnit: string = "day"
+  // let dateFormat = 'MM/dd/yyyy'
+  
+  switch(chartTabIndex) { 
+    case 0: { 
+       //statements; 
+       chartDataUnit = "day";
+      //  dateFormat = 'MM/dd/yyyy'
+       break; 
+    } 
+    case 1: { 
+       //statements; 
+       chartDataUnit = "month";
+      //  dateFormat = 'MM/dd/yyyy'
+       break; 
+    } 
+    case 2: { 
+      //statements; 
+      chartDataUnit = "month";
+      // dateFormat = 'MM/dd/yyyy'
+      break; 
+   } 
+   case 3: { 
+    //statements; 
+    chartDataUnit = "quarter";
+    // dateFormat = 'MMM dd yyyy'
+    break; 
+  } 
+  case 4: { 
+    //statements; 
+    chartDataUnit = "quarter";
+    // dateFormat = 'MMM dd yyyy'
+    break; 
+  } 
+    default: { 
+       //statements; 
+       break; 
+    } 
+ } 
 
-//     const sixmonthDate = new Date();
-//     sixmonthDate.setMonth(sixmonthDate.getMonth() - 6);
-//     console.log("Six month Date: ",sixmonthDate);
-
-//     // const intYear = sixmonthDate.getFullYear() - 1;
-//     const dailyData: TimeSeriesDaily[] = chartData[0]["Time Series (Daily)"];
-//     console.log("------six month dates:",sixmonthDate);
-//     console.log("Report after 2020", Object.keys(dailyData));
-//     const keys = Object.keys(dailyData)
-//     const month: string[] = []
-//     // const monthData: number[] = []
-//     const sixMonth = []
-
-//     for (let i=0; i< keys.length; i++){
-//       const datestr = new Date(keys[i]).getTime();
-//       if(monthDate.getTime()< datestr){
-//         month.push(keys[i]);
-//       }
-//       if(sixmonthDate.getTime() < datestr){
-//         sixMonth.push(keys[i]);
-//       }
-//     }
-
-// const filteredMonthData = Object.keys(dailyData)
-//     .filter(key => month.includes(key))
-//     .reduce((obj, key) => {
-//         obj[key] = dailyData[key];
-//         return obj;
-//   }, []);
-
-// console.log("filtered Month data",filteredMonthData);
-
-// for (let value of Object.values(filteredMonthData)) {
-//   monthData.push(parseFloat(value?.["4. close"]));
-//   console.log(value?.["4. close"]); // John, then 30
-// }
-
+  console.log("Moth keys: ",month)
   const labels = month;
+
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     interaction: {
       mode: 'index' as const,
       intersect: false,
     },
     stacked: false,
+    
     plugins: {
       title: {
         display: true,
@@ -95,6 +104,16 @@ function StockMultiChart({month,dailyData}: stockProp){
       },
     },
     scales: {
+      x: {
+        type: 'time',
+        position: 'bottom',
+        time: {
+          displayFormats: {'day': 'MMM dd yyyy'},
+          // tooltipFormat: 'MM/dd/yyyy',
+          tooltipFormat: 'MMM dd yyyy',
+          unit: chartDataUnit,
+         }
+      },
         volume: {
         type: 'linear' as const,
         display: true,
@@ -149,6 +168,7 @@ function StockMultiChart({month,dailyData}: stockProp){
         stack: 'combined',
         label: 'volume',
         backgroundColor: '#a8a29e',
+        // #a8a29e
         yAxisID: "volume",
         data: 
         month.map((key) => {return (((dailyData[key as keyof TimeSeriesDaily[]] as TimeSeriesDaily)?.["5. volume"]))}),
@@ -158,11 +178,9 @@ function StockMultiChart({month,dailyData}: stockProp){
   };
 
     return(<>
-    <div id="stock-chart" className="py-10 text-white min-h-fit pb-10">
-        {/* <div className="mt-20 pt-10"></div> */}
+    <div id="stock-chart" className="py-10 text-white pb-10">
         <div className="px-6 pt-6">
-        <h1 className="text-2xl">Chart</h1>
-        <div className="w-full h-90">
+        <div className="chart-container" style={{height:"55vh", width:"90vw"}}>
         <Chart type='bar' options={options} data={data} style={{color:"white"}}/>
         </div>
         </div>

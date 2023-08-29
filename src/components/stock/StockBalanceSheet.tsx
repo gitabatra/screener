@@ -8,12 +8,12 @@ interface stockProp{
 
 function StockBalanceSheet({id, annualData}: stockProp){
     console.log("Stock Balance sheet",id);
-    const annualReportData = (annualData?.[0]?.annualReports)
+    const annualReport = (annualData?.[0]?.annualReports)
+    const annualReportData = [...annualReport].reverse();
     // console.log("Annual report data: ",annualReportData);
     return (<>
-     <div className="py-10 text-white min-h-screen pb-14">
+     <div className="py-10 px-10 text-white pb-14">
      <div className="mt-14 pt-12"></div>
-     <div className="pl-6 pt-8">
         <h1 className="text-2xl">Balance Sheet</h1>
 
 <div className="overflow-x-auto shadow-md sm:rounded-lg pt-4">
@@ -163,8 +163,6 @@ function StockBalanceSheet({id, annualData}: stockProp){
         </tbody>
     </table>
 </div>
-
-    </div>
     </div>
     </>);
 }

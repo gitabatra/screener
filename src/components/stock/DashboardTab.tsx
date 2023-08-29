@@ -24,7 +24,7 @@ function DashboardTab() {
 
   const tabObj = [
     { id: "stock-info", title: "Stock" },
-    { id: "stock-chart", title: "Chart" },
+    { id: "stock-chart-tab", title: "Chart" },
     { id: "stock-quarterly-results", title: "Quarters" },
     { id: "stock-profit-loss", title: "Profit & Loss" },
     { id: "stock-balance-sheet", title: "Balance Sheet" },
@@ -78,15 +78,13 @@ function DashboardTab() {
             })}
           </ul>
         </div>
-        <div id="stock-info" className="py-10 text-white border-1 z-[1]">
+        <div id="stock-info" className="py-10 text-white border-1 z-[1] shadow-inner">
           {" "}
           <StockInfo id={id as string} result={result} />
         </div>
-        <div id="stock-chart" className="text-white mt-15 z-[-1]">
+        <div id="stock-chart-tab" className="text-white mt-2 z-[-1]">
           {" "}
           <StockChartTab id={id as string} chartData={chartData}/>
-          {/* <StockChart id={id as string} chartData={chartData} /> */}
-          {/* <StockMultiChart id={id as string} chartData={chartData} /> */}
         </div>
         <div id="stock-quarterly-results" className="text-white mt-15 z-[1]">
           {" "}
@@ -106,23 +104,3 @@ function DashboardTab() {
 }
 
 export default DashboardTab;
-
-// export const stockOverviewLoader = (value: string) => {
-//   const result ={}
-//   const stockInfoOutput = getCompanyOverviewDataBySymbol(value);
-
-//   const dailyData = getDailyStockDataBySymbol(value);
-//   console.log("--CHART--Daily data from aPI: ",dailyData);
-
-//   const incomeOutput = getCompanyIncomeDataBySymbol(value);
-//   console.log("--INCOME--Income Data from API by given Symbol",incomeOutput);
-
-//   const balanceInfo = getCompanyBalanceSheetDataBySymbol(value);
-//   result = {
-//     stockResult: stockInfoOutput,
-//     chartData: dailyData,
-//     balanceSheetData: balanceInfo,
-//     incomeData: incomeOutput
-//   }
-//   return result;
-// }

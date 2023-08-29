@@ -10,15 +10,16 @@ function QuarterlyResult({id,quarterData}:stockProp){
     const quarterResult = quarterData[0]?.quarterlyReports;
     console.log("quarter data",id);
     const datestr = new Date("2020-12-31").getTime();
-    const report = quarterResult.filter((res) =>{
+    const reportData = quarterResult.filter((res) =>{
         const date = new Date(res.fiscalDateEnding);
         return ((date.getTime()> datestr))})
-    // console.log("Report after 2020", report);
+    const report = [...reportData].reverse();
+    console.log("Report after 2020", report);
     
     return (<>
-     <div className="py-10 text-white min-h-fit">
+     <div className="py-10 px-10 text-white">
      <div className="mt-20 pt-10"></div>
-     <div className="pl-6 pt-8">
+     <div className=" pt-2">
         <h1 className="text-2xl">Quarterly Results</h1>
         <div className="overflow-x-auto shadow-md sm:rounded-lg pt-4">
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">

@@ -1,7 +1,7 @@
 function PopularStocks () {
     const populatStockLinks = [
-        {name:"Air canada", link:"/"},
-        {name:"BMO", link:"/"},
+        {name:"IBM", link:"/"},
+        {name:"BABA", link:"/"},
     ]
     return (
         <>
