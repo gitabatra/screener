@@ -168,6 +168,7 @@ function StockMultiChart({month,dailyData,chartTabIndex}: stockProp){
         stack: 'combined',
         label: 'volume',
         backgroundColor: '#a8a29e',
+        // #a8a29e
         yAxisID: "volume",
         data: 
         month.map((key) => {return (((dailyData[key as keyof TimeSeriesDaily[]] as TimeSeriesDaily)?.["5. volume"]))}),
@@ -179,7 +180,7 @@ function StockMultiChart({month,dailyData,chartTabIndex}: stockProp){
     return(<>
     <div id="stock-chart" className="py-10 text-white pb-10">
         <div className="px-6 pt-6">
-        <div className="chart-container" style={{position: "relative", height:"60vh", width:"90vw"}}>
+        <div className="chart-container" style={{height:"55vh", width:"90vw"}}>
         <Chart type='bar' options={options} data={data} style={{color:"white"}}/>
         </div>
         </div>

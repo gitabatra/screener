@@ -54,12 +54,12 @@ function StockChartTab({id,chartData}: stockProp){
     return(<>
     <div className="py-10 text-white">
      <div className="mt-10 pt-10"></div>
-    <div id="stock-chart-tab" className="pb-4 px-4 pt-8" > 
-    <div className="ml-4 mr-4 pl-4 pt-4 shadow-lg rounded-lg shadow-cyan-500/50">
-    <h1 className="text-2xl pb-4">Chart</h1>
+    <div id="stock-chart-tab" className="pb-4 px-6 pt-8 " > 
+    <div className="ml-4 mr-4 pl-4 py-6 border border-gray-700 rounded-lg">
+    {/* <h1 className="text-2xl pb-4">Chart</h1> */}
          {/* <div className="mt-20 pt-10"></div> */}
     <div className="flex flex-wrap -mb-px text-sm font-medium text-center">
-        <div className="border border-gray-500 rounded-lg p-3" >
+        <div className="border border-gray-700 rounded-lg p-3" >
         <div className={`inline-block px-4 py-3 rounded-lg text-white hover:bg-sky-600 hover:text-white cursor-pointer mr-2
         ${chartTabIndex === 0 ? "bg-sky-600" : ""}`} 
         // style = {chartTabIndex === 0 ? {backgroundColor:"#0891b2"} : ""}

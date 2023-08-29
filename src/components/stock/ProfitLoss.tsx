@@ -6,12 +6,12 @@ interface stockProp{
     annualIncomeData: IncomeSheet[]
    }
 function ProfitLoss({id,annualIncomeData}: stockProp){
-    const annualReportData = (annualIncomeData?.[0]?.annualReports)
+    const annualReport = (annualIncomeData?.[0]?.annualReports)
+    const annualReportData = [...annualReport].reverse();
     console.log("Annual report data: ",id);
     return (<>
-     <div className="py-10 text-white min-h-screen">
+     <div className="py-10 px-10 text-white">
      <div className="mt-20 pt-10"></div>
-     <div className="pl-6 pt-8">
         <h1 className="text-2xl">Profit & Loss</h1>
         <div className="overflow-x-auto shadow-md sm:rounded-lg pt-4">
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -124,7 +124,6 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
             </tr>
         </tbody>
     </table>
-</div>
     </div>
     </div>
     </>);
