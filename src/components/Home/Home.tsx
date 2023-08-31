@@ -10,6 +10,7 @@ import SearchList from "./SearchList";
 function HomeSearch() {
   const [input,setInput] = useState("");
   const [filteredList, setFilteredList] = useState<Company[]>([]);
+  
   // const stockTicker = [
   //   {symbol: 'IBM',name: 'International Business Machines'},
   //   {symbol: 'BA',name: 'The Boeing Company',},

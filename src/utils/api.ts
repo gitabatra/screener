@@ -1,5 +1,6 @@
-import { Watchlist, Stock, CompanyOverviewData, StockDailyData, IncomeSheet, BalanceSheet, DailyData } from "../types";
-
+import Bottleneck from "bottleneck";
+import { Watchlist, Stock, CompanyOverviewData, StockDailyData, DailyData } from "../types";
+"use strict";
 
 import data from "../../data/companyOverview.json";
 import dailyStockData from "../../data/companyDailySeriesData.json";
@@ -16,15 +17,143 @@ export const stockTicker = [
     ]
 
 
+async function getCompanyOverview(company: string) {
+    const apiKey = import.meta.env.VITE_API_KEY as string
+    return new Promise((resolve, reject) => {
+        const url = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${company}&apikey=${apiKey}`
+
+        fetch(url)
+            .then(data => {
+                resolve(data.json())
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+    const limiter = new Bottleneck({
+      minTime: 60 * 1000 / 5 // 5 requests per minute = 12 seconds
+    })
+    
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+    export const wrappedFn = limiter.wrap(getCompanyOverview)
+    
+    // Now limited to 5 requests per minute
+
+    export async function getCompanyOverviewDataBySymbol(value: string) {
+      console.log("Get Company info data from API file.....");
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+      const res = await wrappedFn(value);
+      const result = res as CompanyOverviewData
+      console.log("Data from aPI: ",result);
+      return {
+              Symbol: result.Symbol,
+              AssetType: result.AssetType,
+              Name: result.Name,
+              Description: result.Description,
+              CIK: result.CIK,
+              Exchange: result.Exchange,
+              Currency: result.Currency,
+              Country: result.Country,
+              Sector: result.Sector,
+              Industry: result.Industry,
+              Address: result.Address,
+              FiscalYearEnd: result.FiscalYearEnd,
+              LatestQuarter: (new Date(result.LatestQuarter)),
+              MarketCapitalization: Number(result.MarketCapitalization),
+              EBITDA: Number(result.EBITDA),
+              PERatio: Number(result.PERatio) ? Number(result.PERatio) : result.PERatio,
+              PEGRatio: Number(result.PEGRatio ? Number(result.PEGRatio) : result.PEGRatio),
+              BookValue: Number(result.BookValue)
+                ? Number(result.BookValue)
+                : result.BookValue,
+              DividendPerShare: Number(result.DividendPerShare)
+                ? Number(result.DividendPerShare)
+                : result.DividendPerShare,
+              DividendYield: Number(result.DividendYield)
+                ? Number(result.DividendYield)
+                : result.DividendYield,
+              EPS: Number(result.EPS) ? Number(result.EPS) : result.EPS,
+              RevenuePerShareTTM: Number(result.RevenuePerShareTTM)
+                ? Number(result.RevenuePerShareTTM)
+                : result.RevenuePerShareTTM,
+              ProfitMargin: Number(result.ProfitMargin)
+                ? Number(result.ProfitMargin)
+                : result.ProfitMargin,
+              OperatingMarginTTM: Number(result.OperatingMarginTTM)
+                ? Number(result.OperatingMarginTTM)
+                : result.OperatingMarginTTM,
+              ReturnOnAssetsTTM: Number(result.ReturnOnAssetsTTM)
+                ? Number(result.ReturnOnAssetsTTM)
+                : result.ReturnOnAssetsTTM,
+              ReturnOnEquityTTM: Number(result.ReturnOnEquityTTM)
+                ? Number(result.ReturnOnEquityTTM)
+                : result.ReturnOnEquityTTM,
+              RevenueTTM: Number(result.RevenueTTM)
+                ? Number(result.RevenueTTM)
+                : result.RevenueTTM,
+              GrossProfitTTM: Number(result.GrossProfitTTM)
+                ? Number(result.GrossProfitTTM)
+                : result.GrossProfitTTM,
+              DilutedEPSTTM: Number(result.DilutedEPSTTM)
+                ? Number(result.DilutedEPSTTM)
+                : result.DilutedEPSTTM,
+              QuarterlyEarningsGrowthYOY: Number(result.QuarterlyEarningsGrowthYOY)
+                ? Number(result.QuarterlyEarningsGrowthYOY)
+                : result.QuarterlyEarningsGrowthYOY,
+              QuarterlyRevenueGrowthYOY: Number(result.QuarterlyRevenueGrowthYOY)
+                ? Number(result.QuarterlyRevenueGrowthYOY)
+                : result.QuarterlyRevenueGrowthYOY,
+              AnalystTargetPrice: Number(result.AnalystTargetPrice)
+                ? Number(result.AnalystTargetPrice)
+                : result.AnalystTargetPrice,
+              TrailingPE: Number(result.TrailingPE)
+                ? Number(result.TrailingPE)
+                : result.TrailingPE,
+              ForwardPE: Number(result.ForwardPE)
+                ? Number(result.ForwardPE)
+                : result.ForwardPE,
+              PriceToSalesRatioTTM: Number(result.PriceToSalesRatioTTM)
+                ? Number(result.PriceToSalesRatioTTM)
+                : result.PriceToSalesRatioTTM,
+              PriceToBookRatio: Number(result.PriceToBookRatio)
+                ? Number(result.PriceToBookRatio)
+                : result.PriceToBookRatio,
+              EVToRevenue: Number(result.EVToRevenue)
+                ? Number(result.EVToRevenue)
+                : result.EVToRevenue,
+              EVToEBITDA: Number(result.EVToEBITDA)
+                ? Number(result.EVToEBITDA)
+                : result.EVToEBITDA,
+              Beta: Number(result.Beta) ? Number(result.Beta) : result.Beta,
+              "52WeekHigh": Number(result?.["52WeekHigh"])
+                ? Number(result?.["52WeekHigh"])
+                : result?.["52WeekHigh"],
+              "52WeekLow": Number(result?.["52WeekLow"])
+                ? Number(result?.["52WeekLow"])
+                : result?.["52WeekLow"],
+              "50DayMovingAverage": Number(result?.["50DayMovingAverage"])
+                ? Number(result?.["50DayMovingAverage"])
+                : result?.["50DayMovingAverage"],
+              "200DayMovingAverage": Number(result["200DayMovingAverage"])
+                ? Number(result["200DayMovingAverage"])
+                : result["200DayMovingAverage"],
+              SharesOutstanding: Number(result.SharesOutstanding)
+                ? Number(result.SharesOutstanding)
+                : result.SharesOutstanding,
+              DividendDate: (new Date(result.DividendDate)),
+              ExDividendDate: (new Date(result.ExDividendDate)),
+      }
+    }
+
+
 export function getStocks() {
   // Actually go get the data from the API
   // localStorage.get('stocks')[0].stocks
   // fetch('myapi.com')
 }
 
-export const getCompanyOverview = () => {
-  return data;
-};
 
 export const getDataFromLocalStorage = (): Watchlist[] => {
   const defaultData = [
@@ -59,28 +188,13 @@ export function isStockAlreadyAdded(stockData: Stock[],symbol: string) {
 
 export function deleteStockFromWatchlist(watchlistId: string, stockId: string) {
   const watchlists = getDataFromLocalStorage();
-  const watchlistData = getWatchlistDataById(watchlistId);
-  console.log(watchlistData,watchlistData?.[0]?.wlData);
+  // const watchlistData = getWatchlistDataById(watchlistId);
+  // console.log(watchlistData,watchlistData?.[0]?.wlData);
   const index = watchlists.findIndex(x => x.id === watchlistId);
   const stockIndex = watchlists[index].wlData.findIndex(x => x.stockID === stockId)
   console.log("**********Indx of selected watchlist: ",index, stockIndex);
-  
-  // So this is actually a clever way to remove just one item from the list 
   const watchlistDataObj = watchlists[index].wlData;
   watchlistDataObj.splice(stockIndex, 1);
-
-  // but again, alternative!
-  // misread something, but in essence you can do a .filter() which will only return items that are true to the predicate
-  // you can flip this though to exclude the one item you want to delete
-  // like .filter(wl => wl.id === watchlistId)
-  // Now the new array returned is the same thing you wanted, and you can just save/return that array
-  // Now what you currently have is perhaps more performant (if we really cared about it), but the filter way is more readable
-  // Like the other alternatives, its up to you if you want to do it or not!
-  // didnt hear you
-  // yup
- 
-
-  // Object.assign(watchlists[index].wlData,filteredList)
   console.log("after Assigning to  watchlist Data: ",watchlistDataObj,watchlists[index])
   localStorage.setItem("watchlists", JSON.stringify(watchlists));
 }
@@ -175,125 +289,139 @@ export function formatNumber(num: number, precision = 2) {
 }
 
 
-export function getCompanyOverviewDataBySymbol(value: string) {
+export function getCompanyOverviewDataBySymbol1(value: string) {
   console.log("Get Company info data from API file.....");
-  const result = data.filter((stock) => {
+  const result = data.find(function (stock) {
     return stock?.Symbol === value;
-  });
-  const output = result.map((item) => {
+});
+console.log("****RESULT: ",result);
+if (!result) {
+  return
+} 
     return {
-      Symbol: item.Symbol,
-      AssetType: item.AssetType,
-      Name: item.Name,
-      Description: item.Description,
-      CIK: item.CIK,
-      Exchange: item.Exchange,
-      Currency: item.Currency,
-      Country: item.Country,
-      Sector: item.Sector,
-      Industry: item.Industry,
-      Address: item.Address,
-      FiscalYearEnd: item.FiscalYearEnd,
-      LatestQuarter: (new Date(item.LatestQuarter)),
-      MarketCapitalization: Number(item.MarketCapitalization),
-      EBITDA: Number(item.EBITDA),
-      PERatio: Number(item.PERatio) ? Number(item.PERatio) : item.PERatio,
-      PEGRatio: Number(item.PEGRatio ? Number(item.PEGRatio) : item.PEGRatio),
-      BookValue: Number(item.BookValue)
-        ? Number(item.BookValue)
-        : item.BookValue,
-      DividendPerShare: Number(item.DividendPerShare)
-        ? Number(item.DividendPerShare)
-        : item.DividendPerShare,
-      DividendYield: Number(item.DividendYield)
-        ? Number(item.DividendYield)
-        : item.DividendYield,
-      EPS: Number(item.EPS) ? Number(item.EPS) : item.EPS,
-      RevenuePerShareTTM: Number(item.RevenuePerShareTTM)
-        ? Number(item.RevenuePerShareTTM)
-        : item.RevenuePerShareTTM,
-      ProfitMargin: Number(item.ProfitMargin)
-        ? Number(item.ProfitMargin)
-        : item.ProfitMargin,
-      OperatingMarginTTM: Number(item.OperatingMarginTTM)
-        ? Number(item.OperatingMarginTTM)
-        : item.OperatingMarginTTM,
-      ReturnOnAssetsTTM: Number(item.ReturnOnAssetsTTM)
-        ? Number(item.ReturnOnAssetsTTM)
-        : item.ReturnOnAssetsTTM,
-      ReturnOnEquityTTM: Number(item.ReturnOnEquityTTM)
-        ? Number(item.ReturnOnEquityTTM)
-        : item.ReturnOnEquityTTM,
-      RevenueTTM: Number(item.RevenueTTM)
-        ? Number(item.RevenueTTM)
-        : item.RevenueTTM,
-      GrossProfitTTM: Number(item.GrossProfitTTM)
-        ? Number(item.GrossProfitTTM)
-        : item.GrossProfitTTM,
-      DilutedEPSTTM: Number(item.DilutedEPSTTM)
-        ? Number(item.DilutedEPSTTM)
-        : item.DilutedEPSTTM,
-      QuarterlyEarningsGrowthYOY: Number(item.QuarterlyEarningsGrowthYOY)
-        ? Number(item.QuarterlyEarningsGrowthYOY)
-        : item.QuarterlyEarningsGrowthYOY,
-      QuarterlyRevenueGrowthYOY: Number(item.QuarterlyRevenueGrowthYOY)
-        ? Number(item.QuarterlyRevenueGrowthYOY)
-        : item.QuarterlyRevenueGrowthYOY,
-      AnalystTargetPrice: Number(item.AnalystTargetPrice)
-        ? Number(item.AnalystTargetPrice)
-        : item.AnalystTargetPrice,
-      TrailingPE: Number(item.TrailingPE)
-        ? Number(item.TrailingPE)
-        : item.TrailingPE,
-      ForwardPE: Number(item.ForwardPE)
-        ? Number(item.ForwardPE)
-        : item.ForwardPE,
-      PriceToSalesRatioTTM: Number(item.PriceToSalesRatioTTM)
-        ? Number(item.PriceToSalesRatioTTM)
-        : item.PriceToSalesRatioTTM,
-      PriceToBookRatio: Number(item.PriceToBookRatio)
-        ? Number(item.PriceToBookRatio)
-        : item.PriceToBookRatio,
-      EVToRevenue: Number(item.EVToRevenue)
-        ? Number(item.EVToRevenue)
-        : item.EVToRevenue,
-      EVToEBITDA: Number(item.EVToEBITDA)
-        ? Number(item.EVToEBITDA)
-        : item.EVToEBITDA,
-      Beta: Number(item.Beta) ? Number(item.Beta) : item.Beta,
-      "52WeekHigh": Number(item?.["52WeekHigh"])
-        ? Number(item?.["52WeekHigh"])
-        : item?.["52WeekHigh"],
-      "52WeekLow": Number(item?.["52WeekLow"])
-        ? Number(item?.["52WeekLow"])
-        : item?.["52WeekLow"],
-      "50DayMovingAverage": Number(item?.["50DayMovingAverage"])
-        ? Number(item?.["50DayMovingAverage"])
-        : item?.["50DayMovingAverage"],
-      "200DayMovingAverage": Number(item["200DayMovingAverage"])
-        ? Number(item["200DayMovingAverage"])
-        : item["200DayMovingAverage"],
-      SharesOutstanding: Number(item.SharesOutstanding)
-        ? Number(item.SharesOutstanding)
-        : item.SharesOutstanding,
-      DividendDate: (new Date(item.DividendDate)),
-      ExDividendDate: (new Date(item.ExDividendDate)),
+      Symbol: result.Symbol,
+      AssetType: result.AssetType,
+      Name: result.Name,
+      Description: result.Description,
+      CIK: result.CIK,
+      Exchange: result.Exchange,
+      Currency: result.Currency,
+      Country: result.Country,
+      Sector: result.Sector,
+      Industry: result.Industry,
+      Address: result.Address,
+      FiscalYearEnd: result.FiscalYearEnd,
+      LatestQuarter: (new Date(result.LatestQuarter)),
+      MarketCapitalization: Number(result.MarketCapitalization),
+      EBITDA: Number(result.EBITDA),
+      PERatio: Number(result.PERatio) ? Number(result.PERatio) : result.PERatio,
+      PEGRatio: Number(result.PEGRatio ? Number(result.PEGRatio) : result.PEGRatio),
+      BookValue: Number(result.BookValue)
+        ? Number(result.BookValue)
+        : result.BookValue,
+      DividendPerShare: Number(result.DividendPerShare)
+        ? Number(result.DividendPerShare)
+        : result.DividendPerShare,
+      DividendYield: Number(result.DividendYield)
+        ? Number(result.DividendYield)
+        : result.DividendYield,
+      EPS: Number(result.EPS) ? Number(result.EPS) : result.EPS,
+      RevenuePerShareTTM: Number(result.RevenuePerShareTTM)
+        ? Number(result.RevenuePerShareTTM)
+        : result.RevenuePerShareTTM,
+      ProfitMargin: Number(result.ProfitMargin)
+        ? Number(result.ProfitMargin)
+        : result.ProfitMargin,
+      OperatingMarginTTM: Number(result.OperatingMarginTTM)
+        ? Number(result.OperatingMarginTTM)
+        : result.OperatingMarginTTM,
+      ReturnOnAssetsTTM: Number(result.ReturnOnAssetsTTM)
+        ? Number(result.ReturnOnAssetsTTM)
+        : result.ReturnOnAssetsTTM,
+      ReturnOnEquityTTM: Number(result.ReturnOnEquityTTM)
+        ? Number(result.ReturnOnEquityTTM)
+        : result.ReturnOnEquityTTM,
+      RevenueTTM: Number(result.RevenueTTM)
+        ? Number(result.RevenueTTM)
+        : result.RevenueTTM,
+      GrossProfitTTM: Number(result.GrossProfitTTM)
+        ? Number(result.GrossProfitTTM)
+        : result.GrossProfitTTM,
+      DilutedEPSTTM: Number(result.DilutedEPSTTM)
+        ? Number(result.DilutedEPSTTM)
+        : result.DilutedEPSTTM,
+      QuarterlyEarningsGrowthYOY: Number(result.QuarterlyEarningsGrowthYOY)
+        ? Number(result.QuarterlyEarningsGrowthYOY)
+        : result.QuarterlyEarningsGrowthYOY,
+      QuarterlyRevenueGrowthYOY: Number(result.QuarterlyRevenueGrowthYOY)
+        ? Number(result.QuarterlyRevenueGrowthYOY)
+        : result.QuarterlyRevenueGrowthYOY,
+      AnalystTargetPrice: Number(result.AnalystTargetPrice)
+        ? Number(result.AnalystTargetPrice)
+        : result.AnalystTargetPrice,
+      TrailingPE: Number(result.TrailingPE)
+        ? Number(result.TrailingPE)
+        : result.TrailingPE,
+      ForwardPE: Number(result.ForwardPE)
+        ? Number(result.ForwardPE)
+        : result.ForwardPE,
+      PriceToSalesRatioTTM: Number(result.PriceToSalesRatioTTM)
+        ? Number(result.PriceToSalesRatioTTM)
+        : result.PriceToSalesRatioTTM,
+      PriceToBookRatio: Number(result.PriceToBookRatio)
+        ? Number(result.PriceToBookRatio)
+        : result.PriceToBookRatio,
+      EVToRevenue: Number(result.EVToRevenue)
+        ? Number(result.EVToRevenue)
+        : result.EVToRevenue,
+      EVToEBITDA: Number(result.EVToEBITDA)
+        ? Number(result.EVToEBITDA)
+        : result.EVToEBITDA,
+      Beta: Number(result.Beta) ? Number(result.Beta) : result.Beta,
+      "52WeekHigh": Number(result?.["52WeekHigh"])
+        ? Number(result?.["52WeekHigh"])
+        : result?.["52WeekHigh"],
+      "52WeekLow": Number(result?.["52WeekLow"])
+        ? Number(result?.["52WeekLow"])
+        : result?.["52WeekLow"],
+      "50DayMovingAverage": Number(result?.["50DayMovingAverage"])
+        ? Number(result?.["50DayMovingAverage"])
+        : result?.["50DayMovingAverage"],
+      "200DayMovingAverage": Number(result["200DayMovingAverage"])
+        ? Number(result["200DayMovingAverage"])
+        : result["200DayMovingAverage"],
+      SharesOutstanding: Number(result.SharesOutstanding)
+        ? Number(result.SharesOutstanding)
+        : result.SharesOutstanding,
+      DividendDate: (new Date(result.DividendDate)),
+      ExDividendDate: (new Date(result.ExDividendDate)),
     };
-  });
-  return output as unknown as CompanyOverviewData[];
+ 
+  //  });
+  //  console.log("Company Info-----: ",output)
+  // return {...[output]} as unknown as CompanyOverviewData;
 }
 
 
 
 export function getCompanyIncomeDataBySymbol(value: string) {
   console.log("Get Company INCOME data from API file.....");
-  const result = incomeData.filter((stock) => {
+  
+  // const result = incomeData.filter((stock) => {
+  //   return stock?.symbol === value;
+  // });
+
+  const result = incomeData.find(function (stock) {
     return stock?.symbol === value;
-  });
-  const output = result.map((item) => {
+});
+if(!result){
+  return
+}
+
+
     return {
-      symbol: item.symbol,
-      annualReports: item.annualReports.map((element) => {
+      symbol: result.symbol,
+      annualReports: result.annualReports.map((element) => {
         return {
           fiscalDateEnding: (new Date(element.fiscalDateEnding)),
           reportedCurrency: element.reportedCurrency,
@@ -377,7 +505,7 @@ export function getCompanyIncomeDataBySymbol(value: string) {
             : element.netIncome,
         };
       }),
-      quarterlyReports: item.quarterlyReports.map((element) => {
+      quarterlyReports: result.quarterlyReports.map((element) => {
         return {
           fiscalDateEnding: (new Date(element.fiscalDateEnding)),
           reportedCurrency: element.reportedCurrency,
@@ -462,20 +590,25 @@ export function getCompanyIncomeDataBySymbol(value: string) {
         };
       }),
     };
-  });
-  return output as unknown as IncomeSheet[];
+
 }
 
 export function getCompanyBalanceSheetDataBySymbol(value: string) {
   console.log("Get Company INCOME data from API file.....");
-  const result = balanceData.filter((stock) => {
-    return stock?.symbol === value;
-  });
+  // const result = balanceData.filter((stock) => {
+  //   return stock?.symbol === value;
+  // });
 
-  const output = result.map((item) => {
+  const result = balanceData.find(function (stock) {
+    return stock?.symbol === value;
+});
+if(!result){
+  return
+}
+
     return {
-      symbol: item.symbol,
-      annualReports: item.annualReports.map((element) => {
+      symbol: result.symbol,
+      annualReports: result.annualReports.map((element) => {
         return {
           fiscalDateEnding: (new Date(element.fiscalDateEnding)),
           reportedCurrency: element.reportedCurrency,
@@ -599,7 +732,7 @@ export function getCompanyBalanceSheetDataBySymbol(value: string) {
             : element.commonStockSharesOutstanding,
         };
       }),
-      quarterlyReports: item.annualReports.map((element) => {
+      quarterlyReports: result.annualReports.map((element) => {
         return {
           fiscalDateEnding: (new Date(element.fiscalDateEnding)),
           reportedCurrency: element.reportedCurrency,
@@ -724,9 +857,6 @@ export function getCompanyBalanceSheetDataBySymbol(value: string) {
         };
       }),
     };
-  });
-  
-  return output as unknown as BalanceSheet[];
 }
 
 function getTimeSeries(item: StockDailyData){

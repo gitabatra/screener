@@ -2,25 +2,35 @@ import StockBalanceSheet from "./StockBalanceSheet";
 import ProfitLoss from "./ProfitLoss";
 import QuarterlyResult from "./QuarterlyResult";
 import StockInfo from "./StockInfo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HashLink } from "react-router-hash-link";
 import { useParams } from "react-router-dom";
 
 // import StockChart from "./StockChart";
- 
-import {getCompanyOverviewDataBySymbol, getDailyStockDataBySymbol, getCompanyIncomeDataBySymbol, getCompanyBalanceSheetDataBySymbol} from "../../utils/api";
+
+import {
+  getCompanyOverviewDataBySymbol,
+  getDailyStockDataBySymbol,
+  getCompanyIncomeDataBySymbol,
+  getCompanyBalanceSheetDataBySymbol,
+  getCompanyOverviewDataBySymbol1,
+} from "../../utils/api";
 // import StockMultiChart from "./StockMultiChart";
 import StockChartTab from "./StockChartTab";
+import { BalanceSheet, CompanyOverviewData, IncomeSheet } from "../../types";
 
 
 function DashboardTab() {
   const { id } = useParams();
-  const result = getCompanyOverviewDataBySymbol(id as string);
+  // const [result, setResult] = useState<CompanyOverviewData>();
+
+  const result = getCompanyOverviewDataBySymbol1(id as string);
+  console.log("Data in stock dashboard: ", result);
   const chartData = getDailyStockDataBySymbol(id as string);
   const income = getCompanyIncomeDataBySymbol(id as string);
   const balanceSheetData = getCompanyBalanceSheetDataBySymbol(id as string);
 
-  console.log(`ID: ${id!}`)
+  console.log(`ID: ${id!}`);
 
   const tabObj = [
     { id: "stock-info", title: "Stock" },
@@ -48,12 +58,50 @@ function DashboardTab() {
     }
   };
 
-  const ready = result.length > 0 && chartData.length > 0 && balanceSheetData.length > 0 && income.length > 0
+  // useEffect(() => {
+  //   const data = getCompanyOverviewDataBySymbol(id as string);
+  //   data
+  //     .then((result) => {
+  //       console.log("Data: ", result);
+  //       setResult(result);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  //   console.log("Result in useEffect: ", result);
+  // }, [id, result]);
+
+  // useEffect(() => {
+  //   if (id) {
+  //     console.log(`Starting data fetching for symbol: ${id}`)
+  //     void fetchCompnayData(id);
+  //     // fetchChartData(id);
+  //     // fetchBalanceSheetData(id);
+  //     // fetchIncomeSheetData(id);
+  //   }
+  // }, [id]);
+
+
+  const ready =
+    // result.length > 0 &&
+    // result &&
+    chartData.length > 0 
+    // balanceSheetData.length > 0 
+    // income.length > 0;
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  console.log(`Data is ready?: ${ready}`)
+  console.log(`Data is ready?: ${ready}`);
+
+  // const ready =
+  //   // result.length > 0 &&
+  //   // result &&
+  //   chartData.length > 0 &&
+  //   balanceSheetData.length > 0 &&
+  //   income.length > 0;
+  // // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  // console.log(`Data is ready?: ${ready}`);
 
   if (!ready) {
-    return <p>Not ready</p>
+    return <p>Not ready</p>;
   }
 
   return (
@@ -78,25 +126,30 @@ function DashboardTab() {
             })}
           </ul>
         </div>
-        <div id="stock-info" className="py-10 text-white border-1 z-[1] shadow-inner">
+        <div
+          id="stock-info"
+          className="py-10 text-white border-1 z-[1] shadow-inner"
+        >
           {" "}
-          <StockInfo id={id as string} result={result} />
+          {/* <StockInfo id={id as string} result={result ? [result] : []} /> */}
+          <StockInfo id={id as string} result={result as unknown as CompanyOverviewData} />
         </div>
         <div id="stock-chart-tab" className="text-white mt-2 z-[-1]">
           {" "}
-          <StockChartTab id={id as string} chartData={chartData}/>
+          <StockChartTab id={id as string} chartData={chartData} />
         </div>
         <div id="stock-quarterly-results" className="text-white mt-15 z-[1]">
           {" "}
-          <QuarterlyResult id={id as string} quarterData={income} />
+          <QuarterlyResult id={id as string} quarterData={income as IncomeSheet} />
         </div>
         <div id="stock-profit-loss" className="text-white z-[1]">
           {" "}
-          <ProfitLoss id={id as string} annualIncomeData={income} />
+          {/* <Test id={id as string} annualIncomeData={income} /> */}
+          <ProfitLoss id={id as string} annualIncomeData={income as IncomeSheet} />
         </div>
         <div id="stock-balance-sheet" className="text-white z-[1]">
           {" "}
-          <StockBalanceSheet id={id as string} annualData={balanceSheetData} />
+          <StockBalanceSheet id={id as string} annualData={balanceSheetData as BalanceSheet} />
         </div>
       </div>
     </>

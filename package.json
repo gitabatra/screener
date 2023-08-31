@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "bottleneck": "^2.19.5",
     "chart.js": "^4.3.3",
     "chartjs-adapter-date-fns": "^3.0.0",
     "date-fns": "^2.30.0",
@@ -22,6 +23,7 @@
     "react-router-hash-link": "^2.4.3"
   },
   "devDependencies": {
+    "@types/node": "^20.5.7",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "@types/react-router-hash-link": "^2.4.6",

@@ -1,13 +1,13 @@
-import {formatNumber} from "../../utils/api";
 import {  IncomeSheet } from "../../types";
+import IncomeTableRow from "./IncomeTableRow";
 
 interface stockProp{
     id: string,
-    quarterData: IncomeSheet[]
+    quarterData: IncomeSheet
    }
 
 function QuarterlyResult({id,quarterData}:stockProp){
-    const quarterResult = quarterData[0]?.quarterlyReports;
+    const quarterResult = quarterData?.quarterlyReports;
     console.log("quarter data",id);
     const datestr = new Date("2020-12-31").getTime();
     const reportData = quarterResult.filter((res) =>{
@@ -15,6 +15,10 @@ function QuarterlyResult({id,quarterData}:stockProp){
         return ((date.getTime()> datestr))})
     const report = [...reportData].reverse();
     console.log("Report after 2020", report);
+
+    if (!quarterData) {
+        return <div></div>
+      }
     
     return (<>
      <div className="py-10 px-10 text-white">
@@ -38,7 +42,16 @@ function QuarterlyResult({id,quarterData}:stockProp){
             </tr>
         </thead>
         <tbody>
-        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+        <IncomeTableRow label={"Sales"} annualReportData={report} resKey={"totalRevenue"}/>
+           <IncomeTableRow label={"Expenses"} annualReportData={report} resKey={"costOfRevenue"}/>
+           <IncomeTableRow label={"Operating Profit"} annualReportData={report} resKey={"grossProfit"}/>
+           <IncomeTableRow label={"Other Income"} annualReportData={report} resKey={"interestIncome"}/>
+           <IncomeTableRow label={"Interest Expense"} annualReportData={report} resKey={"interestExpense"}/>
+           <IncomeTableRow label={"Depreciation"} annualReportData={report} resKey={"depreciation"}/>
+           <IncomeTableRow label={"Income Before Tax"} annualReportData={report} resKey={"incomeBeforeTax"}/>
+           <IncomeTableRow label={"Tax"} annualReportData={report} resKey={"incomeTaxExpense"}/>
+           <IncomeTableRow label={"Net Income"} annualReportData={report} resKey={"netIncome"}/>
+        {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Sales
                 </th>
@@ -154,7 +167,7 @@ function QuarterlyResult({id,quarterData}:stockProp){
                         </td>)
                     })
                 }
-            </tr>
+            </tr> */}
            
         </tbody>
     </table>

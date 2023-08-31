@@ -17,13 +17,13 @@ function StockChartTab({id,chartData}: stockProp){
 
     const monthDate =  getMonthDate(1);
     const sixmonthDate =  getMonthDate(6);
-    console.log("Six month Date: ",sixmonthDate);
+    // console.log("Six month Date: ",sixmonthDate);
     const oneYearDate = getYearDate(1);
     const threeYearDate = getYearDate(3);
     const fiveYearDate = getYearDate(5);
     const dailyData: TimeSeriesDaily[] = chartData[0]["Time Series (Daily)"];
 
-    console.log("------six month dates:",sixmonthDate);
+    // console.log("------six month dates:",sixmonthDate);
     // console.log("Report after 2020", Object.keys(dailyData));
     const keys = Object.keys(dailyData)
     const month: string[] = []

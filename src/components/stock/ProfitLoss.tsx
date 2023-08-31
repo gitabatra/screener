@@ -1,28 +1,17 @@
-import { IncomeSheet } from "../../types";
-import { formatNumber } from "../../utils/api";
+import { AnnualIncomeReport, IncomeSheet } from "../../types";
+import IncomeTableRow from "./IncomeTableRow";
 
-interface stockProp{
-    id: string,
-    annualIncomeData: IncomeSheet[]
-   }
-function ProfitLoss({id,annualIncomeData}: stockProp){
-    const annualReport = (annualIncomeData?.[0]?.annualReports)
-    const annualReportData = [...annualReport].reverse();
-    console.log("Annual report data: ",id);
-    return (<>
-     <div className="py-10 px-10 text-white">
-     <div className="mt-20 pt-10"></div>
-        <h1 className="text-2xl">Profit & Loss</h1>
-        <div className="overflow-x-auto shadow-md sm:rounded-lg pt-4">
-    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
+interface PLTableHeaderProp{
+    annualReportData : AnnualIncomeReport[]
+}
+
+function PLTableHeaderRow({annualReportData}: PLTableHeaderProp){
+    return(
+        <tr>
                 <th scope="col" className="px-6 py-3">
-                    
                 </th>
                 {annualReportData.map((result,index) =>{
                 const date = new Date(result.fiscalDateEnding).toLocaleString('en-us',{month:'short', year:'numeric'})
-                // const dateObj = date.get;
                 return(
                 <th key={index} scope="col" className="px-6 py-3">
                     {date}
@@ -30,98 +19,39 @@ function ProfitLoss({id,annualIncomeData}: stockProp){
                 )
                })}
             </tr>
+    )
+}
+
+interface StockProp{
+    id: string,
+    annualIncomeData: IncomeSheet
+   }
+function ProfitLoss({id,annualIncomeData}: StockProp){
+    const annualReport = (annualIncomeData?.annualReports)
+    const annualReportData = [...annualReport].reverse();
+    console.log("Annual report data: ",id);
+    if(!annualIncomeData){
+        return(<div></div>)
+    }
+    return (<>
+     <div className="py-10 px-10 text-white">
+     <div className="mt-20 pt-10"></div>
+        <h1 className="text-2xl">Profit & Loss</h1>
+        <div className="overflow-x-auto shadow-md sm:rounded-lg pt-4">
+    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <PLTableHeaderRow annualReportData={annualReportData} />
         </thead>
         <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Sales
-                </th>
-                {annualReportData.map((res,index)=>{return(
-                <td key={index} className="px-6 py-4">
-                {formatNumber(res?.totalRevenue)}
-                </td>
-            )})}
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Expenses
-                </th>
-                {annualReportData.map((res,index)=>{return(
-                <td key={index} className="px-6 py-4">
-                {formatNumber(res?.costOfRevenue)}
-                </td>
-            )})}
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Operating Profit
-                </th>
-                {annualReportData.map((res,index)=>{return(
-                <td key={index} className="px-6 py-4">
-                {formatNumber(res?.grossProfit)}
-                </td>
-            )})}
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Other Income
-                </th>
-                {annualReportData.map((res,index)=>{return(
-                <td key={index} className="px-6 py-4">
-                {formatNumber(res?.interestIncome)}
-                </td>
-            )})}
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Interest Expense
-                </th>
-                {annualReportData.map((res,index)=>{return(
-                <td key={index} className="px-6 py-4">
-                {formatNumber(res?.interestExpense)}
-                </td>
-            )})}
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Depreciation
-                </th>
-                {annualReportData.map((res,index)=>{return(
-                <td key={index} className="px-6 py-4">
-                {formatNumber(res?.depreciation)}
-                </td>
-            )})}
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Profit Before Tax
-                </th>
-                {annualReportData.map((res,index)=>{return(
-                <td key={index} className="px-6 py-4">
-                {formatNumber(res?.incomeBeforeTax)}
-                </td>
-            )})}
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Tax
-                </th>
-                {annualReportData.map((res,index)=>{return(
-                <td key={index} className="px-6 py-4">
-                {formatNumber(res?.incomeTaxExpense)}
-                </td>
-            )})}
-            </tr>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    Net Profit
-                </th>
-                {annualReportData.map((res,index)=>{return(
-                <td key={index} className="px-6 py-4">
-                {formatNumber(res?.netIncome)}
-                </td>
-            )})}
-            </tr>
+           <IncomeTableRow label={"Sales"} annualReportData={annualReportData} resKey={"totalRevenue"}/>
+           <IncomeTableRow label={"Expenses"} annualReportData={annualReportData} resKey={"costOfRevenue"}/>
+           <IncomeTableRow label={"Operating Profit"} annualReportData={annualReportData} resKey={"grossProfit"}/>
+           <IncomeTableRow label={"Other Income"} annualReportData={annualReportData} resKey={"interestIncome"}/>
+           <IncomeTableRow label={"Interest Expense"} annualReportData={annualReportData} resKey={"interestExpense"}/>
+           <IncomeTableRow label={"Depreciation"} annualReportData={annualReportData} resKey={"depreciation"}/>
+           <IncomeTableRow label={"Income Before Tax"} annualReportData={annualReportData} resKey={"incomeBeforeTax"}/>
+           <IncomeTableRow label={"Tax"} annualReportData={annualReportData} resKey={"incomeTaxExpense"}/>
+           <IncomeTableRow label={"Net Income"} annualReportData={annualReportData} resKey={"netIncome"}/>
         </tbody>
     </table>
     </div>
