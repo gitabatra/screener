@@ -4,10 +4,10 @@ import SecondaryNavigation from "./SecondaryNavigation";
 import {
   getStocksDataFromWatchlist,
   deleteStockFromWatchlist,
-  getCompanyOverviewDataBySymbol,
+  getCompanyOverviewDataBySymbol1,
   insertStockToWatchlist,
 } from "../../utils/api";
-import { Stock } from "../../types";
+import { CompanyOverviewData, Stock } from "../../types";
 // import SearchBar from "../Home/SearchBar";
 import { Company } from "../../types";
 import { stockTicker } from "../../utils/api";
@@ -65,13 +65,13 @@ function ManageStocks() {
                               key={index}
                               onClick={() => {
                                 setInput(value?.symbol);
-                                const result = getCompanyOverviewDataBySymbol(
+                                const result = getCompanyOverviewDataBySymbol1(
                                   value?.symbol
                                 );
                                 insertStockToWatchlist(
                                   id as string,
                                   value?.symbol,
-                                  result
+                                  [result as CompanyOverviewData] 
                                 );
                                 setFilteredStockList(
                                   getStocksDataFromWatchlist(id as string)

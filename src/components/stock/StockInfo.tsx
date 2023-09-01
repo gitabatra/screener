@@ -79,14 +79,14 @@ function StockInfo({ id, result }: StockProp) {
     <>
      {/* shadow-inner rounded-lg shadow-sky-500/50  */}
       <div id="stock-info" className="px-4 mt-20">
-        <div className="ml-4 mr-4 py-6 px-4 ">
+        <div className="ml-4 mr-4 py-6 px-2">
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <h1 className="px-2 py-3 text-md sm:text-2xl md:text-4xl lg:text-5xl"> 
+              <h1 className="py-3 text-md sm:text-2xl md:text-4xl lg:text-5xl"> 
                 {result.Name} ({result.Symbol}) <span className="text-slate-500 text-xl">{result.Exchange}</span>
               </h1>
-              <p className="px-2 pb-2 text-slate-500">Current Price - </p>
-              <p className="px-2 pb-7 text-slate-500">Currency - {result.Currency}</p>
+              <p className="pb-2 text-slate-500">Current Price - </p>
+              <p className="pb-7 text-slate-500">Currency - {result.Currency}</p>
             </div>
 
             <div>

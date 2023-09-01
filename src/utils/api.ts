@@ -33,7 +33,8 @@ async function getCompanyOverview(company: string) {
 }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     const limiter = new Bottleneck({
-      minTime: 60 * 1000 / 5 // 5 requests per minute = 12 seconds
+      minTime: (60 * 1000) / 5 ,// 5 requests per minute = 12 seconds
+      maxConcurrent: 1
     })
     
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
@@ -406,18 +407,12 @@ if (!result) {
 
 export function getCompanyIncomeDataBySymbol(value: string) {
   console.log("Get Company INCOME data from API file.....");
-  
-  // const result = incomeData.filter((stock) => {
-  //   return stock?.symbol === value;
-  // });
-
   const result = incomeData.find(function (stock) {
     return stock?.symbol === value;
 });
 if(!result){
   return
 }
-
 
     return {
       symbol: result.symbol,
@@ -595,17 +590,12 @@ if(!result){
 
 export function getCompanyBalanceSheetDataBySymbol(value: string) {
   console.log("Get Company INCOME data from API file.....");
-  // const result = balanceData.filter((stock) => {
-  //   return stock?.symbol === value;
-  // });
-
   const result = balanceData.find(function (stock) {
     return stock?.symbol === value;
 });
 if(!result){
   return
 }
-
     return {
       symbol: result.symbol,
       annualReports: result.annualReports.map((element) => {
