@@ -1,5 +1,5 @@
 export interface StockDailyData {
-    "Meta Data": MetaData[]
+    "Meta Data": MetaData
     "Time Series (Daily)": TimeSeriesDaily[]
   }
   

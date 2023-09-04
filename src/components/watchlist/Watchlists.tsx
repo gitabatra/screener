@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CreateArea from "./CreateArea";
 import DisplayWatchlist from "./DisplayWatchlist";
-import { getDataFromLocalStorage } from "../../utils/api";
+import { getDataFromLocalStorage } from "../../utils/localApi";
 import { Watchlist } from "../../types";
 import { WatchlistContext } from "../Context/WatchlistContext";
 

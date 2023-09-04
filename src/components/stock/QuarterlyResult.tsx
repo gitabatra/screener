@@ -8,11 +8,13 @@ interface stockProp{
 
 function QuarterlyResult({id,quarterData}:stockProp){
     const quarterResult = quarterData?.quarterlyReports;
-    console.log("quarter data",id);
+    console.log("quarter data",id, quarterResult);
     const datestr = new Date("2020-12-31").getTime();
+    
     const reportData = quarterResult.filter((res) =>{
         const date = new Date(res.fiscalDateEnding);
         return ((date.getTime()> datestr))})
+    
     const report = [...reportData].reverse();
     console.log("Report after 2020", report);
 

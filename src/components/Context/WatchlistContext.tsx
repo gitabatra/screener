@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { Watchlist } from "../../types";
-import { getDataFromLocalStorage } from "../../utils/api";
+import { getDataFromLocalStorage } from "../../utils/localApi";
 
 export interface WatchlistContextData {
     watchlists: Watchlist[];

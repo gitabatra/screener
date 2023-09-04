@@ -8,7 +8,7 @@ import {getMonthDate,
 
 interface stockProp{
     id: string,
-    chartData: StockDailyData[]
+    chartData: StockDailyData
    }
 
 function StockChartTab({id,chartData}: stockProp){
@@ -21,7 +21,8 @@ function StockChartTab({id,chartData}: stockProp){
     const oneYearDate = getYearDate(1);
     const threeYearDate = getYearDate(3);
     const fiveYearDate = getYearDate(5);
-    const dailyData: TimeSeriesDaily[] = chartData[0]["Time Series (Daily)"];
+    const dailyData: TimeSeriesDaily[] = chartData["Time Series (Daily)"];
+    console.log("Daily TimeSeries Data in ChartTab: ",dailyData);
 
     // console.log("------six month dates:",sixmonthDate);
     // console.log("Report after 2020", Object.keys(dailyData));

@@ -4,7 +4,7 @@ import {
   formatNumber,
   getWatchlistsNames,
   insertStockToWatchlist,
-} from "../../utils/api";
+} from "../../utils/localApi";
 import { WatchlistContext } from "../Context/WatchlistContext";
 import CompanyAboutInfo from "./CompanyAboutInfo";
 
@@ -72,7 +72,11 @@ function StockInfo({ id, result }: StockProp) {
 
   // Null/undefined check, return empty display
   if (!result) {
-    return <div></div>
+    return <div className="w-full flex justify-center items-center h-screen">
+    <div className="flex items-center justify-center ">
+        <div className="w-60 h-60 border-t-4 border-b-8 border-sky-500 rounded-full animate-spin"></div>
+    </div>
+</div>
   }
 
   return (

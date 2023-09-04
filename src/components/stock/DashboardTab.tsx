@@ -13,22 +13,26 @@ import {
   getDailyStockDataBySymbol,
   getCompanyIncomeDataBySymbol,
   getCompanyBalanceSheetDataBySymbol,
-  getCompanyOverviewDataBySymbol1,
+  //getCompanyOverviewDataBySymbol1,
 } from "../../utils/api";
-// import StockMultiChart from "./StockMultiChart";
+
 import StockChartTab from "./StockChartTab";
-import { BalanceSheet, CompanyOverviewData, IncomeSheet } from "../../types";
+import { BalanceSheet, CompanyOverviewData, IncomeSheet, StockDailyData } from "../../types";
 
 
 function DashboardTab() {
   const { id } = useParams();
-  // const [result, setResult] = useState<CompanyOverviewData>();
 
-  const result = getCompanyOverviewDataBySymbol1(id as string);
-  console.log("Data in stock dashboard: ", result);
-  const chartData = getDailyStockDataBySymbol(id as string);
-  const income = getCompanyIncomeDataBySymbol(id as string);
-  const balanceSheetData = getCompanyBalanceSheetDataBySymbol(id as string);
+  const [result, setResult] = useState<CompanyOverviewData>();
+  const [chartData,setChartData] =useState<StockDailyData>();
+  const [balanceSheetData,setBalanceSheetData] =useState<BalanceSheet>();
+  const [incomeData,setIncomeData] =useState<IncomeSheet>();
+
+  //const result = getCompanyOverviewDataBySymbol1(id as string);
+
+  //const chartData = getDailyStockDataBySymbol1(id as string);
+  //const income = getCompanyIncomeDataBySymbol(id as string);
+  //const balanceSheetData = getCompanyBalanceSheetDataBySymbol(id as string);
 
   console.log(`ID: ${id!}`);
 
@@ -58,50 +62,81 @@ function DashboardTab() {
     }
   };
 
-  // useEffect(() => {
-  //   const data = getCompanyOverviewDataBySymbol(id as string);
-  //   data
-  //     .then((result) => {
-  //       console.log("Data: ", result);
-  //       setResult(result);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  //   console.log("Result in useEffect: ", result);
-  // }, [id, result]);
+  function fetchCompnayData(id: string){
+    const data = getCompanyOverviewDataBySymbol(id);
+    data
+      .then((result) => {
+        console.log("Data: ", result);
+        setResult(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
-  // useEffect(() => {
-  //   if (id) {
-  //     console.log(`Starting data fetching for symbol: ${id}`)
-  //     void fetchCompnayData(id);
-  //     // fetchChartData(id);
-  //     // fetchBalanceSheetData(id);
-  //     // fetchIncomeSheetData(id);
-  //   }
-  // }, [id]);
+  function fetchChartData(id: string){
+    const data = getDailyStockDataBySymbol(id);
+    data
+      .then((result) => {
+        console.log("CHART Data: ", result);
+        setChartData(result as unknown as StockDailyData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
+  function fetchBalanceSheetData(id: string){
+    const data = getCompanyBalanceSheetDataBySymbol(id);
+    data
+      .then((result) => {
+        console.log("Data: ", result);
+        setBalanceSheetData(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
+  function fetchIncomeSheetData(id: string){
+    const data = getCompanyIncomeDataBySymbol(id);
+    data
+      .then((result) => {
+        console.log("Data: ", result);
+        setIncomeData(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    if(id){
+      fetchCompnayData(id);
+      fetchChartData(id);
+      fetchBalanceSheetData(id);
+      fetchIncomeSheetData(id);
+    }
+  }, [id]);
+
+// console.log("------balanceSheetData data in DASHBOARD: ",balanceSheetData);
+// console.log("------INCOMESheetData data in DASHBOARD: ",incomeData);
   const ready =
-    // result.length > 0 &&
-    // result &&
-    chartData.length > 0 
-    // balanceSheetData.length > 0 
-    // income.length > 0;
+    (result!== null && result!== undefined) &&
+    (chartData!== null && chartData!== undefined) &&
+    (balanceSheetData!== null && balanceSheetData!== undefined) &&
+    (incomeData!== null && incomeData!== undefined)
+
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   console.log(`Data is ready?: ${ready}`);
 
-  // const ready =
-  //   // result.length > 0 &&
-  //   // result &&
-  //   chartData.length > 0 &&
-  //   balanceSheetData.length > 0 &&
-  //   income.length > 0;
-  // // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  // console.log(`Data is ready?: ${ready}`);
-
   if (!ready) {
-    return <p>Not ready</p>;
+    return 
+      ( <div className="w-full flex justify-center items-center h-screen">
+          <div className="flex items-center justify-center ">
+              <div className="w-60 h-60 border-t-4 border-b-8 border-sky-500 rounded-full animate-spin"></div>
+          </div>
+  </div>);
   }
 
   return (
@@ -130,26 +165,22 @@ function DashboardTab() {
           id="stock-info"
           className="py-10 text-white border-1 z-[1] shadow-inner"
         >
-          {" "}
+     
           {/* <StockInfo id={id as string} result={result ? [result] : []} /> */}
           <StockInfo id={id as string} result={result as unknown as CompanyOverviewData} />
         </div>
         <div id="stock-chart-tab" className="text-white mt-2 z-[-1]">
-          {" "}
           <StockChartTab id={id as string} chartData={chartData} />
         </div>
         <div id="stock-quarterly-results" className="text-white mt-15 z-[1]">
-          {" "}
-          <QuarterlyResult id={id as string} quarterData={income as IncomeSheet} />
+          <QuarterlyResult id={id as string} quarterData={incomeData} />
         </div>
         <div id="stock-profit-loss" className="text-white z-[1]">
-          {" "}
           {/* <Test id={id as string} annualIncomeData={income} /> */}
-          <ProfitLoss id={id as string} annualIncomeData={income as IncomeSheet} />
+          <ProfitLoss id={id as string} annualIncomeData={incomeData} />
         </div>
         <div id="stock-balance-sheet" className="text-white z-[1]">
-          {" "}
-          <StockBalanceSheet id={id as string} annualData={balanceSheetData as BalanceSheet} />
+          <StockBalanceSheet id={id as string} annualData={balanceSheetData} />
         </div>
       </div>
     </>

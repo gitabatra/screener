@@ -1,22 +1,25 @@
-import { useState, ChangeEvent} from "react";
-import { Company } from "../../types";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { getCompanyOverviewDataBySymbol, insertStockToWatchlist } from "../../utils/api";
+import { useState, ChangeEvent, useEffect} from "react";
+import { BestMatch, Company, Ticker } from "../../types";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { insertStockToWatchlist } from "../../utils/localApi";
+import { getStocksListByKeyword } from "../../utils/api";
 
 // import { StockData, IncomeSheet,
 //     //  Ticker,BestMatch,  Company, BestMatch
 //     StockDailyData, BalanceSheet
 //   } from "../../types";
 
-interface searchProps 
+interface SearchProps 
 {
     placeholder: string,
-    data: Company[],
+  //  data: Company[],
     value: string,
     setInput: (value: string) => void
 }
 
-function SearchBar({placeholder, data, value, setInput}: searchProps){
+function SearchBar({placeholder, 
+ //data, 
+  value, setInput}: SearchProps){
     const navigate = useNavigate();
     const { pathname } = useLocation(); 
     const isIncluded = pathname.includes("manage-companies");
@@ -26,10 +29,41 @@ function SearchBar({placeholder, data, value, setInput}: searchProps){
    
     
     // const [input,setInput] = useState("");
-    const [filteredList, setFilteredList] = useState<Company[]>([]);
+    // const [filteredList, setFilteredList] = useState<Company[]>([]);
+    const [ticker,setTicker] =useState<BestMatch[]>();
 
     
-    // const fetchTicker=(value: string)=> {
+
+    function fetchTicker(value: string){
+      const data = getStocksListByKeyword(value);
+      data
+        .then((result) => {
+          console.log("Data: ", result);
+          const bestMatchData: BestMatch[]| undefined = result.bestMatches
+          const res = (bestMatchData).filter(stock =>{
+           // return (stock?.["3. type"]==="Equity")
+        return (stock?.["1. symbol"].includes(value) && stock?.["3. type"]==="Equity")
+      })
+      // const matchData: BestMatch[] = res;
+      console.log("Ticket result: ",res);
+          setTicker(res);
+
+          // return result
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    useEffect(() => {
+      if(value){
+        fetchTicker(value)
+      }
+      console.log("DATA in handlechange: ",value);
+      }
+    ,[value]);
+    
+  //   const fetchTicker=(value: string)=> {
   //   const apiKey = 'EGAI68J68Y9G55QE'
   //   const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${apiKey}`
   //   void fetch(url).then((response) => 
@@ -48,15 +82,8 @@ function SearchBar({placeholder, data, value, setInput}: searchProps){
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) =>{
         const seachWord =  event.target.value;
-        const newFilter = data.filter((value) =>{
-            return value?.name.toLowerCase()?.includes(seachWord.toLowerCase());
-        })
-        if(seachWord === ""){
-            setFilteredList([]);
-        }else{
-            setFilteredList(newFilter);
-        }
-        
+        console.log("keyword in handlechange: ",seachWord);
+        setInput(seachWord);
     }
         return(<>
      <div className="flex items-center justify-center">
@@ -91,7 +118,7 @@ function SearchBar({placeholder, data, value, setInput}: searchProps){
         </div>
         </div>
         
-        {filteredList.length !== 0 &&  <div className="grid grid-cols-1 divide-y divide-gray-700 rounded-lg shadow w-70 dark:bg-gray-700 z-10 h-40 overflow-y-auto absolute">
+        {/* {filteredList.length !== 0 &&  <div className="grid grid-cols-1 divide-y divide-gray-700 rounded-lg shadow w-70 dark:bg-gray-700 z-10 h-40 overflow-y-auto absolute">
      
             {
               !isIncluded ?
@@ -123,15 +150,16 @@ function SearchBar({placeholder, data, value, setInput}: searchProps){
                 </div>) 
               })
             }
-        </div>}
+        </div>} */}
        
 
-         {/* <div className="grid grid-cols-1 divide-y divide-gray-700 rounded-lg shadow w-70 dark:bg-gray-700 z-10 h-40 overflow-y-auto absolute">
-           {(ticker ).map((res, index: number) => {
+       {ticker &&  <div className="grid grid-cols-1 divide-y divide-gray-700 rounded-lg shadow w-70 dark:bg-gray-700 z-10 h-40 overflow-y-auto absolute">
+           {
+           (ticker).map((res, index: number) => {
              console.log("symbol: ", res);
              return (
               <div key={res?.["1. symbol"]} >
-              <Link to={`/stock/${res?.["1. symbol"]}`} state={{result:result,chart:chartData,balance:balanceSheetData}}>
+              <Link to={`/stock/${res?.["1. symbol"]}`} >
                <div className="px-2 py-1 hover:bg-gray-500" key={index} onClick={() => {
                  setInput(res?.["1. symbol"]);
                } }>
@@ -141,8 +169,9 @@ function SearchBar({placeholder, data, value, setInput}: searchProps){
                </div>
              );
               
-           })}
-         </div> */}
+           })
+          }
+         </div> }
     </>)
 }
 

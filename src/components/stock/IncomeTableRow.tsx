@@ -1,5 +1,5 @@
 import { AnnualIncomeReport } from "../../types/Income"
-import { formatNumber } from "../../utils/api"
+import { formatNumber } from "../../utils/localApi"
 
 interface PLTableRowProp{
     label : string

@@ -1,4 +1,4 @@
-import { getWatchlistDataById } from "../../utils/api";
+import { getWatchlistDataById } from "../../utils/localApi";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface watchlistNavProps {

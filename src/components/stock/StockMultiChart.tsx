@@ -180,7 +180,9 @@ function StockMultiChart({month,dailyData,chartTabIndex}: stockProp){
     return(<>
     <div id="stock-chart" className="py-10 text-white pb-10">
         <div className="px-6 pt-6">
-        <div className="chart-container" style={{height:"55vh", width:"90vw"}}>
+        <div className="chart-container" style={{height:"55vh", 
+        // width:"90vw"
+        }}>
           {/* @ts-ignore */}
         <Chart type='bar' options={options} data={data} style={{color:"white"}}/>
         </div>

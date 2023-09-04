@@ -1,5 +1,5 @@
 import { AnnualReport, BalanceSheet } from "../../types";
-import { formatNumber } from "../../utils/api";
+import { formatNumber } from "../../utils/localApi";
 interface BSTableRowProp {
   label: string;
   annualReportData: AnnualReport[];

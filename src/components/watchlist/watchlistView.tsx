@@ -1,6 +1,6 @@
 import SecondaryNavigation from "./SecondaryNavigation";
 import { useParams, useNavigate } from "react-router-dom";
-import { getWatchlistDataById, getStocksDataFromWatchlist, formatNumber } from "../../utils/api";
+import { getWatchlistDataById, getStocksDataFromWatchlist, formatNumber } from "../../utils/localApi";
 
 
 

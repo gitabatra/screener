@@ -4,20 +4,22 @@ import SecondaryNavigation from "./SecondaryNavigation";
 import {
   getStocksDataFromWatchlist,
   deleteStockFromWatchlist,
-  getCompanyOverviewDataBySymbol1,
   insertStockToWatchlist,
-} from "../../utils/api";
+} from "../../utils/localApi";
+
+import {  getCompanyOverviewDataBySymbol } from "../../utils/api";
 import { CompanyOverviewData, Stock } from "../../types";
 // import SearchBar from "../Home/SearchBar";
 import { Company } from "../../types";
 import { stockTicker } from "../../utils/api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StockData from "./StockData";
 import Search from "../Home/Search";
 
 function ManageStocks() {
   const [input, setInput] = useState("");
   const [filteredList, setFilteredList] = useState<Company[]>([]);
+  const [result, setResult] = useState<CompanyOverviewData>();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -33,6 +35,45 @@ function ManageStocks() {
     });
     setFilteredStockList(filteredStocks);
   };
+
+  // function fetchCompnayData(input: string){
+  //   console.log("---Input while fetching data: ",input);
+  //   const data = getCompanyOverviewDataBySymbol(input);
+  //   data
+  //     .then((result) => {
+  //       console.log("Data: ", result);
+  //       setResult(result);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+
+  // const addStock = (stockId: string) =>{
+  //   fetchCompnayData(stockId);
+  //   console.log("DATA in MANAGE Companies----",result)
+  // }
+
+  useEffect(() => {
+    async function startFetching() {
+      console.log("Input: ",input)
+     // setResult(null);
+      const result = await getCompanyOverviewDataBySymbol(input);
+      if (!ignore) {
+        setResult(result);
+      }
+    }
+
+    let ignore = false;
+    void startFetching();
+    return () => {
+      ignore = true;
+    }
+  }, [input]);
+
+  // if(!result){
+  //   return <div></div>
+  // }
 
   return (
     <>
@@ -65,13 +106,15 @@ function ManageStocks() {
                               key={index}
                               onClick={() => {
                                 setInput(value?.symbol);
-                                const result = getCompanyOverviewDataBySymbol1(
-                                  value?.symbol
-                                );
+                               // addStock(value?.symbol);
+                                // const result = fetchCompanyOverviewData(
+                                //   value?.symbol
+                                // );
+                                console.log("DATA in MANAGE Companies----",input,result)
                                 insertStockToWatchlist(
                                   id as string,
                                   value?.symbol,
-                                  [result as CompanyOverviewData] 
+                                  [result] 
                                 );
                                 setFilteredStockList(
                                   getStocksDataFromWatchlist(id as string)

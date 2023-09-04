@@ -16,6 +16,7 @@ interface searchProps
 }
 
 function Search({placeholder, data, value, setFilteredList}: searchProps){
+  
     // const fetchTicker=(value: string)=> {
   //   const apiKey = 'EGAI68J68Y9G55QE'
   //   const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${apiKey}`
@@ -31,6 +32,7 @@ function Search({placeholder, data, value, setFilteredList}: searchProps){
   //     setTickerData(result);
   //   });
   // }
+
 
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) =>{
