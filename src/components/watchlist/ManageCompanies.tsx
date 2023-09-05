@@ -19,7 +19,7 @@ import Search from "../Home/Search";
 function ManageStocks() {
   const [input, setInput] = useState("");
   const [filteredList, setFilteredList] = useState<Company[]>([]);
-  const [result, setResult] = useState<CompanyOverviewData>();
+  const [result, setResult] = useState<CompanyOverviewData | undefined>();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -36,40 +36,55 @@ function ManageStocks() {
     setFilteredStockList(filteredStocks);
   };
 
-  // function fetchCompnayData(input: string){
-  //   console.log("---Input while fetching data: ",input);
-  //   const data = getCompanyOverviewDataBySymbol(input);
-  //   data
-  //     .then((result) => {
-  //       console.log("Data: ", result);
-  //       setResult(result);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
-
-  // const addStock = (stockId: string) =>{
-  //   fetchCompnayData(stockId);
-  //   console.log("DATA in MANAGE Companies----",result)
-  // }
-
-  useEffect(() => {
-    async function startFetching() {
-      console.log("Input: ",input)
-     // setResult(null);
-      const result = await getCompanyOverviewDataBySymbol(input);
-      if (!ignore) {
+  function fetchCompnayData(input: string){
+    console.log("---Input while fetching data: ",input);
+    const data = getCompanyOverviewDataBySymbol(input);
+    data
+      .then((result) => {
+        console.log("Data: ", result);
+        setInput(input);
         setResult(result);
-      }
+       // return result
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+console.log("and Input is: ",input)
+  const addStock = (stockId: string) =>{
+    fetchCompnayData(stockId);
+  }
+  useEffect(() => {
+    // run something every time name changes
+    if(input) {
+    fetchCompnayData(input)
+    if(result!== undefined || result!== null){
+      console.log("Result is not undefined or null");
+      insertStockToWatchlist(
+        id as string,
+        input,
+        [result as CompanyOverviewData] 
+      );
     }
+  }
+  }, [id, input, result]); // <-- dependency array
 
-    let ignore = false;
-    void startFetching();
-    return () => {
-      ignore = true;
-    }
-  }, [input]);
+  // useEffect(() => {
+  //   async function startFetching() {
+  //     console.log("Input: ",input)
+  //    // setResult(null);
+  //     const result = await getCompanyOverviewDataBySymbol(input);
+  //     if (!ignore) {
+  //       setResult(result);
+  //     }
+  //   }
+
+  //   let ignore = false;
+  //   void startFetching();
+  //   return () => {
+  //     ignore = true;
+  //   }
+  // }, [input]);
 
   // if(!result){
   //   return <div></div>
@@ -104,18 +119,19 @@ function ManageStocks() {
                             <div
                               className="px-2 py-1 hover:bg-gray-500"
                               key={index}
+                              onChange={()=>{setInput(value?.symbol)}}
                               onClick={() => {
-                                setInput(value?.symbol);
-                               // addStock(value?.symbol);
+                               // setInput(value?.symbol);
+                                addStock(value?.symbol);
                                 // const result = fetchCompanyOverviewData(
                                 //   value?.symbol
                                 // );
-                                console.log("DATA in MANAGE Companies----",input,result)
-                                insertStockToWatchlist(
-                                  id as string,
-                                  value?.symbol,
-                                  [result] 
-                                );
+                                console.log("DATA in MANAGE Companies----",input)
+                                // insertStockToWatchlist(
+                                //   id as string,
+                                //   input,
+                                //   [result] 
+                                // );
                                 setFilteredStockList(
                                   getStocksDataFromWatchlist(id as string)
                                 );
@@ -132,23 +148,28 @@ function ManageStocks() {
                   )}
                 </div>
               </div>
-              <div className="py-4 px-4">
+              <div className="py-4 px-2">
                 <button className="btn bg-sky-600 text-xl px-5 py-3 rounded hover:bg-sky-800 ml-3" onClick={()=>{navigate(`/watchlist/${id as string}`)}}>
                   Done
                 </button>
               </div>
             </form>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 py-5 px-5">
-              {filteredStockList.map((stock, index) => {
-                return (
-                  <StockData
-                    key={index}
-                    stock={stock as unknown as Stock}
-                    deleteStock={deleteStock}
-                  />
-                );
-              })}
-            </div>
+            {/* {result ?  */}
+             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 py-5 px-5">
+             {filteredStockList.map((stock, index) => {
+               return (
+                 <StockData
+                   key={index}
+                   stock={stock as unknown as Stock}
+                   deleteStock={deleteStock}
+                 />
+               );
+             })}
+           </div>
+           {/* :
+           <div></div>}
+            */}
+
           </div>
         </div>
       </div>

@@ -53,7 +53,7 @@ export function deleteStockFromWatchlist(watchlistId: string, stockId: string) {
 
 export function insertStockToWatchlist(watchlistId: string, symbol: string, result: CompanyOverviewData[]) {
     const watchlists = getDataFromLocalStorage();
-    console.log("Passed Watchlist ID: ",watchlistId,"and result is: ",result);
+    console.log("Passed Watchlist ID: ",watchlistId,"and ****** result is: ",result);
     const watchlistData = getWatchlistDataById(watchlistId);
     console.log(watchlistData,watchlistData?.[0]?.wlData);
 

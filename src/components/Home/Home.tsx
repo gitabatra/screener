@@ -7,13 +7,13 @@ import {stockTicker} from "../../utils/api";
 import { 
   //useEffect, 
   useState } from "react";
-// import Search from "./Search";
-// import SearchList from "./SearchList";
+import Search from "./Search";
+import SearchList from "./SearchList";
 import SearchBar from "./SearchBar";
 
 function HomeSearch() {
   const [input,setInput] = useState("");
-  //const [filteredList, setFilteredList] = useState<Company[]>([]);
+  const [filteredList, setFilteredList] = useState<Company[]>([]);
   // const [stockTicker,setStockTicker] = useState();
 
   // function fetchStocks(input: string){
@@ -50,11 +50,11 @@ function HomeSearch() {
               Screening tool for investors
             </h4>
           </div>
-          {/* <Search placeholder="Search for a company..." data={stockTicker as Company[]} value={input} setFilteredList={setFilteredList}/>
-          <SearchList filteredList={filteredList} setInput={setInput} /> */}
-         <SearchBar placeholder="Search for a company..." data={stockTicker as Company[]} value={input} setInput={setInput}
+          <Search placeholder="Search for a company..." data={stockTicker as Company[]} value={input} setFilteredList={setFilteredList}/>
+          <SearchList filteredList={filteredList} setInput={setInput} />
+         {/* <SearchBar placeholder="Search for a company..." data={stockTicker as Company[]} value={input} setInput={setInput}
          // setSymbol={Symbol.bind(null)}
-         />
+         /> */}
          <PopularStocks />
         </div>
       </div>
