@@ -139,3 +139,15 @@ export function formatNumber(num: number, precision = 2) {
 
   return num;
 }
+
+export const getMonthDate = (index: number) =>{
+  const date = new Date();
+  date.setMonth(date.getUTCMonth() - index);
+  return date
+}
+
+export const getYearDate = (index: number) =>{
+  const date = new Date();
+  date.setFullYear(date.getUTCFullYear() - index);
+  return date
+}

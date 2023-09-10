@@ -126,19 +126,9 @@ async function getBalanceSheet(company: string) {
       const res = await wrappedStockOverviewData(value);
       const result = res as CompanyOverviewData
       console.log("Data from aPI: ",result);
+
       return {
-              Symbol: result.Symbol,
-              AssetType: result.AssetType,
-              Name: result.Name,
-              Description: result.Description,
-              CIK: result.CIK,
-              Exchange: result.Exchange,
-              Currency: result.Currency,
-              Country: result.Country,
-              Sector: result.Sector,
-              Industry: result.Industry,
-              Address: result.Address,
-              FiscalYearEnd: result.FiscalYearEnd,
+              ...result,
               LatestQuarter: (new Date(result.LatestQuarter)),
               MarketCapitalization: Number(result.MarketCapitalization),
               EBITDA: Number(result.EBITDA),
@@ -752,26 +742,26 @@ function getTimeSeries(item: StockDailyData){
       return result 
 }
 
-export function getDailyStockDataBySymbol1(value: string) {
-    console.log("Get Company info data from API file.....");
-    const result = dailyStockData.filter((stock) => {
-      return stock?.["Meta Data"]?.["2. Symbol"] === value;
-    });
+// export function getDailyStockDataBySymbol1(value: string) {
+//     console.log("Get Company info data from API file.....");
+//     const result = dailyStockData.filter((stock) => {
+//       return stock?.["Meta Data"]?.["2. Symbol"] === value;
+//     });
    
-    const output = result.map((item) => {
-    console.log("ITEM: ", item);
-    const resultObject = getTimeSeries(item as unknown as StockDailyData);
-    return {
-        "Meta Data":  {
-            "1. Information": item["Meta Data"]["1. Information"],
-            "2. Symbol": item["Meta Data"]["2. Symbol"],
-            "3. Last Refreshed": (new Date(item["Meta Data"]["2. Symbol"])),
-            "4. Output Size": item["Meta Data"]["2. Symbol"],
-            "5. Time Zone": item["Meta Data"]["2. Symbol"],
-          },
-        "Time Series (Daily)": resultObject
-    }
-    });
-    console.log("-------------OUTPUT Daily data in API : ",output);
-    return output as unknown as StockDailyData[]
-  }
+//     const output = result.map((item) => {
+//     console.log("ITEM: ", item);
+//     const resultObject = getTimeSeries(item as unknown as StockDailyData);
+//     return {
+//         "Meta Data":  {
+//             "1. Information": item["Meta Data"]["1. Information"],
+//             "2. Symbol": item["Meta Data"]["2. Symbol"],
+//             "3. Last Refreshed": (new Date(item["Meta Data"]["2. Symbol"])),
+//             "4. Output Size": item["Meta Data"]["2. Symbol"],
+//             "5. Time Zone": item["Meta Data"]["2. Symbol"],
+//           },
+//         "Time Series (Daily)": resultObject
+//     }
+//     });
+//     console.log("-------------OUTPUT Daily data in API : ",output);
+//     return output as unknown as StockDailyData[]
+//   }

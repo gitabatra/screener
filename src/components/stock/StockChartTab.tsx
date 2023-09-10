@@ -3,7 +3,7 @@ import { StockDailyData, TimeSeriesDaily } from "../../types";
 import StockMultiChart from "./StockMultiChart";
 import {getMonthDate, 
     // getChartDataByMonth, getChartDataByYear, getDailyStockChartData, 
-    getYearDate} from "./chartDataAPI";
+    getYearDate} from "../../utils/localApi";
 // import TestChart from "./TestChart";
 
 interface stockProp{

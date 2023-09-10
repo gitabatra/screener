@@ -1,7 +1,3 @@
-
-
-// import { StockDailyData } from "../../types";
-
 import { TimeSeriesDaily } from "../../types";
 import {
     Chart as ChartJS,

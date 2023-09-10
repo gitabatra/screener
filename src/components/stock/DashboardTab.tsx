@@ -6,8 +6,6 @@ import { useEffect, useState } from "react";
 import { HashLink } from "react-router-hash-link";
 import { useParams } from "react-router-dom";
 
-// import StockChart from "./StockChart";
-
 import {
   getCompanyOverviewDataBySymbol,
   getDailyStockDataBySymbol,
@@ -18,6 +16,7 @@ import {
 
 import StockChartTab from "./StockChartTab";
 import { BalanceSheet, CompanyOverviewData, IncomeSheet, StockDailyData } from "../../types";
+import LoadSpinner from "./LoadSpinner";
 
 
 function DashboardTab() {
@@ -119,26 +118,11 @@ function DashboardTab() {
     }
   }, [id]);
 
-// console.log("------balanceSheetData data in DASHBOARD: ",balanceSheetData);
-// console.log("------INCOMESheetData data in DASHBOARD: ",incomeData);
-  const ready =
-    (result!== null && result!== undefined) &&
-    (chartData!== null && chartData!== undefined) &&
-    (balanceSheetData!== null && balanceSheetData!== undefined) &&
-    (incomeData!== null && incomeData!== undefined)
+  // const ready = result && chartData && balanceSheetData && incomeData
 
-  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-  console.log(`Data is ready?: ${ready}`);
-
-  if (!ready) {
-    return 
-      ( <div className="w-full flex justify-center items-center h-screen">
-          <div className="flex items-center justify-center ">
-              <div className="w-60 h-60 border-t-4 border-b-8 border-sky-500 rounded-full animate-spin"></div>
-          </div>
-  </div>);
-  }
-
+  // // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  // console.log(`Data is ready?: ${ready}`);
+  
   return (
     <>
       <div className="py-10 text-white pb-10">
@@ -167,20 +151,21 @@ function DashboardTab() {
         >
      
           {/* <StockInfo id={id as string} result={result ? [result] : []} /> */}
-          <StockInfo id={id as string} result={result as unknown as CompanyOverviewData} />
+          {result ? <StockInfo id={id as string} result={result as unknown as CompanyOverviewData} /> : <LoadSpinner />}
         </div>
         <div id="stock-chart-tab" className="text-white mt-2 z-[-1]">
-          <StockChartTab id={id as string} chartData={chartData} />
+          {chartData ? <StockChartTab id={id as string} chartData={chartData} /> : <LoadSpinner /> }
+          
         </div>
         <div id="stock-quarterly-results" className="text-white mt-15 z-[1]">
-          <QuarterlyResult id={id as string} quarterData={incomeData} />
+          {incomeData ? <QuarterlyResult id={id as string} quarterData={incomeData} /> : <LoadSpinner /> }
         </div>
         <div id="stock-profit-loss" className="text-white z-[1]">
           {/* <Test id={id as string} annualIncomeData={income} /> */}
-          <ProfitLoss id={id as string} annualIncomeData={incomeData} />
+          {incomeData ? <ProfitLoss id={id as string} annualIncomeData={incomeData} /> : <LoadSpinner /> }
         </div>
         <div id="stock-balance-sheet" className="text-white z-[1]">
-          <StockBalanceSheet id={id as string} annualData={balanceSheetData} />
+          {balanceSheetData ? <StockBalanceSheet id={id as string} annualData={balanceSheetData} /> : <LoadSpinner /> }
         </div>
       </div>
     </>

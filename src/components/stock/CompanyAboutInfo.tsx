@@ -17,11 +17,11 @@ function CompanyAboutInfo({description,sector,industry}:CompanyAboutInfoProp){
         <a href="#" className={`text-sky-600 uppercase py-4`}  onClick={()=>{setShowMore(true)}} hidden= {showMore ? true : false}>Read More</a>
         </div>
         </div>
-        <div className="flex justify-between text-lg py-3 px-2 bg-gray-700 rounded mb-4">
+        <div className="flex justify-between text-md py-3 px-2 bg-gray-700 rounded mb-4">
           <span className="text-slate-500 uppercase"> Sector</span>
             <span className="text-zinc-300 text-md">{sector}</span>
         </div>
-        <div className="flex justify-between text-lg py-3 px-2 bg-gray-700 rounded">
+        <div className="flex justify-between text-sm py-3 px-2 bg-gray-700 rounded">
           <span className="text-slate-500 uppercase"> Industry</span>
             <span className="text-zinc-300 text-md">{industry}</span>
         </div>

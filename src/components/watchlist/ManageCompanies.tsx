@@ -119,9 +119,9 @@ console.log("and Input is: ",input)
                             <div
                               className="px-2 py-1 hover:bg-gray-500"
                               key={index}
-                              onChange={()=>{setInput(value?.symbol)}}
+                              // onChange={()=>{setInput(value?.symbol)}}
                               onClick={() => {
-                               // setInput(value?.symbol);
+                                setInput(value?.symbol);
                                 addStock(value?.symbol);
                                 // const result = fetchCompanyOverviewData(
                                 //   value?.symbol
@@ -136,7 +136,7 @@ console.log("and Input is: ",input)
                                   getStocksDataFromWatchlist(id as string)
                                 );
                                 setFilteredList([]);
-                                setInput("");
+                                // setInput("");
                               }}
                             >
                               {value?.name}
