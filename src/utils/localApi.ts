@@ -111,15 +111,18 @@ export const getStockNameInfo = (id: string) => {
 
 export const getStocksDataFromWatchlist = (id: string) => {
   const watchlistData = getWatchlistDataById(id);
+  const stockData = watchlistData?.[0]?.wlData;
+  return stockData ? Object.values(stockData) : [];
+
   // const wlength: number = Object.keys(watchlistData[0].wlData).length;
-  if (JSON.stringify(watchlistData?.[0]?.wlData) === "[]") {
-    console.log("stock data is not present");
-    return [];
-  } else {
-    const stocksData = Object.values(watchlistData?.[0]?.wlData as Stock[]);
-    console.log("stocks: ", stocksData);
-    return stocksData;
-  }
+  // if (JSON.stringify(watchlistData?.[0]?.wlData) === "[]") {
+  //   console.log("stock data is not present");
+  //   return [];
+  // } else {
+  //   const stocksData = Object.values(watchlistData?.[0]?.wlData as Stock[]);
+  //   console.log("stocks: ", stocksData);
+  //   return stocksData;
+  // }
 };
 
 export function formatNumber(num: number, precision = 2) {

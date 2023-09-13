@@ -18,6 +18,9 @@ import {
   Route
 } from "react-router-dom";
 
+import { WatchlistContextProvider } from "./Context/WatchlistContext";
+import { PortfolioProvider } from "./Context/PortfolioContext";
+
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path="/" element={<RootLayout />}>
@@ -34,7 +37,11 @@ const router = createBrowserRouter(createRoutesFromElements(
 function App() {
   return (
     <>
-    <RouterProvider router={router} />
+    <WatchlistContextProvider>
+      <PortfolioProvider>
+        <RouterProvider router={router} />
+     </PortfolioProvider>
+    </WatchlistContextProvider>
     </>
   )
 }

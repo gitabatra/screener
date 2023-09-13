@@ -1,7 +1,8 @@
 import CreatePortfolio from "./CreatePortfolio";
 
 function Portfolio () {
-    return (<div>
+    return (
+       <div>
         <div className="container mx-auto items-center">
         <div className="mt-20">
             
@@ -11,7 +12,8 @@ function Portfolio () {
         <CreatePortfolio />
         </div>
         </div>
-    </div>);
+    </div>
+    );
 }
 
 export default Portfolio;

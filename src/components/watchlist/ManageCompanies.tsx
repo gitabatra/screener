@@ -12,16 +12,32 @@ import { CompanyOverviewData, Stock } from "../../types";
 // import SearchBar from "../Home/SearchBar";
 import { Company } from "../../types";
 import { stockTicker } from "../../utils/api";
-import { useEffect, useState } from "react";
+import { 
+  useEffect,
+  // useContext,
+  //  useEffect,
+   useState } from "react";
 import StockData from "./StockData";
 import Search from "../Home/Search";
+// import { WatchlistContext } from "../Context/WatchlistContext";
+
+
+
 
 function ManageStocks() {
-  const [input, setInput] = useState("");
-  const [filteredList, setFilteredList] = useState<Company[]>([]);
-  const [result, setResult] = useState<CompanyOverviewData | undefined>();
+
   const { id } = useParams<{ id: string }>();
+
+  console.log("MANAGE COMPANIES: ", id);
+
+  // const { selectedStock, filteredStockList, result, id, addStock, deleteStock} = useContext(WatchlistContext);
+
+  const [filteredList, setFilteredList] = useState<Company[]>([]);
+  const [selectedStock, setSelectedStock] = useState("");
+  const [result, setResult] = useState<CompanyOverviewData | undefined>();
+
   const navigate = useNavigate();
+
 
   const [filteredStockList, setFilteredStockList] = useState<Stock[]>(
     getStocksDataFromWatchlist(id as string)
@@ -42,7 +58,7 @@ function ManageStocks() {
     data
       .then((result) => {
         console.log("Data: ", result);
-        setInput(input);
+        setSelectedStock(input);
         setResult(result);
        // return result
       })
@@ -50,45 +66,38 @@ function ManageStocks() {
         console.log(error);
       });
   }
-console.log("and Input is: ",input)
+console.log("and Input is: ",selectedStock)
   const addStock = (stockId: string) =>{
     fetchCompnayData(stockId);
+    console.log("Add STock to WL: ",result);
+    if(result){
+      insertStockToWatchlist(
+        id as string,
+        selectedStock,
+        [result] 
+      );
+    }
+    setFilteredStockList(
+      getStocksDataFromWatchlist(id as string)
+    );
   }
+
+
   useEffect(() => {
     // run something every time name changes
-    if(input) {
-    fetchCompnayData(input)
+    if(selectedStock!=="") {
+    fetchCompnayData(selectedStock)
     if(result!== undefined || result!== null){
       console.log("Result is not undefined or null");
       insertStockToWatchlist(
         id as string,
-        input,
+        selectedStock,
         [result as CompanyOverviewData] 
       );
     }
   }
-  }, [id, input, result]); // <-- dependency array
+}, [id, selectedStock, result]); // <-- dependency array
 
-  // useEffect(() => {
-  //   async function startFetching() {
-  //     console.log("Input: ",input)
-  //    // setResult(null);
-  //     const result = await getCompanyOverviewDataBySymbol(input);
-  //     if (!ignore) {
-  //       setResult(result);
-  //     }
-  //   }
-
-  //   let ignore = false;
-  //   void startFetching();
-  //   return () => {
-  //     ignore = true;
-  //   }
-  // }, [input]);
-
-  // if(!result){
-  //   return <div></div>
-  // }
 
   return (
     <>
@@ -103,12 +112,10 @@ console.log("and Input is: ",input)
               <div className="mx-auto flex-inline items-center justify-center px-4 py-4 text-xl">
                 <p className="text-md mr-5 pb-2">Company Name </p>
                 <div className="w-full">
-                  {/* <SearchBar placeholder="Search for a company..." data={stockTicker as Company[]} value={input} setInput={setInput} 
-             /> */}
                   <Search
                     placeholder="Search for a company..."
                     data={stockTicker as Company[]}
-                    value={input}
+                    value={selectedStock}
                     setFilteredList={setFilteredList}
                   />
                   {filteredList.length !== 0 && (
@@ -119,24 +126,10 @@ console.log("and Input is: ",input)
                             <div
                               className="px-2 py-1 hover:bg-gray-500"
                               key={index}
-                              // onChange={()=>{setInput(value?.symbol)}}
                               onClick={() => {
-                                setInput(value?.symbol);
                                 addStock(value?.symbol);
-                                // const result = fetchCompanyOverviewData(
-                                //   value?.symbol
-                                // );
-                                console.log("DATA in MANAGE Companies----",input)
-                                // insertStockToWatchlist(
-                                //   id as string,
-                                //   input,
-                                //   [result] 
-                                // );
-                                setFilteredStockList(
-                                  getStocksDataFromWatchlist(id as string)
-                                );
+                                console.log("DATA in MANAGE Companies----",selectedStock)
                                 setFilteredList([]);
-                                // setInput("");
                               }}
                             >
                               {value?.name}

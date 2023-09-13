@@ -1,57 +1,59 @@
-import InitialPick from "./InitialPick";
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
-import {getPortfolioFromLocalStorage} from "../../utils/localApi"
-import { Portfolio } from "../../types/Portfolio";
 import { PortfolioContext } from "../Context/PortfolioContext";
+import InitialPick from "./InitialPick";
+import { useContext } from "react";
+
+
 
 const inputStyle = `bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-4 p-2.5  
 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`
 
 function CreatePortfolio(){
-  const [portfolios, setPortfolio] = useState(getPortfolioFromLocalStorage());
-  const [details, setDetails] = useState({
-    stockName: "",
-    shares: 0,
-    price:0,
-    dateOfPurchase:""
-  })
+  const { portfolios,handleChange, addStocks} = useContext(PortfolioContext);
+//   const [portfolios, setPortfolio] = useState(getPortfolioFromLocalStorage());
+//   const [details, setDetails] = useState({
+//     stockName: "",
+//     shares: 0,
+//     price:0,
+//     dateOfPurchase:""
+//   })
 
-  console.log("Portfolio",portfolios);
+//   console.log("Portfolio",portfolios);
  
-  function handleChange(event: ChangeEvent<HTMLInputElement>){
-    const {name,value} = event.target;
-    console.log(name,value);
-    setDetails((prevValue) =>{
-      return({...prevValue,[name]: value})
-    })
-}
-console.log("Details--",details);
+//   function handleChange(event: ChangeEvent<HTMLInputElement>){
+//     const {name,value} = event.target;
+//     console.log(name,value);
+//     setDetails((prevValue) =>{
+//       return({...prevValue,[name]: value})
+//     })
+// }
+// console.log("Details--",details);
 
-const addStocks = (event: MouseEvent<HTMLButtonElement>) =>{
-  event.preventDefault();
-  console.log("Portfolio: ",portfolios);
-  const stockId = "pf-st-20230727-" + (portfolios.length).toString();
-    const portfolio: Portfolio = {
-      id: stockId,
-      stockName: details.stockName,
-      shares: details.shares,
-      price: details.price,
-      dateOfPurchase: (details.dateOfPurchase)
-    }
-    setPortfolio([...portfolios, portfolio]);
-}
+// const addStocks = (event: MouseEvent<HTMLButtonElement>) =>{
+//   event.preventDefault();
+//   console.log("Portfolio: ",portfolios);
+//   const stockId = "pf-st-20230727-" + (portfolios.length).toString();
+//     const portfolio: Portfolio = {
+//       id: stockId,
+//       stockName: details.stockName,
+//       shares: details.shares,
+//       price: details.price,
+//       dateOfPurchase: (details.dateOfPurchase)
+//     }
+//     setPortfolio([...portfolios, portfolio]);
+// }
 
-const addPortfolio = (event: MouseEvent<HTMLButtonElement>) => {
-  event.preventDefault();
-  console.log("Details--",details);
-}
+// const addPortfolio = (event: MouseEvent<HTMLButtonElement>) => {
+//   event.preventDefault();
+//   console.log("Details--",details);
+// }
 
 
-useEffect(()=>{
-  localStorage.setItem("portfolio",JSON.stringify(portfolios));
-},[portfolios]);
+// useEffect(()=>{
+//   localStorage.setItem("portfolio",JSON.stringify(portfolios));
+// },[portfolios]);
 
     return(<>
+    
      <div className="items-center justify-center py-10">
             <form className="text-left">
             {/* <div className="flex items-center justify-left px-5 py-4">
@@ -133,19 +135,19 @@ useEffect(()=>{
             onClick={addStocks}
         >Save</button>
       </div>
-      <PortfolioContext.Provider value={{portfolios}}>
+     
       <InitialPick portfolios={portfolios}/>
-      </PortfolioContext.Provider>
+     
            
 
             <div className="float-right pr-4 pb-4">
               <button className="btn bg-sky-600 text-xl px-5 py-3 rounded hover:bg-sky-800 ml-3" 
-              onClick={addPortfolio}
+              // onClick={addPortfolio}
               >Create Portfolio</button>
             </div>
             </form>
             </div>
-
+       
     </>)
 }
 
