@@ -20,16 +20,3 @@ function StockDashboard() {
 }
 
 export default StockDashboard;
-
-
-
-
-// export const chartDetailsLoader =async () => {
-//   const res = await fetch("../../../data/IBMdailyData.json");
-//   return res.json()
-// }
-
-// export const balanceSheetLoader =async () => {
-//   const res = await fetch("../../../data/balanceSheet.json");
-//   return res.json()
-// }

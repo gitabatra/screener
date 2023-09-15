@@ -3,12 +3,12 @@ import { StockDailyData, TimeSeriesDaily } from "../../types";
 import StockMultiChart from "./StockMultiChart";
 import {getMonthDate, 
     // getChartDataByMonth, getChartDataByYear, getDailyStockChartData, 
-    getYearDate} from "./chartDataAPI";
+    getYearDate} from "../../utils/localApi";
 // import TestChart from "./TestChart";
 
 interface stockProp{
     id: string,
-    chartData: StockDailyData[]
+    chartData: StockDailyData
    }
 
 function StockChartTab({id,chartData}: stockProp){
@@ -17,13 +17,14 @@ function StockChartTab({id,chartData}: stockProp){
 
     const monthDate =  getMonthDate(1);
     const sixmonthDate =  getMonthDate(6);
-    console.log("Six month Date: ",sixmonthDate);
+    // console.log("Six month Date: ",sixmonthDate);
     const oneYearDate = getYearDate(1);
     const threeYearDate = getYearDate(3);
     const fiveYearDate = getYearDate(5);
-    const dailyData: TimeSeriesDaily[] = chartData[0]["Time Series (Daily)"];
+    const dailyData: TimeSeriesDaily[] = chartData["Time Series (Daily)"];
+    console.log("Daily TimeSeries Data in ChartTab: ",dailyData);
 
-    console.log("------six month dates:",sixmonthDate);
+    // console.log("------six month dates:",sixmonthDate);
     // console.log("Report after 2020", Object.keys(dailyData));
     const keys = Object.keys(dailyData)
     const month: string[] = []

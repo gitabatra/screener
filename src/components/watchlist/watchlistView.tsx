@@ -1,61 +1,15 @@
-// import { loader } from ".";
 import SecondaryNavigation from "./SecondaryNavigation";
 import { useParams, useNavigate } from "react-router-dom";
-import { getWatchlistDataById, getStocksDataFromWatchlist, getStockNameInfo } from "../../utils/api";
-import { Stock } from "../../types";
-
-interface HeaderProp{
-  header: []
-}
-
-function WatclistTableHeader({header}:HeaderProp) {
-  console.log("headerInfo: ",header);
-  return (
-    <>
-      <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <tr>
-          {header.map((name, index) => {
-            return (
-              <th scope="col" className="px-6 py-3" key={index}>
-                {" "}
-                {name}{" "}
-              </th>
-            );
-          })}
-        </tr>
-      </thead>
-    </>
-  );
-}
+import { getWatchlistDataById, getStocksDataFromWatchlist, formatNumber } from "../../utils/localApi";
 
 
-interface StockProp {
-  stock: Stock
-}
 
-function WatchlistTableRow({stock}:StockProp) {
-  console.log("......Stocks....",stock);
-  return (
-    <>
-      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-        {Object.entries(stock).map(([key,value]) => {
-          return (
-            <td className="px-6 py-4" key={key}>
-              {(value)}
-            </td>
-          );
-        })}
-      </tr>
-    </>
-  );
-}
 
 function WatchlistView() {
   const { id } = useParams<{id: string}>();
   const navigate = useNavigate();
   console.log("Id in Watchlist-view: ",id);
   const watchlistData = getWatchlistDataById(id as string);
-  const watchlistHeaderInfo = getStockNameInfo(id as string);
   const stocksList =  getStocksDataFromWatchlist(id as string);
 
   return (
@@ -73,19 +27,54 @@ function WatchlistView() {
           </button>
         </div>
 
+        
+
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+        { (!stocksList.length) ? 
+          <div className="text-2xl text-center">Stocks are not added to watchlist yet.</div>
+          : 
           <table className="w-full text-sm text-center text-gray-500 dark:text-gray-400">
-            {
-              (watchlistHeaderInfo?.length) ? <WatclistTableHeader header={watchlistHeaderInfo as []}/> : <caption className="text-xl">Stocks are not added. Click on Companies to add them.</caption>
-            }
-           
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+            <th scope="col" className="px-2 py-3">Stock Name</th>
+            <th scope="col" className="px-2 py-3">CMP</th>
+            <th scope="col" className="px-2 py-3">MarketCap</th>
+            <th scope="col" className="px-2 py-3">Dividend Yield</th>
+            <th scope="col" className="px-2 py-3">EPS</th>
+            <th scope="col" className="px-2 py-3">PE</th>
+            <th scope="col" className="px-2 py-3">Book value</th>
+            <th scope="col" className="px-2 py-3">Profit Margin</th>
+            <th scope="col" className="px-2 py-3">P/B Ratio</th>
+            <th scope="col" className="px-2 py-3">P/S Ratio TTM</th>
+            <th scope="col" className="px-2 py-3">ROE</th>
+            <th scope="col" className="px-2 py-3">52-Week High/Low</th>
+            </tr>
+        </thead>
             <tbody>
-              {
-                // if(stocksList)
-                stocksList.map((stock,index) => {return (<WatchlistTableRow key={index} stock={stock} />)})
-              }
+               {
+                    stocksList.map((result,index) =>{
+                        console.log("element",result)
+                        return( 
+                        <tr key={index}>
+                              <td scope="col" className="px-2 py-3">{result.stockName}</td>
+                              <td scope="col" className="px-2 py-3">{result.cmp}</td>
+                              <td scope="col" className="px-2 py-3">{formatNumber(result.marketCap)}</td>
+                              <td scope="col" className="px-2 py-3">{result.dividendYield}</td>
+                              <td scope="col" className="px-2 py-3">{result.eps}</td>
+                              <td scope="col" className="px-2 py-3">{result.pe}</td>
+                              <td scope="col" className="px-2 py-3">{result.bookValue}</td> 
+                              <td scope="col" className="px-2 py-3">{result.ProfitMargin}</td>
+                              <td scope="col" className="px-2 py-3">{result.priceToBookRatio}</td>
+                              <td scope="col" className="px-2 py-3">{result.priceToSalesRatioTTM}</td>
+                              <td scope="col" className="px-2 py-3">{result.roe}</td>
+                              <td scope="col" className="px-2 py-3">{result.weekHigh_52} / {result.weekLow_52}</td>
+                        </tr>)
+                    })
+                }
             </tbody>
           </table>
+          }
+         
         </div>
       </div>
     </>
