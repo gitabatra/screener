@@ -742,26 +742,18 @@ function getTimeSeries(item: StockDailyData){
       return result 
 }
 
-// export function getDailyStockDataBySymbol1(value: string) {
-//     console.log("Get Company info data from API file.....");
-//     const result = dailyStockData.filter((stock) => {
-//       return stock?.["Meta Data"]?.["2. Symbol"] === value;
-//     });
-   
-//     const output = result.map((item) => {
-//     console.log("ITEM: ", item);
-//     const resultObject = getTimeSeries(item as unknown as StockDailyData);
-//     return {
-//         "Meta Data":  {
-//             "1. Information": item["Meta Data"]["1. Information"],
-//             "2. Symbol": item["Meta Data"]["2. Symbol"],
-//             "3. Last Refreshed": (new Date(item["Meta Data"]["2. Symbol"])),
-//             "4. Output Size": item["Meta Data"]["2. Symbol"],
-//             "5. Time Zone": item["Meta Data"]["2. Symbol"],
-//           },
-//         "Time Series (Daily)": resultObject
-//     }
-//     });
-//     console.log("-------------OUTPUT Daily data in API : ",output);
-//     return output as unknown as StockDailyData[]
+
+// function foo() {
+//   const data = 'something, blah, foo';
+
+//   const items = data.split(',')
+
+//   const arr = []
+
+//   return arr.filter(item => item.active)
+
+//   return {
+//     symbol: items[0],
+//     active: items[7]
 //   }
+// }
