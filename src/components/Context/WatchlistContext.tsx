@@ -66,14 +66,12 @@ export interface WatchlistContextInterface {
  
 
     function addWatchlistName(watchlistName: string) {
-      // let wllength = watchlists.length
-  // if(wllength>0){
-  //   wllength = Object.keys(questionarieObject["questions"])[qlength - 1].substring(12);
-  // }
-  // let newQuestionKey = "q-20230405-0" + (parseInt(qlength) + 1);
-      console.log("Count: ",watchlists.length);
-      const watchlistId = "wl-20230727-" + (watchlists.length).toString();
-      console.log("Count: ",watchlistId,watchlists.length);
+      const lastElement = watchlists.slice(-1);
+      const lastElementKey = lastElement?.[0]?.id.substring(12);
+      const newWatchlistId = "wl-20230727-" + (parseInt(lastElementKey) + 1).toString();
+      //console.log("New ID: ",newWatchlistId);
+      const watchlistId = newWatchlistId;
+      //console.log("Count: ",watchlistId,watchlists.length);
       const watchlist: Watchlist = {
           id: watchlistId,
           wlName: watchlistName,
