@@ -9,7 +9,7 @@ import {
   useState } from "react";
 import Search from "./Search";
 import SearchList from "./SearchList";
-import SearchBar from "./SearchBar";
+// import SearchBar from "./SearchBar";
 
 function HomeSearch() {
   const [input,setInput] = useState("");

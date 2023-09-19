@@ -1,104 +1,31 @@
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import SecondaryNavigation from "./SecondaryNavigation";
-import {
-  getStocksDataFromWatchlist,
-  deleteStockFromWatchlist,
-  insertStockToWatchlist,
-} from "../../utils/localApi";
-
-import {  getCompanyOverviewDataBySymbol } from "../../utils/api";
-import { CompanyOverviewData, Stock } from "../../types";
-// import SearchBar from "../Home/SearchBar";
+import { Stock } from "../../types";
 import { Company } from "../../types";
 import { stockTicker } from "../../utils/api";
-import { 
-  useEffect,
-  // useContext,
-  //  useEffect,
-   useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import StockData from "./StockData";
 import Search from "../Home/Search";
-// import { WatchlistContext } from "../Context/WatchlistContext";
-
-
-
+import { WatchlistContext } from "../Context/WatchlistContext";
+import { getStocksDataFromWatchlist } from "../../utils/localApi";
 
 function ManageStocks() {
-
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
-  console.log("MANAGE COMPANIES: ", id);
+  // console.log("MANAGE COMPANIES: ", id);
 
-  // const { selectedStock, filteredStockList, result, id, addStock, deleteStock} = useContext(WatchlistContext);
-
+  const { selectedStock, filteredStockList, setId, addStock, deleteStock} = useContext(WatchlistContext);
   const [filteredList, setFilteredList] = useState<Company[]>([]);
-  const [selectedStock, setSelectedStock] = useState("");
-  const [result, setResult] = useState<CompanyOverviewData | undefined>();
 
-  const navigate = useNavigate();
-
-
-  const [filteredStockList, setFilteredStockList] = useState<Stock[]>(
-    getStocksDataFromWatchlist(id as string)
-  );
-
-  const deleteStock = (stockId: string) => {
-    console.log("Delete function is executing....", stockId);
-    deleteStockFromWatchlist(id as string, stockId);
-    const filteredStocks: Stock[] = filteredStockList.filter((element) => {
-      return stockId != element.stockID;
-    });
-    setFilteredStockList(filteredStocks);
-  };
-
-  function fetchCompnayData(input: string){
-    console.log("---Input while fetching data: ",input);
-    const data = getCompanyOverviewDataBySymbol(input);
-    data
-      .then((result) => {
-        console.log("Data: ", result);
-        setSelectedStock(input);
-        setResult(result);
-       // return result
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-console.log("and Input is: ",selectedStock)
-  const addStock = (stockId: string) =>{
-    fetchCompnayData(stockId);
-    console.log("Add STock to WL: ",result);
-    if(result){
-      insertStockToWatchlist(
-        id as string,
-        selectedStock,
-        [result] 
-      );
-    }
-    setFilteredStockList(
-      getStocksDataFromWatchlist(id as string)
-    );
-  }
-
+ const updatedFilteredStockList = (filteredStockList.length>0)? filteredStockList : getStocksDataFromWatchlist(id as string)
+ console.log("UPdated list: ",updatedFilteredStockList);
 
   useEffect(() => {
-    // run something every time name changes
-    if(selectedStock!=="") {
-    fetchCompnayData(selectedStock)
-    if(result!== undefined || result!== null){
-      console.log("Result is not undefined or null");
-      insertStockToWatchlist(
-        id as string,
-        selectedStock,
-        [result as CompanyOverviewData] 
-      );
-    }
-  }
-}, [id, selectedStock, result]); // <-- dependency array
-
-
+    setId(id as string);
+  }, [id, setId]);
+ 
   return (
     <>
       <div className="container mx-auto py-10">
@@ -128,7 +55,6 @@ console.log("and Input is: ",selectedStock)
                               key={index}
                               onClick={() => {
                                 addStock(value?.symbol);
-                                console.log("DATA in MANAGE Companies----",selectedStock)
                                 setFilteredList([]);
                               }}
                             >
@@ -149,7 +75,7 @@ console.log("and Input is: ",selectedStock)
             </form>
             {/* {result ?  */}
              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 py-5 px-5">
-             {filteredStockList.map((stock, index) => {
+             {updatedFilteredStockList.map((stock, index) => {
                return (
                  <StockData
                    key={index}

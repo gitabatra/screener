@@ -7,6 +7,7 @@ import ManageCompanies from "./watchlist/ManageCompanies";
 import RootLayout from "./RootLayout";
 import StockDashboard from "./stock/StockDashboard";
 
+
 import Home from "./Home/Home";
 import NotFound from "./NotFound";
 
@@ -20,6 +21,7 @@ import {
 
 import { WatchlistContextProvider } from "./Context/WatchlistContext";
 import { PortfolioProvider } from "./Context/PortfolioContext";
+import PortfolioDashboard from "./portfolio/PortfolioDashboard";
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -29,6 +31,7 @@ const router = createBrowserRouter(createRoutesFromElements(
   <Route path= {Routes.WATCHLIST_VIEW} element={ <WatchlistView />} /> 
   <Route path= {Routes.MANAGE_COMPANIES} element={ <ManageCompanies />} />
   <Route path= {Routes.PORTFOLIO} element={ <Portfolio />} />
+  <Route path= {Routes.PORTFOLIO_DASHBOARD} element={ <PortfolioDashboard />} />
   <Route path= {Routes.STOCK} element={ <StockDashboard />} />
   <Route path= {Routes.NOT_FOUND} element={<NotFound />} />
   </Route>
