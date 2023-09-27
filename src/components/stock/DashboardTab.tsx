@@ -11,6 +11,7 @@ import {
   getDailyStockDataBySymbol,
   getCompanyIncomeDataBySymbol,
   getCompanyBalanceSheetDataBySymbol,
+  getLatestPriceVolume
   //getCompanyOverviewDataBySymbol1,
 } from "../../utils/api";
 
@@ -109,12 +110,26 @@ function DashboardTab() {
       });
   }
 
+  
+  function fetchLatestPriceVolumeData(id: string){
+    const data = getLatestPriceVolume(id);
+    data
+      .then((result) => {
+        console.log("Latest PRice Volume Data: ", result);
+        //setIncomeData(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
     if(id){
       fetchCompnayData(id);
       fetchChartData(id);
       fetchBalanceSheetData(id);
       fetchIncomeSheetData(id);
+      fetchLatestPriceVolumeData(id);
     }
   }, [id]);
 

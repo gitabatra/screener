@@ -6,6 +6,7 @@ import data from "../../data/companyOverview.json";
 import dailyStockData from "../../data/companyDailySeriesData.json";
 import incomeData from "../../data/companyIncomeData.json";
 import balanceData from "../../data/companyBalanceSheet.json";
+import { PriceVolume } from "../types/PriceVolume";
 
 
 export const stockTicker = [
@@ -96,11 +97,38 @@ async function getBalanceSheet(company: string) {
             })
     })
 }
+
+async function getPriceVolumeData(company: string) {
+  const apiKey = import.meta.env.VITE_API_KEY as string
+    return new Promise((resolve, reject) => {
+        const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${company}&apikey=${apiKey}`
+
+        fetch(url)
+            .then(data => {
+                resolve(data.json())
+            })
+            .catch(error => {
+                reject(error)
+            })
+    })
+}
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     const limiter = new Bottleneck({
       minTime: (60 * 1000) / 5 ,// 5 requests per minute = 12 seconds
       maxConcurrent: 1
     })
+
+    export const wrappedPriceVolumeData = limiter.wrap(getPriceVolumeData)
+    
+    export async function getLatestPriceVolume(value: string) {
+      console.log("Get Company list data from API file.....",value);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+      const res = await wrappedPriceVolumeData(value);
+      const result = res as PriceVolume
+      console.log("---PriceVolume---",result);
+      return result
+    }
+
     
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     export const wrappedStockList = limiter.wrap(getTickers)
