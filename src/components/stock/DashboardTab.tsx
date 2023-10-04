@@ -11,11 +11,11 @@ import {
   getDailyStockDataBySymbol,
   getCompanyIncomeDataBySymbol,
   getCompanyBalanceSheetDataBySymbol,
-  //getCompanyOverviewDataBySymbol1,
+  getLatestPriceVolume
 } from "../../utils/api";
 
 import StockChartTab from "./StockChartTab";
-import { BalanceSheet, CompanyOverviewData, IncomeSheet, StockDailyData } from "../../types";
+import { BalanceSheet, CompanyOverviewData, IncomeSheet, StockDailyData, PriceVolume } from "../../types";
 import LoadSpinner from "./LoadSpinner";
 
 
@@ -23,6 +23,7 @@ function DashboardTab() {
   const { id } = useParams();
 
   const [result, setResult] = useState<CompanyOverviewData>();
+  const [priceVolumeData, setPriceVolumeData] =useState<PriceVolume>();
   const [chartData,setChartData] =useState<StockDailyData>();
   const [balanceSheetData,setBalanceSheetData] =useState<BalanceSheet>();
   const [incomeData,setIncomeData] =useState<IncomeSheet>();
@@ -109,8 +110,22 @@ function DashboardTab() {
       });
   }
 
+  
+  function fetchLatestPriceVolumeData(id: string){
+    const data = getLatestPriceVolume(id);
+    data
+      .then((result) => {
+        console.log("Latest PRice Volume Data: ", result);
+        setPriceVolumeData(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   useEffect(() => {
     if(id){
+      fetchLatestPriceVolumeData(id);
       fetchCompnayData(id);
       fetchChartData(id);
       fetchBalanceSheetData(id);
@@ -151,7 +166,7 @@ function DashboardTab() {
         >
      
           {/* <StockInfo id={id as string} result={result ? [result] : []} /> */}
-          {result ? <StockInfo id={id as string} result={result as unknown as CompanyOverviewData} /> : <LoadSpinner />}
+          {result ? <StockInfo id={id as string} result={result as unknown as CompanyOverviewData} priceVolumeData = {priceVolumeData as PriceVolume}/> : <LoadSpinner />}
         </div>
         <div id="stock-chart-tab" className="text-white mt-2 z-[-1]">
           {chartData ? <StockChartTab id={id as string} chartData={chartData} /> : <LoadSpinner /> }

@@ -35,7 +35,9 @@ export const getWatchlistsNames = (watchlist: Watchlist[]) =>{
 
 
 export function isStockAlreadyAdded(stockData: Stock[],symbol: string) {
+    console.log("----ADDED or not: ",stockData, symbol);
     const isAdded = stockData.find(stock => stock.stockID === symbol)
+    console.log("----ADDED or not: ",isAdded);
     return isAdded ? isAdded : false
 }
 
@@ -53,7 +55,7 @@ export function deleteStockFromWatchlist(watchlistId: string, stockId: string) {
 
 export function insertStockToWatchlist(watchlistId: string, symbol: string, result: CompanyOverviewData[]) {
     const watchlists = getDataFromLocalStorage();
-    console.log("Passed Watchlist ID: ",watchlistId,"and ****** result is: ",result);
+    console.log("Passed Watchlist ID: ",watchlistId,"and ****** result is: ",result,"and Symbol is: ",symbol);
     const watchlistData = getWatchlistDataById(watchlistId);
     console.log(watchlistData,watchlistData?.[0]?.wlData);
 
@@ -79,6 +81,7 @@ export function insertStockToWatchlist(watchlistId: string, symbol: string, resu
       const stockData: Stock[] | undefined = watchlistData?.[0]?.wlData
 
       const isAdded = isStockAlreadyAdded(stockData as Stock[], symbol);
+      console.log("STOCK Added or not: ",isAdded);
       if(!isAdded){
         console.log("not added..");
         watchlistData?.[0]?.wlData.push(newWLDataObject);
@@ -94,35 +97,26 @@ export const getWatchlistDataById = (id: string): Watchlist[] | null => {
   return watchList?.filter((watchlist) => watchlist.id === id) ?? null;
 };
 
-export const getStockNameInfo = (id: string) => {
-  const watchlistData: Watchlist[] | null = getWatchlistDataById(id);
-  console.log(watchlistData?.[0]);
-  const wlLength = watchlistData?.[0]?.wlData?.length;
-  if ((wlLength as number) > 0) {
-    const headerInfo = Object.keys(watchlistData?.[0]?.wlData?.[0] as Stock);
-    // console.log("Length of header: ",(watchlistData[0].wlData).length);
-    return headerInfo;
-  } else {
-    return [];
-    console.log("Length is zero");
-  }
-  // }
-};
+// export const getStockNameInfo = (id: string) => {
+//   const watchlistData: Watchlist[] | null = getWatchlistDataById(id);
+//   console.log(watchlistData?.[0]);
+//   const wlLength = watchlistData?.[0]?.wlData?.length;
+//   if ((wlLength as number) > 0) {
+//     const headerInfo = Object.keys(watchlistData?.[0]?.wlData?.[0] as Stock);
+//     // console.log("Length of header: ",(watchlistData[0].wlData).length);
+//     return headerInfo;
+//   } else {
+//     return [];
+//     console.log("Length is zero");
+//   }
+//   // }
+// };
 
 export const getStocksDataFromWatchlist = (id: string) => {
   const watchlistData = getWatchlistDataById(id);
   const stockData = watchlistData?.[0]?.wlData;
+  console.log("STOCKS DAta...",stockData);
   return stockData ? Object.values(stockData) : [];
-
-  // const wlength: number = Object.keys(watchlistData[0].wlData).length;
-  // if (JSON.stringify(watchlistData?.[0]?.wlData) === "[]") {
-  //   console.log("stock data is not present");
-  //   return [];
-  // } else {
-  //   const stocksData = Object.values(watchlistData?.[0]?.wlData as Stock[]);
-  //   console.log("stocks: ", stocksData);
-  //   return stocksData;
-  // }
 };
 
 export function formatNumber(num: number, precision = 2) {
@@ -154,3 +148,15 @@ export const getYearDate = (index: number) =>{
   date.setFullYear(date.getUTCFullYear() - index);
   return date
 }
+
+
+// export function deleteStockFromPortfolio(stock: string) {
+//   const portfolio = getPortfolioFromLocalStorage();
+//   const index = portfolio.findIndex(x => x.stockName === stock);
+//   const stockIndex = watchlists[index].wlData.findIndex(x => x.stockID === stockId)
+//   console.log("**********Indx of selected watchlist: ",index, stockIndex);
+//   const watchlistDataObj = watchlists[index].wlData;
+//   watchlistDataObj.splice(stockIndex, 1);
+//   console.log("after Assigning to  watchlist Data: ",watchlistDataObj,watchlists[index])
+//   localStorage.setItem("watchlists", JSON.stringify(watchlists));
+// }

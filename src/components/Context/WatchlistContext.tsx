@@ -1,58 +1,33 @@
-// import { createContext } from "react";
-// import { Watchlist } from "../../types";
-// import { getDataFromLocalStorage } from "../../utils/localApi";
-
-// const [watchlists, setWatchlist] = useState<Watchlist[]>(getDataFromLocalStorage())
-
-// export interface WatchlistContextData {
-//     watchlists: Watchlist[];
-//     // addWatchlistName: (name: string) => void;
-//     // deleteWatchlist: (id: string) =>void;
-//   }
-   
-//   export const WatchlistContextDefaultValue: WatchlistContextData = {
-   
-//     watchlists: getDataFromLocalStorage(),
-
-
-//   }
-   
-//   export const WatchlistContext = createContext<WatchlistContextData>(WatchlistContextDefaultValue);
-
 import { createContext, useEffect, useState } from "react";
+import { Stock, Watchlist } from "../../types";
 import { 
-  // CompanyOverviewData, Stock, 
-  Watchlist } from "../../types";
-import { 
-  // deleteStockFromWatchlist, 
+  deleteStockFromWatchlist, 
   getDataFromLocalStorage, 
-  // getStocksDataFromWatchlist, insertStockToWatchlist 
+  getStocksDataFromWatchlist, insertStockToWatchlist 
 } from "../../utils/localApi";
-// import { getCompanyOverviewDataBySymbol } from "../../utils/api";
-// import { useParams } from "react-router-dom";
+import { getCompanyOverviewDataBySymbol } from "../../utils/api";
+
 
 export interface WatchlistContextInterface {
     watchlists: Watchlist[];
     addWatchlistName: (name: string) => void;
     deleteWatchlist: (id: string) =>void;
-    // selectedStock: string;
-    // filteredStockList: Stock[];
-    // result: CompanyOverviewData | undefined;
-    // id: string | undefined;
-    // addStock:  (stockId: string) => void;
-    // deleteStock: (stockId: string) => void;
+    selectedStock: string;
+    filteredStockList: Stock[];
+    setId: (id: string) =>void;
+    addStock:  (stockId: string) => void;
+    deleteStock: (stockId: string) => void;
   }
    
   export const WatchlistContextDefaultValue: WatchlistContextInterface = {
     watchlists: getDataFromLocalStorage(),
     addWatchlistName: () => { },
     deleteWatchlist: () => { },
-    // selectedStock: "",
-    // filteredStockList: [],
-    // result: null,
-    // id: "",
-    // addStock: () => {},
-    // deleteStock: () => { }
+    selectedStock: "",
+    setId: () => {},
+    filteredStockList: [],//getStocksDataFromWatchlist(id),
+    addStock: () => {},
+    deleteStock: () => { }
   } as unknown as WatchlistContextInterface
    
   export const WatchlistContext = createContext(WatchlistContextDefaultValue);
@@ -64,16 +39,13 @@ export interface WatchlistContextInterface {
   export const WatchlistContextProvider = ({children}: WatchlistProviderProps) => {
     const [watchlists, setWatchlist] = useState(getDataFromLocalStorage())
  
-
     function addWatchlistName(watchlistName: string) {
-      // let wllength = watchlists.length
-  // if(wllength>0){
-  //   wllength = Object.keys(questionarieObject["questions"])[qlength - 1].substring(12);
-  // }
-  // let newQuestionKey = "q-20230405-0" + (parseInt(qlength) + 1);
-      console.log("Count: ",watchlists.length);
-      const watchlistId = "wl-20230727-" + (watchlists.length).toString();
-      console.log("Count: ",watchlistId,watchlists.length);
+      const lastElement = watchlists.slice(-1);
+      const lastElementKey = lastElement?.[0]?.id.substring(12);
+      const newWatchlistId = "wl-20230727-" + (parseInt(lastElementKey) + 1).toString();
+      //console.log("New ID: ",newWatchlistId);
+      const watchlistId = newWatchlistId;
+      //console.log("Count: ",watchlistId,watchlists.length);
       const watchlist: Watchlist = {
           id: watchlistId,
           wlName: watchlistName,
@@ -96,46 +68,50 @@ export interface WatchlistContextInterface {
       },[watchlists]);
       
 
-//       const { id } = useParams<{ id: string }>();
-//       const [selectedStock, setSelectedStock] = useState("");
-//       const [filteredStockList, setFilteredStockList] = useState<Stock[]>(
-//         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-//         getStocksDataFromWatchlist(id as string)
-//       );
-//       const [result, setResult] = useState<CompanyOverviewData | undefined>();
-
-//       const deleteStock = (stockId: string) => {
-//         console.log("Delete function is executing....", stockId);
-//         deleteStockFromWatchlist(id as string, stockId);
-//         const filteredStocks: Stock[] = filteredStockList.filter((element) => {
-//           return stockId != element.stockID;
-//         });
-//         setFilteredStockList(filteredStocks);
-//       };
-
-
-//   function fetchCompnayData(input: string){
-//     console.log("---Input while fetching data: ",input);
-//     const data = getCompanyOverviewDataBySymbol(input);
-//     data
-//       .then((result) => {
-//         console.log("Data: ", result);
-//         setSelectedStock(input);
-//         setResult(result);
-//        // return result
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   }
-// console.log("and Input is: ",selectedStock)
-//   const addStock = (stockId: string) =>{
-//     fetchCompnayData(stockId);
-//   }
+      const [watchlistId, setId] = useState("");
+      const [selectedStock, setSelectedStock] = useState("");
+      const [filteredStockList, setFilteredStockList] = useState<Stock[]>(
+        getStocksDataFromWatchlist(watchlistId)
+      );
+      console.log("Watchlist id in Global context: ",watchlistId, filteredStockList);
+      const deleteStock = (stockId: string) => {
+        console.log("Delete function is executing....", stockId);
+        deleteStockFromWatchlist(watchlistId, stockId);
+        const filteredStocks: Stock[] = filteredStockList.filter((element) => {
+          return stockId != element.stockID;
+        });
+        setFilteredStockList(filteredStocks);
+      };
+    
+      function fetchCompnayData(input: string){
+        console.log("---Input while fetching data: ",input);
+        const data = getCompanyOverviewDataBySymbol(input);
+        console.log("--------------Data: ", data);
+        data
+          .then((res) => {
+            insertStockToWatchlist(
+              watchlistId,
+              input,
+              [res] 
+            );
+            setFilteredStockList(
+              getStocksDataFromWatchlist(watchlistId)
+            );
+            setSelectedStock("");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    
+      const addStock = (stockId: string) =>{
+        setSelectedStock(stockId);
+        fetchCompnayData(stockId);
+      }
 
     return (
       <WatchlistContext.Provider value={{ watchlists, addWatchlistName, deleteWatchlist, 
-      // selectedStock, filteredStockList, result, id, addStock, deleteStock 
+      selectedStock, filteredStockList, setId, addStock, deleteStock 
       }}>
         {children}
       </WatchlistContext.Provider>

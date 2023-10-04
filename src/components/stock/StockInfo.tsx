@@ -7,6 +7,7 @@ import {
 } from "../../utils/localApi";
 import { WatchlistContext } from "../Context/WatchlistContext";
 import CompanyAboutInfo from "./CompanyAboutInfo";
+import { PriceVolume } from "../../types/PriceVolume";
 
 
 
@@ -26,9 +27,10 @@ function StockGridData({label, value}: StockGridProp){
 interface StockProp {
   id: string;
   result: CompanyOverviewData;
+  priceVolumeData: PriceVolume
 }
 
-function StockInfo({ id, result }: StockProp) {
+function StockInfo({ id, result, priceVolumeData }: StockProp) {
   const [isMultipleWatchlists, setMultipleWatchlists] = useState(false);
 
   console.log(id, result);
@@ -37,7 +39,7 @@ function StockInfo({ id, result }: StockProp) {
 
   useEffect(() => {
     localStorage.setItem("watchlists", JSON.stringify(watchlists));
-  }, [watchlists]);
+  }, [watchlists,id]);
 
   console.log("Watchlists from Context: ", watchlists);
 
@@ -89,7 +91,9 @@ function StockInfo({ id, result }: StockProp) {
               <h1 className="py-3 text-md sm:text-2xl md:text-4xl lg:text-5xl"> 
                 {result.Name} ({result.Symbol}) <span className="text-slate-500 text-xl">{result.Exchange}</span>
               </h1>
-              <p className="pb-2 text-slate-500">Current Price - </p>
+              <p className="pb-2 text-slate-500">Current Price - $
+              {priceVolumeData?.["Global Quote"]?.["05. price"]} 
+              </p>
               <p className="pb-7 text-slate-500">Currency - {result.Currency}</p>
             </div>
 
@@ -138,7 +142,7 @@ function StockInfo({ id, result }: StockProp) {
             <div className="col-span-2 border-2 border-gray-600 rounded-lg py-6 px-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1 gap-8">
                  <StockGridData label= {"Market Cap"} value = {`$ ${formatNumber(result.MarketCapitalization)}`} />
-                 <StockGridData label= {"Current Price"} value = {" "} />
+                 <StockGridData label= {"Current Price"} value = {`$ ${priceVolumeData?.["Global Quote"]?.["05. price"]}`} />
                  <StockGridData label= {"High / Low"} value = {`$ ${result["52WeekHigh"]} / ${result["52WeekLow"]}`}  />
                  <StockGridData label= {"Stock P/E"} value = {result.PERatio} />
                  <StockGridData label= {"Book Value"} value = {result.BookValue} />

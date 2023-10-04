@@ -1,4 +1,4 @@
-import { ChangeEvent} from "react";
+import { ChangeEvent, useState} from "react";
 import { Company } from "../../types";
 
 
@@ -16,9 +16,10 @@ interface searchProps
 }
 
 function Search({placeholder, data, value, setFilteredList}: searchProps){
+  const [close,setClose]=useState(true);
   
     // const fetchTicker=(value: string)=> {
-  //   const apiKey = 'EGAI68J68Y9G55QE'
+  //   const apiKey = 'EGAI68J68Y9G55QE1'
   //   const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${value}&apikey=${apiKey}`
   //   void fetch(url).then((response) => 
   //   response.json())
@@ -42,15 +43,24 @@ function Search({placeholder, data, value, setFilteredList}: searchProps){
         })
         if(seachWord === ""){
             setFilteredList([]);
+            setClose(true);
         }else{
             setFilteredList(newFilter);
+            setClose(false);
         }
-        
+       
+    }
+
+    const handleCloseClick = () =>{
+      console.log("Close btn clicked........")
+      setFilteredList([]);
+      setClose(true);
     }
         return(<>
      <div className="flex items-center justify-center">
         <div className="relative w-full">
-             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+             onClick={()=>{console.log("Search icon clicked")}}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -77,6 +87,13 @@ function Search({placeholder, data, value, setFilteredList}: searchProps){
             autoComplete="off"
             required
           />
+          <div id="search-close-btn" className={`absolute inset-y-0 right-0 flex items-center pl-3 ${close ? "hidden" : ""}`}
+          // style={{border:"1px solid red", cursor:"pointer", outline:"none"}}
+           onClick={handleCloseClick}>
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 mr-2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+           </svg>
+            </div>
         </div>
         </div>
         

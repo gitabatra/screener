@@ -1,4 +1,4 @@
-import React, { createContext, useState, ChangeEvent, MouseEvent, useEffect } from "react";
+import React, { createContext, useState, ChangeEvent, useEffect } from "react";
 import { Portfolio } from "../../types";
 import { getPortfolioFromLocalStorage } from "../../utils/localApi";
 
@@ -12,7 +12,9 @@ export interface Details {
 export interface PortfolioContextInterface {
     portfolios: Portfolio[];
     details: Details,
-    addStocks : (event: MouseEvent<HTMLButtonElement>) => void,
+    addStocks : (name: string) => void,
+    deleteStock: (stock:string) => void,
+    handleResetPortfolio:() => void,
     handleChange:(event: ChangeEvent<HTMLInputElement>) => void,
   }
    
@@ -25,6 +27,8 @@ export interface PortfolioContextInterface {
       dateOfPurchase: ""
     },
     addStocks : () => { },
+    deleteStock:() =>{},
+    handleResetPortfolio:() => {},
     handleChange:() => { },
   } as PortfolioContextInterface
    
@@ -43,19 +47,47 @@ export interface PortfolioContextInterface {
       dateOfPurchase:""
     })
 
-    const addStocks = (event: MouseEvent<HTMLButtonElement>) =>{
-      event.preventDefault();
+    // const addStocks = (event: MouseEvent<HTMLButtonElement>) =>{
+    const addStocks = (name: string) =>{
+      //event.preventDefault();
+      let isAlreadyAdded: any;
       console.log("Portfolio: ",portfolios);
       const stockId = "pf-st-20230727-" + (portfolios.length).toString();
         const portfolio: Portfolio = {
           id: stockId,
-          stockName: details.stockName,
+          stockName: name,
           shares: details.shares,
           price: details.price,
           dateOfPurchase: (details.dateOfPurchase)
         }
-        setPortfolio([...portfolios, portfolio]);
+        if(portfolios.length>0){
+          isAlreadyAdded = portfolios.find(x => x.stockName === name);
+          console.log("IF STOCK ALREADY ADDED: ",isAlreadyAdded);
+         
+        }
+        (isAlreadyAdded) ? " " : setPortfolio([...portfolios, portfolio]);
+        // setPortfolio([...portfolios, portfolio]);
+        setDetails({
+          stockName: "",
+          shares: 0,
+          price:0,
+          dateOfPurchase:""
+        })
     }
+
+    const deleteStock = (stock:string)=> {
+      console.log("Delete function is executing....",stock);
+      const filteredPortfolio: Portfolio[] = portfolios.filter((element)=>{
+         return (element.stockName!= stock)
+      })
+      console.log("Delete function is executing....",filteredPortfolio);
+      setPortfolio(filteredPortfolio);
+   }
+
+   function handleResetPortfolio(){
+    console.log("Reset PORTFOLIO");
+    setPortfolio([]);
+  }
 
     function handleChange(event: ChangeEvent<HTMLInputElement>){
       const {name,value} = event.target;
@@ -70,13 +102,10 @@ export interface PortfolioContextInterface {
   },[portfolios]);
     
     return (
-      <PortfolioContext.Provider value={{ portfolios, details, addStocks, handleChange }}>
+      <PortfolioContext.Provider value={{ portfolios, details, addStocks, deleteStock, handleResetPortfolio,handleChange }}>
         {children}
       </PortfolioContext.Provider>
     );
   }
-
-  // // eslint-disable-next-line react-refresh/only-export-components
-  // export const usePortfolioContext = () => useContext(PortfolioContext);
 
 
