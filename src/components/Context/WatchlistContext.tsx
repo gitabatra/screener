@@ -86,6 +86,7 @@ export interface WatchlistContextInterface {
       function fetchCompnayData(input: string){
         console.log("---Input while fetching data: ",input);
         const data = getCompanyOverviewDataBySymbol(input);
+        console.log("...testing log..............")
         data
           .then((res) => {
             insertStockToWatchlist(
