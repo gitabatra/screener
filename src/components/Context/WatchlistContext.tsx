@@ -75,7 +75,7 @@ export interface WatchlistContextInterface {
       );
       console.log("Watchlist id in Global context: ",watchlistId, filteredStockList);
       const deleteStock = (stockId: string) => {
-        console.log("Delete function is executing....", stockId);
+        //console.log("Delete function is executing....", stockId);
         deleteStockFromWatchlist(watchlistId, stockId);
         const filteredStocks: Stock[] = filteredStockList.filter((element) => {
           return stockId != element.stockID;
@@ -84,9 +84,9 @@ export interface WatchlistContextInterface {
       };
     
       function fetchCompnayData(input: string){
-        console.log("---Input while fetching data: ",input);
+       // console.log("---Input while fetching data: ",input);
         const data = getCompanyOverviewDataBySymbol(input);
-        console.log("...testing log..............")
+       // console.log("...testing log..............")
         data
           .then((res) => {
             insertStockToWatchlist(

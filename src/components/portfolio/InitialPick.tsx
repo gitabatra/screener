@@ -6,7 +6,7 @@ interface PortfolioProp{
   portfolios: Portfolio[]
 }
 function InitialPick({portfolios}: PortfolioProp) {
-  console.log("Portfolio in INITIAL---",portfolios)
+  //console.log("Portfolio in INITIAL---",portfolios)
   const { deleteStock, handleResetPortfolio} = useContext(PortfolioContext);
 
 
