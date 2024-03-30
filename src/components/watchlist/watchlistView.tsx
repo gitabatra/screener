@@ -29,7 +29,7 @@ function WatchlistView() {
 
         
 
-        <div className="overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         { (!stocksList.length) ? 
           <div className="text-2xl text-center">Stocks are not added to watchlist yet.</div>
           : 
