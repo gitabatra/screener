@@ -24,16 +24,16 @@ function Header() {
             {isMenuOpen ? <XMarkIcon /> : <Bars3Icon />}
           </div>
           <ul
-            className={`md:flex pl-9 mt-2 md:items-center md:pb-0 pb-12 absolute md:static dark:bg-gray-900 md:z-auto z-[100] left-0 w-full md:w-auto md:pl-0 
+            className={`md:flex pl-9 md:items-center md:pb-0 pb-12 absolute md:static dark:bg-gray-900 md:z-auto z-[56] left-0 w-full md:w-auto md:pl-0 
           ${isMenuOpen ? "top-12" : "top-[-490px]"}`}
           >
             <NavLink href={Routes.HOME}>Home</NavLink>
             <NavLink href={Routes.WATCHLIST}>Watchlist</NavLink>
             <NavLink href={Routes.PORTFOLIO}>Portfolio</NavLink>
             {}
-            {/* <button className="btn bg-sky-500 px-3 py-1 md:ml-8 rounded md:static dark:bg-sky-600 dark:hover:bg-sky-800 dark:focus:ring-sky-800">
+            <button className="btn bg-sky-500 px-3 py-1 md:ml-8 rounded md:static dark:bg-sky-600 dark:hover:bg-sky-800 dark:focus:ring-sky-800">
               User
-            </button> */}
+            </button>
           </ul>
         </div>
       </div>
