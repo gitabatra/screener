@@ -83,7 +83,7 @@ export function insertStockToWatchlist(watchlistId: string, symbol: string, resu
       const isAdded = isStockAlreadyAdded(stockData as Stock[], symbol);
       console.log("STOCK Added or not: ",isAdded);
       if(!isAdded){
-        console.log("not added..");
+        console.log("stock is not added................");
         watchlistData?.[0]?.wlData.push(newWLDataObject);
         Object.assign(watchlists[index].wlData,watchlistData?.[0]?.wlData)
         localStorage.setItem("watchlists", JSON.stringify(watchlists));
