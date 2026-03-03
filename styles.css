@@ -1,0 +1,32 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  html {
+    font-family: "Montserrat", sans-serif;
+  }
+
+  .active {
+    color: #0ea5e9;
+    border-bottom: 2px solid #0ea5e9;
+  }
+  
+
+.loginBtn{
+    font-size: 16px;
+    color: #000;
+    background-color: transparent;
+    border: 1px solid #000;
+    padding: 10px 15px;
+    margin-left: 20px;
+}
+.searchWrap{
+  background-image: url("../background-img.png");
+  background-size:cover;
+  overflow: hidden;
+}
+
+#search-close-btn{
+  cursor: pointer;
+}
