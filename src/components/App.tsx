@@ -13,7 +13,7 @@ import NotFound from "./NotFound";
 
 
 import {
-  createBrowserRouter,
+  createHashRouter,
   createRoutesFromElements,
   RouterProvider,
   Route
@@ -24,7 +24,7 @@ import { PortfolioProvider } from "./Context/PortfolioContext";
 import PortfolioDashboard from "./portfolio/PortfolioDashboard";
 
 
-const router = createBrowserRouter(createRoutesFromElements(
+const router = createHashRouter(createRoutesFromElements(
   <Route path="/" element={<RootLayout />}>
   <Route index element={<Home />}/>
   <Route path= {Routes.WATCHLIST} element={ <Watchlist />} />   

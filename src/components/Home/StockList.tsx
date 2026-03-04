@@ -1,10 +1,10 @@
-import { BalanceSheet, Company, IncomeSheet, StockDailyData, StockData } from "../../types";
+import { BalanceSheet, Company, IncomeSheet, StockDailyData, Stock } from "../../types";
 import { Link } from "react-router-dom";
 // import { useState } from "react";
 
 interface StockListProps {
     setInput: (name: string) => void;
-    result : StockData[],
+    result : Stock[],
     chartData: StockDailyData[],
     balanceSheetData: BalanceSheet[],
     income: IncomeSheet[]
